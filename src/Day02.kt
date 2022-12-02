@@ -10,8 +10,10 @@ fun main() {
     fun List<String>.score() =
         component2().toRPS().score + component2().toRPS().play(component1().toRPS()).value
 
-    fun List<String>.scorePredicting() =
-        component2().toResult().value + component2().toResult().played(component1().toRPS())
+    fun List<String>.scorePredicting(): Int {
+        val result = Result.fromCode(component2())
+        return result.value + result.played(component1().toRPS())
+    }
 
     fun part1(input: List<String>): Int =
         input.sumOf { it.split(" ").score() }
@@ -26,39 +28,32 @@ fun main() {
 
 }
 
-fun String.toResult() =
-    when (this) {
-        "X" -> LOSS
-        "Y" -> DRAW
-        "Z" -> WIN
-        else -> LOSS
-    }
-
-fun Result.played(opponent: RPS) =
-    when(this) {
-        LOSS -> when(opponent) {
-            ROCK -> SCISSORS.score
-            PAPER -> ROCK.score
-            SCISSORS -> PAPER.score
-        }
-        DRAW -> opponent.score
-        WIN -> when(opponent) {
-            ROCK -> PAPER.score
-            PAPER -> SCISSORS.score
-            SCISSORS -> ROCK.score
-        }
-    }
-
 fun String.toRPS() = RPS.fromCode(this)
 
-enum class Result(val value: Int) {
-    WIN(6),
-    DRAW(3),
-    LOSS(0);
+enum class Result(val value: Int, val code: String) {
+    WIN(6, "Z"),
+    DRAW(3, "Y"),
+    LOSS(0, "X");
+
+    fun played(opponent: RPS) =
+        when (this) {
+            LOSS -> when (opponent) {
+                ROCK -> SCISSORS.score
+                PAPER -> ROCK.score
+                SCISSORS -> PAPER.score
+            }
+
+            DRAW -> opponent.score
+            WIN -> when (opponent) {
+                ROCK -> PAPER.score
+                PAPER -> SCISSORS.score
+                SCISSORS -> ROCK.score
+            }
+        }
 
     companion object {
-        fun fromResult(result: Int) =
-            enumValues<Result>().single { it.value == result }
+        fun fromCode(code: String) =
+            enumValues<Result>().single { it.code == code }
     }
 }
 
@@ -68,18 +63,20 @@ enum class RPS(val code: List<String>, val score: Int) {
     SCISSORS(listOf("C", "Z"), 3);
 
     fun play(opponent: RPS) =
-        when(this) {
-            ROCK -> when(opponent) {
+        when (this) {
+            ROCK -> when (opponent) {
                 ROCK -> DRAW
                 PAPER -> LOSS
                 SCISSORS -> WIN
             }
-            PAPER -> when(opponent) {
+
+            PAPER -> when (opponent) {
                 ROCK -> WIN
                 PAPER -> DRAW
                 SCISSORS -> LOSS
             }
-            SCISSORS -> when(opponent) {
+
+            SCISSORS -> when (opponent) {
                 ROCK -> LOSS
                 PAPER -> WIN
                 SCISSORS -> DRAW
