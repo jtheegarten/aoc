@@ -22,7 +22,7 @@ fun main() {
 
 fun Pair<String, String>.score() = second.toRPS().let { it.score + it.play(first.toRPS()).value }
 
-fun Pair<String, String>.scorePredicting(): Int = Result.fromCode(second).let { it.played(first.toRPS()) + it.value }
+fun Pair<String, String>.scorePredicting(): Int = Result.fromCode(second).let { it.played(first.toRPS()).score + it.value }
 
 fun String.toGame(): Pair<String, String> = split(" ").let { it.component1() to it.component2() }
 
@@ -36,16 +36,16 @@ enum class Result(val value: Int, val code: String) {
     fun played(opponent: RPS) =
         when (this) {
             LOSS -> when (opponent) {
-                ROCK -> SCISSORS.score
-                PAPER -> ROCK.score
-                SCISSORS -> PAPER.score
+                ROCK -> SCISSORS
+                PAPER -> ROCK
+                SCISSORS -> PAPER
             }
 
-            DRAW -> opponent.score
+            DRAW -> opponent
             WIN -> when (opponent) {
-                ROCK -> PAPER.score
-                PAPER -> SCISSORS.score
-                SCISSORS -> ROCK.score
+                ROCK -> PAPER
+                PAPER -> SCISSORS
+                SCISSORS -> ROCK
             }
         }
 
