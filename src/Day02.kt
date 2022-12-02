@@ -7,19 +7,11 @@ import Result.WIN
 
 fun main() {
 
-    fun List<String>.score() =
-        component2().toRPS().score + component2().toRPS().play(component1().toRPS()).value
-
-    fun List<String>.scorePredicting(): Int {
-        val result = Result.fromCode(component2())
-        return result.value + result.played(component1().toRPS())
-    }
-
     fun part1(input: List<String>): Int =
-        input.sumOf { it.split(" ").score() }
+        input.sumOf { it.toGame().score() }
 
     fun part2(input: List<String>): Int =
-        input.sumOf { it.split(" ").scorePredicting() }
+        input.sumOf { it.toGame().scorePredicting() }
 
     val input = readInput("Day02")
     println("Part 1: ${part1(input)}")
@@ -27,6 +19,12 @@ fun main() {
 
 
 }
+
+fun Pair<String, String>.score() = second.toRPS().let { it.score + it.play(first.toRPS()).value }
+
+fun Pair<String, String>.scorePredicting(): Int = Result.fromCode(second).let { it.played(first.toRPS()) + it.value }
+
+fun String.toGame(): Pair<String, String> = split(" ").let { it.component1() to it.component2() }
 
 fun String.toRPS() = RPS.fromCode(this)
 
