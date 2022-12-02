@@ -22,10 +22,10 @@ fun main() {
     }
 
     fun part2(input: List<String>): Int {
-        return generateElvesList(input).sortedDescending().subList(0, 3).sum()
+        return generateElvesList(input).sortedDescending().take(3).sum()
     }
 
     val input = readInput("Day01")
-    println(part1(input))
-    println(part2(input))
+    println("Part 1: ${part1(input)}")
+    println("Part 2: ${part2(input)}")
 }
