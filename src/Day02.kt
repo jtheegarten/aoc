@@ -38,8 +38,8 @@ fun main() {
         input.sumOf { it.split(" ").scorePredicting() }
 
     val input = readInput("Day02")
-    println(part1(input))
-    println(part2(input))
+    println("Part 1: ${part1(input)}")
+    println("Part 2: ${part2(input)}")
 
 
 }
