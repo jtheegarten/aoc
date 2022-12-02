@@ -6,7 +6,7 @@ fun main() {
         input
             .split("\n\n")
             .map { elf ->
-                elf.split("\n")
+                elf.lines()
                     .sumOf { it.toIntOrNull() ?: 0 }
             }
 
