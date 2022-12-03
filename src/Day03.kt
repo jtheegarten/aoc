@@ -17,10 +17,10 @@ fun main() {
 
 }
 
-fun List<String>.badge() = map { it.toSet() }.reduce{a, b -> a.intersect(b)}
+fun List<String>.badge() = map { it.toSet() }.reduce(Set<Char>::intersect)
 
 fun String.duplicates() =
-    chunked(size = (length / 2)).map { it.toSet() }.reduce{a, b -> a.intersect(b)}
+    chunked(size = (length / 2)).map { it.toSet() }.reduce(Set<Char>::intersect)
 
 fun Char.score() = valueMap[this] ?: 0
 
