@@ -1,9 +1,9 @@
-import java.io.File
 import java.util.Stack
 
-fun main() {
 
-    fun addLine(result: MutableMap<Int, Stack<String>>, line: String) {
+class Day05 : Day<String>("05", "CMZ", "MCD") {
+
+    private fun addLine(result: MutableMap<Int, Stack<String>>, line: String) {
         var position = 1
         while (position < line.length) {
             val char = line[position].toString()
@@ -12,7 +12,7 @@ fun main() {
         }
     }
 
-    fun parseStacks(stacksDescription: String): Map<Int, Stack<String>> {
+    private fun parseStacks(stacksDescription: String): Map<Int, Stack<String>> {
         val lines = stacksDescription.lines().reversed()
         val result = mutableMapOf<Int, Stack<String>>()
         for (i in 1..(lines.first().last().digitToInt())) {
@@ -25,27 +25,29 @@ fun main() {
         return result
     }
 
-    fun applyMove(move: String, stacks: Map<Int, Stack<String>>, stableOrder: Boolean = false) {
+    private fun applyMove(move: String, stacks: Map<Int, Stack<String>>, stableOrder: Boolean = false) {
         val (amount, from, to) = move.split(" ").mapNotNull { it.toIntOrNull() }
         if (!stableOrder) {
             repeat(amount) { stacks[to]!!.push(stacks[from]!!.pop()) }
         } else {
-            List(amount) {stacks[from]!!.pop()}.reversed().forEach{ stacks[to]!!.push(it) }
+            List(amount) { stacks[from]!!.pop() }.reversed().forEach { stacks[to]!!.push(it) }
         }
     }
 
-    fun solve(input: List<String>, stableOrder: Boolean = false): String {
-        val (stacksDescription, instructionsDescription) = input
+    private fun solve(input: List<String>, stableOrder: Boolean = false): String {
+        val (stacksDescription, instructionsDescription) = input.joinToString("\n").split("\n\n")
         val stacks = parseStacks(stacksDescription)
         instructionsDescription.lines().filter { it.isNotEmpty() }.forEach { applyMove(it, stacks, stableOrder) }
 
         return stacks.values.joinToString("") { it.pop() }
     }
 
-    val input = File("src/Day05.txt").readText().split("\n\n")
-//    require(solve(input) == "CMZ")
-//    require(solve(input, true) == "MCD")
+    override fun part1(input: List<String>): String = solve(input)
 
-    println("Part 1: ${solve(input)}")
-    println("Part 2: ${solve(input, true)}")
+    override fun part2(input: List<String>): String = solve(input, true)
+
+}
+
+fun main() {
+    Day05().run()
 }
