@@ -26,7 +26,7 @@ fun main() {
     }
 
     fun applyMove(move: String, stacks: Map<Int, Stack<String>>, stableOrder: Boolean = false) {
-        val (amount, from, to) = Regex("(\\d+)").findAll(move).toList().map { it.value.toInt() }
+        val (amount, from, to) = move.split(" ").mapNotNull { it.toIntOrNull() }
         if (!stableOrder) {
             repeat(amount) { stacks[to]!!.push(stacks[from]!!.pop()) }
         } else {
