@@ -15,8 +15,8 @@ fun main() {
 }
 
 fun String.fullyContained() = split(",").map { it.toNumberList() }
-    .let { it.component1().containsAll(it.component2()) || it.component2().containsAll(it.component1()) }
+    .let { (first, second) -> first.containsAll(second) || second.containsAll(first) }
 
-fun String.overlap() = split(",").map { it.toNumberList().toSet() }.let { it.component1().intersect(it.component2()).isNotEmpty() }
+fun String.overlap() = split(",").map { it.toNumberList().toSet() }.let { (numbers1, numbers2) -> numbers1.intersect(numbers2).isNotEmpty() }
 
-fun String.toNumberList() = split("-").let { it.component1().toLong()..it.component2().toLong() }.toList()
+fun String.toNumberList() = split("-").let { (start, end) -> start.toLong()..end.toLong() }.toList()
