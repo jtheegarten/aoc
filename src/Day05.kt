@@ -1,9 +1,10 @@
-import java.util.Stack
+import java.util.ArrayDeque
+import java.util.Deque
 
 
 class Day05 : Day<String>("05", "CMZ", "MCD") {
 
-    private fun addLine(result: MutableMap<Int, Stack<String>>, line: String) {
+    private fun addLine(result: MutableMap<Int, Deque<String>>, line: String) {
         var position = 1
         while (position < line.length) {
             val char = line[position].toString()
@@ -12,11 +13,11 @@ class Day05 : Day<String>("05", "CMZ", "MCD") {
         }
     }
 
-    private fun parseStacks(stacksDescription: String): Map<Int, Stack<String>> {
+    private fun parseStacks(stacksDescription: String): Map<Int, Deque<String>> {
         val lines = stacksDescription.lines().reversed()
-        val result = mutableMapOf<Int, Stack<String>>()
+        val result = mutableMapOf<Int, Deque<String>>()
         for (i in 1..(lines.first().last().digitToInt())) {
-            result[i] = Stack<String>()
+            result[i] = ArrayDeque()
         }
         for (i in 1 until lines.size) {
             addLine(result, lines[i])
@@ -25,7 +26,7 @@ class Day05 : Day<String>("05", "CMZ", "MCD") {
         return result
     }
 
-    private fun applyMove(move: String, stacks: Map<Int, Stack<String>>, stableOrder: Boolean = false) {
+    private fun applyMove(move: String, stacks: Map<Int, Deque<String>>, stableOrder: Boolean = false) {
         val (amount, from, to) = move.split(" ").mapNotNull { it.toIntOrNull() }
         if (!stableOrder) {
             repeat(amount) { stacks[to]!!.push(stacks[from]!!.pop()) }
