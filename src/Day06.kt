@@ -9,6 +9,4 @@ fun main() {
     Day06().run()
 }
 
-private fun String.indexOfMarker(length: Int = 4) = windowed(length, 1).map { it.allUnique() }.indexOf(true) + length
-
-private fun CharSequence.allUnique(): Boolean = toSet().size == length
+private fun String.indexOfMarker(length: Int = 4) = windowed(length, 1).map { it.toSet().size == length }.indexOf(true) + length
