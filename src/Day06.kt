@@ -9,12 +9,6 @@ fun main() {
     Day06().run()
 }
 
-private fun String.indexOfMarker(length: Int = 4): Int {
-    for (i in 3 until (this.length - 3)) {
-        val chunk = subSequence(i, i + length)
-        if (chunk.allUnique()) return i + length
-    }
-    return 0
-}
+private fun String.indexOfMarker(length: Int = 4) = windowed(length, 1).map { it.allUnique() }.indexOf(true) + length
 
 private fun CharSequence.allUnique(): Boolean = toSet().size == length
