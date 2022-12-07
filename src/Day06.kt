@@ -1,4 +1,4 @@
-class Day06 : Day<Int>("06", 7, 19) {
+class Day06 : Day<Int>(7, 19) {
     override fun part1(input: List<String>): Int = input.first().indexOfMarker()
 
     override fun part2(input: List<String>): Int = input.first().indexOfMarker(14)

@@ -3,7 +3,7 @@ import kotlin.math.absoluteValue
 const val maxSpace: Long = 70_000_000
 const val spaceNeeded: Long = 30_000_000
 
-class Day07 : Day<Long>("07", 95437, 24933642) {
+class Day07 : Day<Long>(95437, 24933642) {
     override fun part1(input: List<String>): Long = input.drop(1).iterator().buildTree().sumOfFoldersWithSizeAtMost(100000)
 
     override fun part2(input: List<String>): Long = input.drop(1).iterator().buildTree()

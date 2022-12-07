@@ -2,7 +2,7 @@ import java.util.ArrayDeque
 import java.util.Deque
 
 
-class Day05 : Day<String>("05", "CMZ", "MCD") {
+class Day05 : Day<String>("CMZ", "MCD") {
 
     private fun addLine(result: MutableMap<Int, Deque<String>>, line: String) {
         var position = 1

@@ -3,12 +3,14 @@ import java.time.Duration
 import java.time.Instant
 
 abstract class Day<T>(
-    private val number: String,
     private val part1Test: T,
     private val part2Test: T,
 ) {
 
     fun run() {
+
+        val number = this::class.java.simpleName.takeLast(2)
+
         val testInput = File("src/Day${number}_test.txt").readLines()
         val input = File("src/Day${number}.txt").readLines()
 
