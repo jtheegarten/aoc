@@ -7,7 +7,7 @@ class Day07 : Day<Long>(95437, 24933642) {
     override fun part1(input: List<String>): Long = input.drop(1).iterator().buildTree().sumOfFoldersWithSizeAtMost(100000)
 
     override fun part2(input: List<String>): Long = input.drop(1).iterator().buildTree()
-        .let { root -> root.listDeletableDirectories((spaceNeeded - (maxSpace - root.size)).absoluteValue).minBy { it.size }.size }
+        .let { root -> root.listDeletableDirectories((spaceNeeded - (maxSpace - root.size)).absoluteValue).minOf { it.size } }
 }
 
 fun main() {
