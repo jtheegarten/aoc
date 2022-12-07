@@ -14,3 +14,9 @@ fun readInput(name: String) = File("src", "$name.txt")
 fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteArray()))
     .toString(16)
     .padStart(32, '0')
+
+class Node(val name: String, outV: Set<Vertex>, inV: Set<Vertex>)
+
+class Vertex(val weight: Long, val from: Node, val to: Node)
+
+class Graph(val nodes: Set<Node>, val vertices: Set<Vertex>)
