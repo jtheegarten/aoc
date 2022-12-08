@@ -20,15 +20,15 @@ fun main() {
 
 }
 
-fun Pair<String, String>.score() = second.toRPS().let { it.score + it.play(first.toRPS()).value }
+private fun Pair<String, String>.score() = second.toRPS().let { it.score + it.play(first.toRPS()).value }
 
-fun Pair<String, String>.scorePredicting(): Int = Result.fromCode(second).let { it.played(first.toRPS()).score + it.value }
+private fun Pair<String, String>.scorePredicting(): Int = Result.fromCode(second).let { it.played(first.toRPS()).score + it.value }
 
-fun String.toGame(): Pair<String, String> = split(" ").let { it.component1() to it.component2() }
+private fun String.toGame(): Pair<String, String> = split(" ").let { it.component1() to it.component2() }
 
-fun String.toRPS() = RPS.fromCode(this)
+private fun String.toRPS() = RPS.fromCode(this)
 
-enum class Result(val value: Int, val code: String) {
+private enum class Result(val value: Int, val code: String) {
     WIN(6, "Z"),
     DRAW(3, "Y"),
     LOSS(0, "X");
@@ -55,7 +55,7 @@ enum class Result(val value: Int, val code: String) {
     }
 }
 
-enum class RPS(val code: List<String>, val score: Int) {
+private enum class RPS(val code: List<String>, val score: Int) {
     ROCK(listOf("A", "X"), 1),
     PAPER(listOf("B", "Y"), 2),
     SCISSORS(listOf("C", "Z"), 3);
