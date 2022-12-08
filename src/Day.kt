@@ -12,10 +12,10 @@ abstract class Day<T>(
         val testInput = File("src/Day${number}_test.txt").readLines()
         val input = File("src/Day${number}.txt").readLines()
 
-        require(part1(testInput) == part1Test)
+        part1(testInput).let { require(part1(testInput) == part1Test) { "Part 1: $it was not correct." } }
         println("Part 1: ${part1(input).toString()}")
 
-        require(part2(testInput) == part2Test)
+        part2(testInput).let { require(it == part2Test) { "Part 2: $it was not correct." } }
         println("Part 2: ${part2(input).toString()}")
 
     }

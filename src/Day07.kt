@@ -1,26 +1,21 @@
-import kotlin.math.absoluteValue
-
 const val maxSpace: Long = 70_000_000
 const val spaceNeeded: Long = 30_000_000
 
 class Day07 : Day<Long>(95437, 24933642) {
-    override fun part1(input: List<String>): Long = input.drop(1).iterator().buildTree().sumOfFoldersWithSizeAtMost(100000)
+    override fun part1(input: List<String>): Long = input.drop(1).iterator().buildTree().getAllFolders().map { it.size }.filter { it <= 100_000 }.sum()
 
-    override fun part2(input: List<String>): Long = input.drop(1).iterator().buildTree()
-        .let { root -> root.listDeletableDirectories((spaceNeeded - (maxSpace - root.size)).absoluteValue).minOf { it.size } }
+    override fun part2(input: List<String>): Long {
+        val root = input.drop(1).iterator().buildTree()
+        val deletionTarget = (spaceNeeded - (maxSpace - root.size))
+        return root.getAllFolders().filter { it.size >= deletionTarget }.minOf { it.size }
+    }
 }
 
 fun main() {
     Day07().run()
 }
 
-private fun Folder.listDeletableDirectories(deletionTarget: Long): List<Folder> = deletableSubdirectories(deletionTarget) + if (size >= deletionTarget) listOf(this) else listOf()
-
-private fun Folder.deletableSubdirectories(spaceNeeded: Long) = content.filterIsInstance<Folder>().flatMap { it.listDeletableDirectories(spaceNeeded) }
-
-private fun Folder.sumOfFoldersWithSizeAtMost(size: Long): Long = sumOfSubFolders(size) + if(this.size <= size) this.size else 0
-
-private fun Folder.sumOfSubFolders(size: Long) = content.filterIsInstance<Folder>().sumOf { it.sumOfFoldersWithSizeAtMost(size) }
+private fun Folder.getAllFolders(): List<Folder> = listOf(this) + content.filterIsInstance<Folder>().flatMap { it.getAllFolders() }
 
 private fun Iterator<String>.buildTree(): Folder = Folder().applyInstructions(this)
 
