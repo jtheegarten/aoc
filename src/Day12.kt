@@ -27,7 +27,7 @@ class HeightMap(input: List<String>, aIsZero: Boolean = false) {
         coordinate.visited = true
         val cost = coordinate.cost + 1
         coordinate.neighbours().filter { it.cost > cost }.forEach { it.cost = cost }
-        coordinates.filterNot(Coordinate::visited).minByOrNull(Coordinate::cost)?.let { dijkstra(it) }
+        coordinates.filterNot { it.visited }.minByOrNull { it.cost }?.let { dijkstra(it) }
     }
 
     private fun Coordinate.neighbours() = listOfNotNull(
