@@ -1,7 +1,7 @@
 class Day12 : Day<Int>(31, 29) {
-    override fun part1(input: List<String>) = HeightMap(input).apply { dijkstra(this.start) }.goal.cost
+    override fun part1(input: List<String>) = HeightMap(input).dijkstra().goal.cost
 
-    override fun part2(input: List<String>) = HeightMap(input, true).apply { dijkstra(this.start) }.goal.cost
+    override fun part2(input: List<String>) = HeightMap(input, true).dijkstra().goal.cost
 
 }
 
@@ -10,7 +10,7 @@ fun main() {
 }
 
 class HeightMap(input: List<String>, aIsZero: Boolean = false) {
-    lateinit var start: Coordinate
+    private lateinit var start: Coordinate
     lateinit var goal: Coordinate
     private val coordinates: List<Coordinate> =
         input.mapIndexed { y, row ->
@@ -23,24 +23,22 @@ class HeightMap(input: List<String>, aIsZero: Boolean = false) {
             }
         }.flatten()
 
-    fun dijkstra(coordinate: Coordinate) {
+    fun dijkstra(coordinate: Coordinate = start): HeightMap = this.apply {
         coordinate.visited = true
         val cost = coordinate.cost + 1
-        neighbours(coordinate).filter { it.cost > cost }.forEach { it.cost = cost }
-        firstUnvisited()?.let { dijkstra(it) }
+        coordinate.neighbours().filter { it.cost > cost }.forEach { it.cost = cost }
+        coordinates.filterNot(Coordinate::visited).minByOrNull(Coordinate::cost)?.let { dijkstra(it) }
     }
 
-    private fun neighbours(coordinate: Coordinate) = listOfNotNull(
-        find(coordinate.x - 1, coordinate.y, coordinate.height),
-        find(coordinate.x + 1, coordinate.y, coordinate.height),
-        find(coordinate.x, coordinate.y - 1, coordinate.height),
-        find(coordinate.x, coordinate.y + 1, coordinate.height),
+    private fun Coordinate.neighbours() = listOfNotNull(
+        find(x - 1, y, height),
+        find(x + 1, y, height),
+        find(x, y - 1, height),
+        find(x, y + 1, height),
     )
 
     private fun find(x: Int, y: Int, maxHeight: Int) = coordinates.find { it.x == x && it.y == y && it.height <= maxHeight + 1 }
 
-    private fun firstUnvisited() =
-        coordinates.filterNot(Coordinate::visited).minByOrNull(Coordinate::cost)
 }
 
 class Coordinate(
