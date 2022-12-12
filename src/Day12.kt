@@ -37,7 +37,7 @@ class HeightMap(input: List<String>, aIsZero: Boolean = false) {
         find(x, y + 1, height),
     )
 
-    private fun find(x: Int, y: Int, maxHeight: Int) = coordinates.find { it.x == x && it.y == y && it.height <= maxHeight + 1 }
+    private fun find(x: Int, y: Int, maxHeight: Int) = coordinates.asSequence().filter { it.height <= maxHeight + 1 }.find { it.x == x && it.y == y }
 
 }
 
