@@ -43,7 +43,7 @@ private fun List<String>.toSignalStrengths(): MutableList<Int> {
                     register.add(curVal)
                 }
                 register.add(curVal)
-                val addition = instruction.split(" ").last().toInt()
+                val addition = instruction.lastAsInt(" ")
                 register.add(curVal + addition)
                 wasNoop = false
             }

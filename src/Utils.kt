@@ -20,3 +20,5 @@ class Node(val name: String, outV: Set<Vertex>, inV: Set<Vertex>)
 class Vertex(val weight: Long, val from: Node, val to: Node)
 
 class Graph(val nodes: Set<Node>, val vertices: Set<Vertex>)
+
+fun String.lastAsInt(delimiter: String) = this.split(delimiter).last().toInt()

@@ -41,8 +41,6 @@ private fun List<String>.toMonkey(calm: Boolean = true): Monkey {
 
 private fun String.toLongOrDefault(default: Long) = toLongOrNull() ?: default
 
-private fun String.lastAsInt(delimiter: String) = this.split(delimiter).last().toInt()
-
 private fun List<String>.toTest(): Test = Test(
     this[0].lastAsInt(" ").toLong(),
     this[1].lastAsInt(" "),
