@@ -7,7 +7,7 @@ class Day10 : Day<Int>(13140, 0) {
 
 private fun List<Int>.printCRT(): Int {
     asSequence().mapIndexed { index, value ->
-        if (index % 40 in ((value)..value + 2)) "#" else " "
+        if (index % 40 in ((value)..value + 2)) "\u2588" else " "
     }.drop(1).windowed(40, 40).forEach { it.joinToString("").let(::println) }
     return 0
 }
