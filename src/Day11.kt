@@ -1,14 +1,12 @@
-import java.math.BigInteger
-
 class Day11 : Day<Long>(10605, 2713310158) {
-    override fun part1(input: List<String>) = input.joinToString("\n").split("\n\n")
+    override fun part1(input: List<String>) = input.windowed(6, 7)
         .map { it.toMonkey() }
         .playRounds(20)
         .map { it.inspections }
         .sortedDescending()
         .take(2).let { (one, two) -> one * two }
 
-    override fun part2(input: List<String>): Long = input.joinToString("\n").split("\n\n")
+    override fun part2(input: List<String>): Long = input.windowed(6, 7)
         .map { it.toMonkey(false) }
         .playRounds(10000)
         .map { it.inspections }
@@ -29,15 +27,14 @@ private fun List<Monkey>.playRounds(rounds: Int): List<Monkey> {
     return this
 }
 
-private fun String.toMonkey(calm: Boolean = true): Monkey {
-    val instructions = split("\n")
-    val startingItems = instructions[1].substringAfter(":").split(",").map { it.trim() }.map { it.toBigInteger() }.toMutableList()
+private fun List<String>.toMonkey(calm: Boolean = true): Monkey {
+    val startingItems = this[1].substringAfter(":").split(",").map { it.trim() }.map { it.toLong() }.toMutableList()
     val operation =
-        instructions[2]
+        this[2]
             .substringAfter("= old ")
             .split(" ")
-            .let { (op, second) -> Operation(MathOperation.fromValue(op), BigInteger.valueOf(second.toLongOrDefault(-1L))) }
-    val test = instructions.takeLast(3).toTest()
+            .let { (op, second) -> Operation(MathOperation.fromValue(op), second.toLongOrDefault(-1L)) }
+    val test = this.takeLast(3).toTest()
 
     return Monkey(startingItems, operation, test, calm)
 }
@@ -47,13 +44,13 @@ private fun String.toLongOrDefault(default: Long) = toLongOrNull() ?: default
 private fun String.lastAsInt(delimiter: String) = this.split(delimiter).last().toInt()
 
 private fun List<String>.toTest(): Test = Test(
-    this[0].lastAsInt(" ").toBigInteger(),
+    this[0].lastAsInt(" ").toLong(),
     this[1].lastAsInt(" "),
     this[2].lastAsInt(" "),
 )
 
-private class Operation(val type: MathOperation, val value: BigInteger) {
-    fun execute(input: BigInteger): BigInteger {
+private class Operation(val type: MathOperation, val value: Long) {
+    fun execute(input: Long): Long {
         val secondOperand = if (value.toInt() == -1) input else value
         return when (type) {
             MathOperation.ADD -> input + secondOperand
@@ -72,11 +69,11 @@ private enum class MathOperation(val value: String) {
     }
 }
 
-private class Test(val divisor: BigInteger, val successTarget: Int, val failureTarget: Int) {
-    fun execute(inputVal: BigInteger): Int = if ((inputVal % divisor).toInt() == 0) successTarget else failureTarget
+private class Test(val divisor: Long, val successTarget: Int, val failureTarget: Int) {
+    fun execute(inputVal: Long): Int = if ((inputVal % divisor).toInt() == 0) successTarget else failureTarget
 }
 
-private class Monkey(var items: MutableList<BigInteger> = mutableListOf(), val op: Operation, val test: Test, val calm: Boolean) {
+private class Monkey(var items: MutableList<Long> = mutableListOf(), val op: Operation, val test: Test, val calm: Boolean) {
 
     var inspections = 0L
 
@@ -90,8 +87,8 @@ private class Monkey(var items: MutableList<BigInteger> = mutableListOf(), val o
         items = mutableListOf()
     }
 
-    private fun inspect(item: BigInteger, mod: BigInteger): Pair<BigInteger, Int> = op.execute(item)
-        .let { if (calm) it / BigInteger.valueOf(3) else it % mod}
+    private fun inspect(item: Long, mod: Long): Pair<Long, Int> = op.execute(item)
+        .let { if (calm) it / 3L else it % mod}
         .let { newValue -> newValue to test.execute(newValue) }
 }
 
