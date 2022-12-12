@@ -24,8 +24,6 @@ fun main() {
     Day10().run()
 }
 
-private fun List<Int>.printLast() = println("${size - 1}: ${last()}")
-
 private fun List<String>.toSignalStrengths(): MutableList<Int> {
     val register = mutableListOf<Int>()
     register.add(1)
@@ -36,7 +34,6 @@ private fun List<String>.toSignalStrengths(): MutableList<Int> {
             instruction == "noop" -> {
                 if (wasNoop) {
                     register.add(curVal)
-                    register.printLast()
                 }
                 wasNoop = true
             }
@@ -44,13 +41,10 @@ private fun List<String>.toSignalStrengths(): MutableList<Int> {
             instruction.startsWith("addx") -> {
                 if (wasNoop) {
                     register.add(curVal)
-                    register.printLast()
                 }
                 register.add(curVal)
-                register.printLast()
                 val addition = instruction.split(" ").last().toInt()
                 register.add(curVal + addition)
-                register.printLast()
                 wasNoop = false
             }
         }
