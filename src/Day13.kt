@@ -13,9 +13,7 @@ class Day13 : Day<Int>(13, 140) {
                 null
             }
         }.reduce { acc, i -> acc * i }
-
 }
-
 
 fun main() {
     Day13().run()
@@ -37,15 +35,15 @@ private class SignalList(var content: MutableList<Signal> = mutableListOf()) : S
 
     fun readInput(input: Iterator<Char>): SignalList {
         while (input.hasNext()) {
-            if (readNext(input)) return this
+            if (input.readNext()) return this
         }
         return this
     }
 
-    private fun readNext(input: Iterator<Char>) = input.next().let { char ->
+    private fun Iterator<Char>.readNext() = next().let { char ->
         when {
             char == ']' -> return true
-            char == '[' -> SignalList().readInput(input).let { content.add(it) }.also { return false }
+            char == '[' -> SignalList().readInput(this).let { content.add(it) }.also { return false }
             char.isDigit() -> {
                 var newDigit = char.digitToInt()
                 newDigit = if (newDigit == 0 && previous.isDigit() && previous.digitToInt() == 1) 10 else newDigit
