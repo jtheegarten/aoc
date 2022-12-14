@@ -1,7 +1,7 @@
 class Day14 : Day<Int>(24, 93) {
-    override fun part1(input: List<String>): Int = input.toMaze().countMaxSandDrops()
+    override fun part1(input: List<String>): Int = input.toCave().countMaxSandDrops()
 
-    override fun part2(input: List<String>): Int = input.toMaze(true).countMaxSandDrops()
+    override fun part2(input: List<String>): Int = input.toCave(true).countMaxSandDrops()
 
 }
 
@@ -30,7 +30,7 @@ private fun Array<CharArray>.dropSand(right: Int, down: Int): Boolean =
         }
     }
 
-private fun List<String>.toMaze(withFloor: Boolean = false): Array<CharArray> {
+private fun List<String>.toCave(withFloor: Boolean = false): Array<CharArray> {
     val wallInstructions = this.map { it.toWallInstructions() }
     val cave = Array(wallInstructions.flatten().maxOf { it.second } + 3) { CharArray(1000) { '.' } }
 
@@ -43,6 +43,8 @@ private fun List<String>.toMaze(withFloor: Boolean = false): Array<CharArray> {
     return cave
 }
 
+private fun Array<CharArray>.addWall(instructions: List<Pair<Int, Int>>) = instructions.zipWithNext().forEach { this.drawBetween(it.first, it.second) }
+
 private fun Array<CharArray>.drawBetween(start: Pair<Int, Int>, end: Pair<Int, Int>) {
     if (start.first == end.first) {
         (start.second to end.second).toRange().forEach { this[it][start.first] = '#' }
@@ -50,8 +52,6 @@ private fun Array<CharArray>.drawBetween(start: Pair<Int, Int>, end: Pair<Int, I
         (start.first to end.first).toRange().forEach{ this[start.second][it] = '#' }
     }
 }
-
-private fun Array<CharArray>.addWall(instructions: List<Pair<Int, Int>>) = instructions.zipWithNext().forEach { this.drawBetween(it.first, it.second) }
 
 private fun Pair<Int, Int>.toRange() = if (first <= second) first..second else second..first
 
