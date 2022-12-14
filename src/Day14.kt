@@ -17,8 +17,8 @@ private fun Array<CharArray>.countMaxSandDrops(): Int {
     return result
 }
 
-private fun Array<CharArray>.dropSand(right: Int, down: Int): Boolean {
-    return when {
+private fun Array<CharArray>.dropSand(right: Int, down: Int): Boolean =
+    when {
         this[down][right] == 'o' -> false
         this.size == down + 1 -> false
         this[down + 1][right] == '.' -> dropSand(right, down + 1)
@@ -26,22 +26,18 @@ private fun Array<CharArray>.dropSand(right: Int, down: Int): Boolean {
         this[down + 1][right + 1] == '.' -> dropSand(right + 1, down + 1)
         else -> {
             this[down][right] = 'o'
-            return true
+            true
         }
     }
-}
 
 private fun List<String>.toMaze(withFloor: Boolean = false): Array<CharArray> {
     val wallInstructions = this.map { it.toWallInstructions() }
-    val depth = wallInstructions.flatten().maxOf { it.second } + 2
-    val cave = Array(depth + 1) { CharArray(1000) { '.' } }
+    val cave = Array(wallInstructions.flatten().maxOf { it.second } + 3) { CharArray(1000) { '.' } }
 
-    wallInstructions.forEach {
-        cave.addWall(it)
-    }
+    wallInstructions.forEach { cave.addWall(it) }
 
     if (withFloor) {
-        cave[depth] = "#".repeat(1000).toCharArray()
+        cave[cave.size - 1] = "#".repeat(1000).toCharArray()
     }
 
     return cave
@@ -49,17 +45,16 @@ private fun List<String>.toMaze(withFloor: Boolean = false): Array<CharArray> {
 
 private fun Array<CharArray>.addWall(instructions: List<Pair<Int, Int>>) {
     val instIterator = instructions.iterator()
-    var previous: Pair<Int, Int>? = null
+    var (prevRight, prevDown) = instIterator.next()
     while (instIterator.hasNext()) {
         val (right, down) = instIterator.next()
-        if (previous != null) {
-            if (down != previous.second) {
-                (previous.second to down).toRange().forEach { this[it][right] = '#' }
-            } else {
-                (previous.first to right).toRange().forEach { this[down][it] = '#' }
-            }
+        if (down != prevDown) {
+            (prevDown to down).toRange().forEach { this[it][right] = '#' }
+        } else {
+            (prevRight to right).toRange().forEach { this[down][it] = '#' }
         }
-        previous = right to down
+        prevRight = right
+        prevDown = down
     }
 }
 
