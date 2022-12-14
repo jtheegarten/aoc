@@ -1,21 +1,15 @@
-class Day14 : Day<Int>(24, 93) {
-    override fun part1(input: List<String>): Int = input.toCave().countMaxSandDrops()
-
-    override fun part2(input: List<String>): Int = input.toCave().apply { this[this.size - 1] = "#".repeat(1000).toCharArray() }.countMaxSandDrops()
-
-}
-
 fun main() {
     Day14().run()
 }
 
-private fun Array<CharArray>.countMaxSandDrops(): Int {
-    var result = 0
-    while (this.dropSand(500, 0)) {
-        result++
-    }
-    return result
+class Day14 : Day<Int>(24, 93) {
+
+    override fun part1(input: List<String>): Int = input.toCave().countMaxSandDrops()
+
+    override fun part2(input: List<String>): Int = input.toCave().apply { this[this.size - 1] = "#".repeat(1000).toCharArray() }.countMaxSandDrops()
 }
+
+private fun Array<CharArray>.countMaxSandDrops() = generateSequence { this.dropSand(500, 0) }.takeWhile { it }.count()
 
 private fun Array<CharArray>.dropSand(right: Int, down: Int): Boolean =
     when {
