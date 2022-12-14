@@ -1,24 +1,21 @@
-import java.io.File
-
 fun main() {
+    Day01().run()
+}
 
-    fun generateElvesList(input: String): List<Int> =
+class Day01 : Day<Int>(24000, 45000) {
+
+    private fun generateElvesList(input: String): List<Int> =
         input
             .split("\n\n")
             .map { elf ->
-                elf.lines()
-                    .sumOf { it.toIntOrNull() ?: 0 }
+                elf.lines().sumOf { it.toIntOrNull() ?: 0 }
             }
 
-    fun part1(input: String): Int {
-        return generateElvesList(input).max()
+    override fun part1(input: List<String>): Int {
+        return generateElvesList(input.joinToString("\n")).max()
     }
 
-    fun part2(input: String): Int {
-        return generateElvesList(input).sortedDescending().take(3).sum()
+    override fun part2(input: List<String>): Int {
+        return generateElvesList(input.joinToString("\n")).sortedDescending().take(3).sum()
     }
-
-    val input = File("src/Day01.txt").readText()
-    println("Part 1: ${part1(input)}")
-    println("Part 2: ${part2(input)}")
 }

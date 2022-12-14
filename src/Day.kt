@@ -12,6 +12,8 @@ abstract class Day<T>(
         val testInput = File("src/Day${number}_test.txt").readLines()
         val input = File("src/Day${number}.txt").readLines()
 
+        println("=== Day $number: ===\n")
+
         part1(testInput).let { require(it == part1Test) { "Part 1: $it was not correct." } }
         println("Part 1: ${part1(input).toString()}")
 

@@ -1,15 +1,12 @@
-import java.io.File
+fun main() {
+    Day04().run()
+}
 
 class Day04: Day<Int>(2, 4) {
 
     override fun part1(input: List<String>): Int = input.count { it.fullyContained() }
 
     override fun part2(input: List<String>): Int = input.count { it.overlap() }
-
-}
-
-fun main() {
-    Day04().run()
 }
 
 fun String.fullyContained() = split(",").map { it.toNumberList() }
