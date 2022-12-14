@@ -43,20 +43,15 @@ private fun List<String>.toMaze(withFloor: Boolean = false): Array<CharArray> {
     return cave
 }
 
-private fun Array<CharArray>.addWall(instructions: List<Pair<Int, Int>>) {
-    val instIterator = instructions.iterator()
-    var (prevRight, prevDown) = instIterator.next()
-    while (instIterator.hasNext()) {
-        val (right, down) = instIterator.next()
-        if (down != prevDown) {
-            (prevDown to down).toRange().forEach { this[it][right] = '#' }
-        } else {
-            (prevRight to right).toRange().forEach { this[down][it] = '#' }
-        }
-        prevRight = right
-        prevDown = down
+private fun Array<CharArray>.drawBetween(start: Pair<Int, Int>, end: Pair<Int, Int>) {
+    if (start.first == end.first) {
+        (start.second to end.second).toRange().forEach { this[it][start.first] = '#' }
+    } else {
+        (start.first to end.first).toRange().forEach{ this[start.second][it] = '#' }
     }
 }
+
+private fun Array<CharArray>.addWall(instructions: List<Pair<Int, Int>>) = instructions.zipWithNext().forEach { this.drawBetween(it.first, it.second) }
 
 private fun Pair<Int, Int>.toRange() = if (first <= second) first..second else second..first
 
