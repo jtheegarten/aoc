@@ -1,7 +1,7 @@
 class Day14 : Day<Int>(24, 93) {
     override fun part1(input: List<String>): Int = input.toCave().countMaxSandDrops()
 
-    override fun part2(input: List<String>): Int = input.toCave(true).countMaxSandDrops()
+    override fun part2(input: List<String>): Int = input.toCave().apply { this[this.size - 1] = "#".repeat(1000).toCharArray() }.countMaxSandDrops()
 
 }
 
@@ -30,17 +30,9 @@ private fun Array<CharArray>.dropSand(right: Int, down: Int): Boolean =
         }
     }
 
-private fun List<String>.toCave(withFloor: Boolean = false): Array<CharArray> {
+private fun List<String>.toCave(): Array<CharArray> {
     val wallInstructions = this.map { it.toWallInstructions() }
-    val cave = Array(wallInstructions.flatten().maxOf { it.second } + 3) { CharArray(1000) { '.' } }
-
-    wallInstructions.forEach { cave.addWall(it) }
-
-    if (withFloor) {
-        cave[cave.size - 1] = "#".repeat(1000).toCharArray()
-    }
-
-    return cave
+    return Array(wallInstructions.flatten().maxOf { it.second } + 3) { CharArray(1000) { '.' } }.apply { wallInstructions.forEach(this::addWall) }
 }
 
 private fun Array<CharArray>.addWall(instructions: List<Pair<Int, Int>>) = instructions.zipWithNext().forEach { this.drawBetween(it.first, it.second) }
