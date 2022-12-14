@@ -1,6 +1,4 @@
 import java.io.File
-import java.time.Duration
-import java.time.Instant
 
 abstract class Day<T>(
     private val part1Test: T,
