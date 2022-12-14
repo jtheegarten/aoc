@@ -10,10 +10,8 @@ fun main() {
 }
 
 private fun Array<CharArray>.countMaxSandDrops(): Int {
-    var success = true
-    var result = -1
-    while (success) {
-        success = this.dropSand(500, 0)
+    var result = 0
+    while (this.dropSand(500, 0)) {
         result++
     }
     return result
@@ -68,5 +66,3 @@ private fun Array<CharArray>.addWall(instructions: List<Pair<Int, Int>>) {
 private fun Pair<Int, Int>.toRange() = if (first <= second) first..second else second..first
 
 private fun String.toWallInstructions() = split(" -> ").map { it.split(",").let { position -> position[0].toInt() to position[1].toInt() } }
-
-private fun Array<CharArray>.print() = forEach { it.joinToString("").replace(".".repeat(100), ".").let(::println) }
