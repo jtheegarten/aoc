@@ -6,7 +6,7 @@ fun main() {
 
 class Day15 : Day<Long>(0, 24) {
 
-    override fun part1(input: List<String>): Long = input.map { it.toSensorAndBeacon() }.toCaveMap(2000000..2000000).countInRow(2000000).toLong()
+    override fun part1(input: List<String>): Long = input.map { it.toSensorAndBeacon() }.toCaveMap(2000000).countInRow(2000000).toLong()
 
     override fun part2(input: List<String>): Long =
         input.map { it.toSensorAndBeacon() }.findHole(4000000) //.also { println("Candidate: ${it.first}, ${it.second}") }
@@ -46,7 +46,7 @@ private fun String.toSensorAndBeacon(): Pair<Pair<Int, Int>, Pair<Int, Int>> {
     return sensor to beacon
 }
 
-private fun List<Pair<Pair<Int, Int>, Pair<Int, Int>>>.toCaveMap(interestingRow: IntRange): Map<Pair<Int, Int>, Content> {
+private fun List<Pair<Pair<Int, Int>, Pair<Int, Int>>>.toCaveMap(interestingRow: Int): Map<Pair<Int, Int>, Content> {
     val caveMap = mutableMapOf<Pair<Int, Int>, Content>()
 
     for (pair in this) {
@@ -55,23 +55,21 @@ private fun List<Pair<Pair<Int, Int>, Pair<Int, Int>>>.toCaveMap(interestingRow:
     return caveMap
 }
 
-private fun MutableMap<Pair<Int, Int>, Content>.computeContent(sensor: Pair<Int, Int>, beacon: Pair<Int, Int>, interestingRows: IntRange) {
+private fun MutableMap<Pair<Int, Int>, Content>.computeContent(sensor: Pair<Int, Int>, beacon: Pair<Int, Int>, interestingRow: Int) {
     this[sensor] = Content.SENSOR
     this[beacon] = Content.BEACON
-    val emptyPositions = spanArea(sensor, sensor.distance(beacon), interestingRows)
+    val emptyPositions = spanArea(sensor, sensor.distance(beacon), interestingRow)
     for (position in emptyPositions) {
         this.putIfAbsent(position, Content.NOTHING)
     }
 }
 
-private fun spanArea(point: Pair<Int, Int>, range: Int, interestingRows: IntRange): List<Pair<Int, Int>> =
+private fun spanArea(point: Pair<Int, Int>, range: Int, interestingRow: Int): List<Pair<Int, Int>> =
     buildList {
-        for (y in interestingRows) {
-            for (x in (point.first - range)..(point.first + range)) {
-                val target = x to y
-                if (target.distance(point) <= range) {
-                    add(target)
-                }
+        for (x in (point.first - range)..(point.first + range)) {
+            val target = x to interestingRow
+            if (target.distance(point) <= range) {
+                add(target)
             }
         }
     }
