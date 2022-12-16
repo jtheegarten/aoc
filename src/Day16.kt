@@ -2,7 +2,6 @@ fun main() {
     Day16().run()
 }
 
-
 class Day16 : Day<Int>(1651, 1707) {
 
 
@@ -14,10 +13,16 @@ class Day16 : Day<Int>(1651, 1707) {
         return paths.floydWarshall(valvesMap).dfs(valvesMap, 0, 0, "AA", emptySet(), 0, 30)
     }
 
-    override fun part2(input: List<String>): Int = 19
+    override fun part2(input: List<String>): Int {
+        val valves = input.map(Valve::from)
+        val valvesMap = valves.associateBy { it.name }
+        val paths = valves.associate { it.name to it.neighbours.associateWith { 1 }.toMutableMap() }.toMutableMap()
+
+        return paths.floydWarshall(valvesMap).dfs(valvesMap, 0, 0, "AA", emptySet(), 0, 26, true)
+    }
 }
 
-private fun Map<String, MutableMap<String, Int>>.dfs(valvesMap: Map<String, Valve>, previousScore: Int, currentScore: Int, currentValve: String, visited: Set<String>, time: Int, maxTime: Int): Int {
+private fun Map<String, MutableMap<String, Int>>.dfs(valvesMap: Map<String, Valve>, previousScore: Int, currentScore: Int, currentValve: String, visited: Set<String>, time: Int, maxTime: Int, partTwo: Boolean = false): Int {
     var score = previousScore.coerceAtLeast(currentScore)
     for ((name, dist) in this[currentValve]!!) {
         if (!visited.contains(name) && time + dist + 1 < maxTime) {
@@ -29,9 +34,21 @@ private fun Map<String, MutableMap<String, Int>>.dfs(valvesMap: Map<String, Valv
                 currentValve = name,
                 visited = visited + name,
                 time = time + dist + 1,
-                maxTime = maxTime
+                maxTime = maxTime,
+                partTwo
             )
         }
+    }
+    if (partTwo) {
+        score = dfs(
+            valvesMap,
+            previousScore = score,
+            currentScore = currentScore,
+            currentValve = "AA",
+            visited = visited,
+            time = 0,
+            maxTime = maxTime
+        )
     }
     return score
 }
