@@ -1,3 +1,7 @@
+package net.sheltem.aoc.y2022
+
+import Day
+
 const val maxSpace: Long = 70_000_000
 const val spaceNeeded: Long = 30_000_000
 
@@ -9,10 +13,6 @@ class Day07 : Day<Long>(95437, 24933642) {
         val deletionTarget = (spaceNeeded - (maxSpace - root.size))
         return root.getAllFolders().filter { it.size >= deletionTarget }.minOf { it.size }
     }
-}
-
-fun main() {
-    Day07().run()
 }
 
 private fun Folder.getAllFolders(): List<Folder> = listOf(this) + content.filterIsInstance<Folder>().flatMap { it.getAllFolders() }

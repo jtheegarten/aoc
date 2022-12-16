@@ -1,12 +1,12 @@
-fun main() {
-    Day16().run()
-}
+package net.sheltem.aoc.y2022
+
+import Day
 
 class Day16 : Day<Int>(1651, 1707) {
 
 
     override fun part1(input: List<String>): Int {
-        val valves = input.map(Valve::from)
+        val valves = input.map(Valve.Companion::from)
         val valvesMap = valves.associateBy { it.name }
         val paths = valves.associate { it.name to it.neighbours.associateWith { 1 }.toMutableMap() }.toMutableMap()
 
@@ -14,7 +14,7 @@ class Day16 : Day<Int>(1651, 1707) {
     }
 
     override fun part2(input: List<String>): Int {
-        val valves = input.map(Valve::from)
+        val valves = input.map(Valve.Companion::from)
         val valvesMap = valves.associateBy { it.name }
         val paths = valves.associate { it.name to it.neighbours.associateWith { 1 }.toMutableMap() }.toMutableMap()
 

@@ -1,24 +1,11 @@
-import RPS.PAPER
-import RPS.ROCK
-import RPS.SCISSORS
-import Result.DRAW
-import Result.LOSS
-import Result.WIN
+package net.sheltem.aoc.y2022
 
-fun main() {
-
-    fun part1(input: List<String>): Int =
-        input.sumOf { it.toGame().score() }
-
-    fun part2(input: List<String>): Int =
-        input.sumOf { it.toGame().scorePredicting() }
-
-    val input = readInput("Day02")
-    println("Part 1: ${part1(input)}")
-    println("Part 2: ${part2(input)}")
-
-
-}
+import net.sheltem.aoc.y2022.RPS.PAPER
+import net.sheltem.aoc.y2022.RPS.ROCK
+import net.sheltem.aoc.y2022.RPS.SCISSORS
+import net.sheltem.aoc.y2022.Result.DRAW
+import net.sheltem.aoc.y2022.Result.LOSS
+import net.sheltem.aoc.y2022.Result.WIN
 
 private fun Pair<String, String>.score() = second.toRPS().let { it.score + it.play(first.toRPS()).value }
 

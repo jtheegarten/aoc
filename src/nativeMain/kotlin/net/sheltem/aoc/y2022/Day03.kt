@@ -1,6 +1,6 @@
-fun main() {
-    Day03().run()
-}
+package net.sheltem.aoc.y2022
+
+import Day
 
 class Day03: Day<Int>(157, 70) {
     override fun part1(input: List<String>): Int =

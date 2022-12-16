@@ -1,8 +1,8 @@
-import kotlin.math.absoluteValue
+package net.sheltem.aoc.y2022
 
-fun main() {
-    Day15().run()
-}
+import Day
+import net.sheltem.aoc.putIfAbsent
+import kotlin.math.absoluteValue
 
 class Day15 : Day<Long>(0, 24) {
 

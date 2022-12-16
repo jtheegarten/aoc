@@ -1,12 +1,12 @@
+package net.sheltem.aoc.y2022
+
+import Day
+
 class Day08 : Day<Int>(21, 8) {
     override fun part1(input: List<String>): Int = input.trees().countVisible()
 
     override fun part2(input: List<String>): Int = input.trees().toScenicScores().max()
 
-}
-
-fun main() {
-    Day08().run()
 }
 
 private fun Array<Array<Int>>.countVisible(): Int = countEdges() + countInsides()

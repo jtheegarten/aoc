@@ -1,3 +1,8 @@
+package net.sheltem.aoc.y2022
+
+import Day
+import net.sheltem.aoc.lastAsInt
+
 class Day11 : Day<Long>(10605, 2713310158) {
     override fun part1(input: List<String>) = input.windowed(6, 7)
         .map { it.toMonkey() }
@@ -12,10 +17,6 @@ class Day11 : Day<Long>(10605, 2713310158) {
         .map { it.inspections }
         .sortedDescending()
         .take(2).let { (one, two) -> one * two }
-}
-
-fun main() {
-    Day11().run()
 }
 
 private fun List<Monkey>.playRounds(rounds: Int): List<Monkey> {

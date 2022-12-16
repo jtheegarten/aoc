@@ -1,7 +1,6 @@
-fun main() {
-    Day13().run()
-}
+package net.sheltem.aoc.y2022
 
+import Day
 
 class Day13 : Day<Int>(13, 140) {
     private val firstDivider = "[[2]]".toSignal()

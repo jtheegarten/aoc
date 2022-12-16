@@ -1,6 +1,6 @@
-fun main() {
-    Day01().run()
-}
+package net.sheltem.aoc.y2022
+
+import Day
 
 class Day01 : Day<Int>(24000, 45000) {
 

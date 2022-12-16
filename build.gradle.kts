@@ -1,24 +1,22 @@
 plugins {
-    kotlin("jvm") version "1.7.22"
+    kotlin("multiplatform") version "1.7.22"
 }
 
 repositories {
     mavenCentral()
 }
 
-tasks {
-    sourceSets {
-        main {
-            java.srcDirs("src")
+kotlin {
+    mingwX64("native") {
+        binaries {
+            executable {
+                entryPoint = "net.sheltem.aoc.y2022.main"
+            }
         }
-    }
-
-    wrapper {
-        gradleVersion = "7.6"
     }
 }
 
-dependencies {
-    implementation("org.jetbrains.kotlinx:multik-core:0.2.0")
-    implementation("org.jetbrains.kotlinx:multik-default:0.2.0")
+tasks.withType<Wrapper> {
+    gradleVersion = "7.6"
+    distributionType = Wrapper.DistributionType.BIN
 }

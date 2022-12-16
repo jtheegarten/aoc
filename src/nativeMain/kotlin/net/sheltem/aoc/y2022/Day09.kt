@@ -1,8 +1,7 @@
-import kotlin.math.absoluteValue
+package net.sheltem.aoc.y2022
 
-fun main() {
-    Day09().run()
-}
+import Day
+import kotlin.math.absoluteValue
 
 class Day09 : Day<Int>(88, 36) {
 
