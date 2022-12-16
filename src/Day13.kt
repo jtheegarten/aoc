@@ -1,10 +1,14 @@
-class Day13 : Day<Int>(13, 140) {
+fun main() {
+    Day13().run()
+}
 
+
+class Day13 : Day<Int>(13, 140) {
     private val firstDivider = "[[2]]".toSignal()
+
     private val secondDivider = "[[6]]".toSignal()
 
     override fun part1(input: List<String>): Int = input.toPairsOfSignals().map { it.compare() }.mapIndexed { index, b -> if (b) (index + 1) else 0 }.sum()
-
     override fun part2(input: List<String>): Int = input.filter { it.isNotBlank() }.toListOfSignals().asSequence().plus(firstDivider).plus(secondDivider).sorted()
         .mapIndexedNotNull { index, signal ->
             if (signal == firstDivider || signal == secondDivider) {
@@ -13,10 +17,6 @@ class Day13 : Day<Int>(13, 140) {
                 null
             }
         }.reduce { acc, i -> acc * i }
-}
-
-fun main() {
-    Day13().run()
 }
 
 private fun Pair<Signal, Signal>.compare(): Boolean = first < second

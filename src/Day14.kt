@@ -13,8 +13,8 @@ private fun Array<CharArray>.addFloor(): Array<CharArray> = apply { this[this.si
 
 private fun Array<CharArray>.countMaxSandDrops() = generateSequence { this.dropSand(500, 0) }.takeWhile { it }.count()
 
-private fun Array<CharArray>.dropSand(right: Int, down: Int): Boolean =
-    when {
+private tailrec fun Array<CharArray>.dropSand(right: Int, down: Int): Boolean {
+    return when {
         this[down][right] == 'o' -> false
         this.size == down + 1 -> false
         this[down + 1][right] == '.' -> dropSand(right, down + 1)
@@ -25,6 +25,7 @@ private fun Array<CharArray>.dropSand(right: Int, down: Int): Boolean =
             true
         }
     }
+}
 
 private fun List<String>.toCave(): Array<CharArray> {
     val wallInstructions = this.map { it.toWallInstructions() }
