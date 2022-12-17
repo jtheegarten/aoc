@@ -1,28 +1,52 @@
 import Direction.*
+import java.util.function.Predicate
 
 fun main() {
     Day17().run()
 }
 
-class Day17 : Day<Long>(3068, 19) {
+class Day17 : Day<Long>(3068, 1514285714288) {
 
-    override fun part1(input: List<String>): Long = input.first().toDirectionList().simulateRocks(2022)
+    override fun part1(input: List<String>): Long = input.first().toDirectionList().simulateRocks(2022) { _ -> false }.height.toLong()
 
     override fun part2(input: List<String>): Long = input.first().toDirectionList().part2()
 }
 
 private fun List<Direction>.part2(): Long {
     val goal = 1000000000000L
-    return 0L
+    val startOfCycle = simulateRocks(goal) { c -> c.reset && (c.numberOfRocks != 0L) }
+    val endOfCycle = simulateRocks(goal) { c -> c.reset && (c.numberOfRocks > startOfCycle.numberOfRocks) }
+
+    val rocksPerCycle = endOfCycle.numberOfRocks - startOfCycle.numberOfRocks
+    val numberOfCycles = goal / rocksPerCycle
+    val totalRocks = rocksPerCycle * numberOfCycles + startOfCycle.numberOfRocks
+
+    val heightPerCycle = endOfCycle.height - startOfCycle.height
+    val totalHeight = heightPerCycle * numberOfCycles + startOfCycle.height
+    val overshoot = totalRocks - goal
+
+    val atOvershoot = simulateRocks(goal) { c -> c.numberOfRocks == startOfCycle.numberOfRocks - overshoot }
+
+    return totalHeight - (startOfCycle.height - atOvershoot.height)
 }
 
 private fun List<Direction>.simulateRocks(
-    maxRocks: Long
-): Long {
+    maxRocks: Long,
+    condition: Predicate<State>,
+): State {
     val caveMap = mutableMapOf<Int, MutableSet<Int>>()
     var instructionIndex = 0
-    for (i in 0 until 2022) {
-        val rockToDrop = Shape.values()[i % 5]
+    var rocksDropped = 0L
+    while (rocksDropped < maxRocks) {
+
+        if (rocksDropped % 10000 == 0L) println("Dropping rock $rocksDropped...")
+
+        val currentCycle = State(caveMap.size, rocksDropped, instructionIndex == 0)
+        if (condition.test(currentCycle)) {
+            return currentCycle
+        }
+
+        val rockToDrop = Shape.values()[(rocksDropped % 5).toInt()]
         var position = (if (rockToDrop == Shape.PLUS) 4 else 3) to (caveMap.keys.maxOrNull() ?: 0) + 4
 
         while (true) {
@@ -35,9 +59,10 @@ private fun List<Direction>.simulateRocks(
             position = position.move(DOWN)
         }
         caveMap.addRock(position, rockToDrop)
+        rocksDropped++
     }
 
-    return caveMap.size.toLong()
+    return State(caveMap.size, maxRocks, false)
 }
 
 private fun MutableMap<Int, MutableSet<Int>>.addRockChunk(position: Pair<Int, Int>) {
@@ -93,4 +118,4 @@ private enum class Direction(val x: Int, val y: Int) {
 
 private fun Pair<Int, Int>.move(direction: Direction) = first + direction.x to second + direction.y
 
-private data class Cycle(val height: Long, val numberOfRocks: Long, val reset: Boolean)
+private data class State(val height: Int, val numberOfRocks: Long, val reset: Boolean)
