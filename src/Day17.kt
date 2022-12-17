@@ -4,16 +4,22 @@ fun main() {
     Day17().run()
 }
 
-class Day17 : Day<Int>(3068, 19) {
+class Day17 : Day<Long>(3068, 19) {
 
-    override fun part1(input: List<String>): Int = input.first().toDirectionList().dropRocks(2022)
+    override fun part1(input: List<String>): Long = input.first().toDirectionList().simulateRocks(2022)
 
-    override fun part2(input: List<String>): Int = 19
+    override fun part2(input: List<String>): Long = input.first().toDirectionList().part2()
 }
 
-private fun List<Direction>.dropRocks(max: Int): Int {
+private fun List<Direction>.part2(): Long {
+    val goal = 1000000000000L
+    return 0L
+}
+
+private fun List<Direction>.simulateRocks(
+    maxRocks: Long
+): Long {
     val caveMap = mutableMapOf<Int, MutableSet<Int>>()
-    caveMap[0] = (0..8).toHashSet()
     var instructionIndex = 0
     for (i in 0 until 2022) {
         val rockToDrop = Shape.values()[i % 5]
@@ -30,7 +36,8 @@ private fun List<Direction>.dropRocks(max: Int): Int {
         }
         caveMap.addRock(position, rockToDrop)
     }
-    return caveMap.size - 1
+
+    return caveMap.size.toLong()
 }
 
 private fun MutableMap<Int, MutableSet<Int>>.addRockChunk(position: Pair<Int, Int>) {
@@ -55,6 +62,7 @@ private fun Map<Int, Set<Int>>.step(position: Pair<Int, Int>, rockToDrop: Shape,
     while (true) {
         if (checkPosition.first < 1
             || checkPosition.first > 7
+            || checkPosition.second < 1
             || this.getOrDefault(checkPosition.second, setOf()).contains(checkPosition.first)
         ) {
             return false
@@ -85,3 +93,4 @@ private enum class Direction(val x: Int, val y: Int) {
 
 private fun Pair<Int, Int>.move(direction: Direction) = first + direction.x to second + direction.y
 
+private data class Cycle(val height: Long, val numberOfRocks: Long, val reset: Boolean)
