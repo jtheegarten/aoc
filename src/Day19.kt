@@ -31,7 +31,7 @@ private fun String.toBlueprint(): List<Robot> = Regex("\\d+")
     .let { listOf(Robot(it[1]), Robot(it[2]), Robot(it[3], it[4]), Robot(it[5], 0, it[6])) }
 
 private fun List<Robot>.toMaxGeodes(resources: IntArray = IntArray(4), robots: IntArray = IntArray(4), time: Int = 24, maxGeodes: Int = 0): Int {
-    if ((time * time - time) / 2 + robots[3] * time <= (maxGeodes - resources[3])) return 0
+    if ((0 until time).sumOf { it } + robots[3] * time + resources[3] <= maxGeodes) return 0
 
     val maxPrices = listOf(maxOf { it.ore }, maxOf { it.clay }, maxOf { it.obsidian }, 9999)
 
@@ -42,6 +42,8 @@ private fun List<Robot>.toMaxGeodes(resources: IntArray = IntArray(4), robots: I
 
     for (i in indices) {
         if (robots[i] >= maxPrices[i]) continue
+        if (i == 2 && robots[1] == 0) continue
+        if (i == 3 && robots[2] == 0) continue
         wait = this[i].resourceWait(resources, robots) + 1
 
         if (time - wait < 1) continue
