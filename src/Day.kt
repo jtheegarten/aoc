@@ -16,28 +16,29 @@ abstract class Day<T>(
 
         println("=== Day $number: ===\n")
 
-        listOf(1 to part1Test, 2 to part2Test).forEach {
-            runPart(it.first, it.second, testInput, input, skipTest)
+        listOf(part1Test, part2Test).forEachIndexed { i, it ->
+            println("Part${i+1}: ")
+            runPart(i+1, it, testInput, input, skipTest)
         }
 
     }
 
-    private fun runPart(part: Int, testResult: T, testInput: List<String>, input: List<String>, skipTest:Boolean) {
-        println("Part$part: ")
+    private fun runPart(part: Int, testResult: T, testInput: List<String>, input: List<String>, skipTest: Boolean) {
 
-        val list = if (!skipTest) listOf("Test" to testInput, "Real" to input) else listOf("real" to input)
+
+        val list = if (skipTest) listOf("real" to input) else listOf("Test" to testInput, "Real" to input)
 
         list.forEach { (step, input) ->
+
             val start = Instant.now()
-            val partResult = (if (part == 1) part1(input) else part2(input)).toString()
-            if (step == "Test") require(partResult == testResult.toString()) { "Result $partResult is not correct, expecting $testResult" }
+            val partResult = (if (part == 1) ::part1 else ::part2).invoke(input)
+            if (step == "Test") require(partResult == testResult) { "Result $partResult is not correct, expecting $testResult" }
             val partDuration = Duration.between(start, Instant.now())
             println("${step}: $partResult\n  in $partDuration")
         }
 
         println()
     }
-
 
     abstract fun part1(input: List<String>): T
     abstract fun part2(input: List<String>): T
