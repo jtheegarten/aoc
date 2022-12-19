@@ -2,7 +2,7 @@ import Direction.*
 import java.util.function.Predicate
 
 fun main() {
-    Day17().run()
+    Day17().run(true)
 }
 
 class Day17 : Day<Long>(3068, 1514285714288) {
@@ -38,8 +38,6 @@ private fun List<Direction>.simulateRocks(
     var instructionIndex = 0
     var rocksDropped = 0L
     while (rocksDropped < maxRocks) {
-
-        if (rocksDropped % 10000 == 0L) println("Dropping rock $rocksDropped...")
 
         val currentCycle = State(caveMap.size, rocksDropped, instructionIndex == 0)
         if (condition.test(currentCycle)) {

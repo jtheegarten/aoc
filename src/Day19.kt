@@ -2,7 +2,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
 fun main() {
-    Day19().run()
+    Day19().run(true)
 }
 
 class Day19 : Day<Int>(33, 3472) {
