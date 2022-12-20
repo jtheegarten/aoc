@@ -29,7 +29,6 @@ abstract class Day<T>(
         val list = if (skipTest) listOf("real" to input) else listOf("Test" to testInput, "Real" to input)
 
         list.forEach { (step, input) ->
-
             val start = Instant.now()
             val partResult = (if (part == 1) ::part1 else ::part2).invoke(input)
             if (step == "Test") require(partResult == testResult) { "Result $partResult is not correct, expecting $testResult" }
