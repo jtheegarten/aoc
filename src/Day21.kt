@@ -27,22 +27,21 @@ private fun List<String>.humanNumber(): Long {
     while (true) {
         val halfDiff = max - (max - min) / 2
 
-        val tests = listOf(min, halfDiff, max).map { checkValue ->
-            val checkMap = inputMap.toMutableMap()
-            checkMap["humn"] = checkValue.toString()
-            (MathMonkey.from(checkMap["root"]!!, checkMap) as MathMonkey)
-                .let {
-                    checkValue to (it.left diff it.right)
-                }
+        val tests = listOf(min, halfDiff, max)
+            .map { checkValue ->
+                val checkMap = inputMap.toMutableMap()
+                checkMap["humn"] = checkValue.toString()
+                (MathMonkey.from(checkMap["root"]!!, checkMap) as MathMonkey)
+                    .let { checkValue to (it.left diff it.right) }
 
-        }.sortedBy { it.second }
+            }.sortedBy { it.second }.take(2)
 
         val result = tests.firstOrNull { it.second == 0.0 }
         if (result != null) {
             return result.first
         } else {
-            min = tests.take(2).minOf { it.first }
-            max = tests.take(2).maxOf { it.first }
+            min = tests.minOf { it.first }
+            max = tests.maxOf { it.first }
         }
     }
 
@@ -69,7 +68,6 @@ private interface MonkeyNode {
     infix operator fun minus(other: MonkeyNode) = value - other.value
     infix operator fun div(other: MonkeyNode) = value / other.value
     infix operator fun times(other: MonkeyNode) = value * other.value
-    infix fun equals(other: MonkeyNode) = value == other.value
     infix fun diff(other: MonkeyNode) = (value - other.value).absoluteValue
 }
 
