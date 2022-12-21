@@ -20,6 +20,14 @@ enum class MathOperation(val sign: String) {
     SUBSTRACT("-"),
     DIVIDE("/");
 
+    fun opposite() =
+        when (this) {
+            ADD -> SUBSTRACT
+            MULTIPLY -> DIVIDE
+            SUBSTRACT -> ADD
+            DIVIDE -> MULTIPLY
+        }
+
     companion object {
         fun fromSign(value: String) = MathOperation.values().first { it.sign == value }
     }
