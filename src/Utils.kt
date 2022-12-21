@@ -13,3 +13,14 @@ fun String.lastAsInt(delimiter: String) = this.split(delimiter).last().toInt()
 suspend inline fun <T, R> Iterable<T>.mapParallel(crossinline transform: (T) -> R): List<R> = coroutineScope {
     map { async { transform(it) } }.map { it.await() }
 }
+
+enum class MathOperation(val sign: String) {
+    ADD("+"),
+    MULTIPLY("*"),
+    SUBSTRACT("-"),
+    DIVIDE("/");
+
+    companion object {
+        fun fromSign(value: String) = MathOperation.values().first { it.sign == value }
+    }
+}

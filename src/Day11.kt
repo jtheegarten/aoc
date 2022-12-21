@@ -33,7 +33,7 @@ private fun List<String>.toMonkey(calm: Boolean = true): Monkey {
         this[2]
             .substringAfter("= old ")
             .split(" ")
-            .let { (op, second) -> Operation(MathOperation.fromValue(op), second.toLongOrDefault(-1L)) }
+            .let { (op, second) -> Operation(MathOperation.fromSign(op), second.toLongOrDefault(-1L)) }
     val test = this.takeLast(3).toTest()
 
     return Monkey(startingItems, operation, test, calm)
@@ -53,19 +53,11 @@ private class Operation(val type: MathOperation, val value: Long) {
         return when (type) {
             MathOperation.ADD -> input + secondOperand
             MathOperation.MULTIPLY -> input * secondOperand
+            else -> input
         }
     }
 }
 
-
-private enum class MathOperation(val value: String) {
-    ADD("+"),
-    MULTIPLY("*");
-
-    companion object {
-        fun fromValue(value: String) = MathOperation.values().first { it.value == value }
-    }
-}
 
 private class Test(val divisor: Long, val successTarget: Int, val failureTarget: Int) {
     fun execute(inputVal: Long): Int = if ((inputVal % divisor).toInt() == 0) successTarget else failureTarget
