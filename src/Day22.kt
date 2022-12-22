@@ -5,7 +5,6 @@ fun main() {
 }
 
 class Day22 : Day<Int>(6032, 19) {
-
     override fun part1(input: List<String>): Int = input.toMaze().let { it.second.traverse(it.first) }.let { (x, y, facing) -> 4 * x + 1000 * y + facing.value }
     override fun part2(input: List<String>): Int = input.toCube().let { it.second.traverse(it.first) }.let { (x, y, facing) -> 4 * x + 1000 * y + facing.value }
 }
@@ -31,8 +30,6 @@ private fun Cube.traverse(instructions: String): Triple<Int, Int, Facing> {
         position = position.turn(turn)
 
     }
-
-
 
     val xAndY = when(position.cube) {
         0 -> position.x + 50 to position.y
@@ -107,16 +104,11 @@ private fun Array<CharArray>.traverse(instructions: String): Triple<Int, Int, Fa
         repeat(steps) {
             position = this.move(position, facing)
         }
-
         if (remainingInstructions.isEmpty()) break
-
         val turn = remainingInstructions.first()
         remainingInstructions = remainingInstructions.drop(1)
-
         facing = facing.turn(turn)
-
     }
-
     return Triple(position.first + 1, position.second + 1, facing)
 }
 
