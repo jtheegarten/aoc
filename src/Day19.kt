@@ -41,7 +41,7 @@ private fun List<Robot>.toMaxGeodes(resources: IntArray = IntArray(4), robots: I
     var max = resources[3] + robots[3] * time
     var wait: Int
 
-    for (i in indices) {
+    for (i in indices.reversed()) { // always try building the higher value robots first
         if (robots[i] >= maxPrices[i]) continue
         if (i == 2 && robots[1] == 0) continue
         if (i == 3 && robots[2] == 0) continue
