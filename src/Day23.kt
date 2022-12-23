@@ -17,10 +17,6 @@ class Day23 : Day<Long>(110, 20) {
 private fun MutableMap<Position, Char>.executeMoves(rounds: Int? = null): Long {
     val dirQueue = ArrayDeque(listOf(N, S, W, E))
 
-//    println("Start")
-//    this.printMap()
-//    println()
-
     var i = 0
 
     while (true) {
@@ -35,25 +31,19 @@ private fun MutableMap<Position, Char>.executeMoves(rounds: Int? = null): Long {
             if (adjacentPositions.intersect(elves).isEmpty()) continue
 
             for (dir in dirQueue) {
-                val canMove = elf.neighbours(dir.directions).none { elves.contains(it) }
-
-                if (canMove) {
-                    val proposedPosition = elf + dir.direction8.coords
-
-                    if (!moves.containsKey(proposedPosition)) {
-                        moves[proposedPosition] = mutableListOf()
+                if (elf.neighbours(dir.directions).none { elves.contains(it) }) {
+                    (elf + dir.direction8.coords).let {
+                        moves[it] = moves.getOrDefault(it, mutableListOf()).apply { add(elf) }
                     }
-
-                    moves[proposedPosition]?.add(elf)
                     break
                 }
             }
         }
 
-        for ((proposedPosition, elfIntentions) in moves) {
-            if (elfIntentions.size == 1) {
-                this[proposedPosition] = '#'
-                this[elfIntentions.single()] = '.'
+        for ((newPosition, interestedElves) in moves) {
+            if (interestedElves.size == 1) {
+                this[newPosition] = '#'
+                this[interestedElves.single()] = '.'
             }
         }
 
@@ -64,12 +54,10 @@ private fun MutableMap<Position, Char>.executeMoves(rounds: Int? = null): Long {
         }
 
         if (i == rounds) {
-            val bounds = this.keys.bounds()
+            val bounds = this.filter { it.value == '#' }.keys.bounds()
             return this.countEmpty(bounds.first, bounds.second)
         }
-
     }
-
 }
 
 private fun Map<Position, Char>.elves() = filterValues { it == '#' }.keys
