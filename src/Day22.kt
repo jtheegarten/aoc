@@ -67,12 +67,12 @@ private fun List<String>.toCube(): Pair<String, Cube> {
             cubeMaps[it][lineIndex] = cubeLine[it].toCharArray()
         }
     }
-    cubeMaps.forEachIndexed { index, map ->
-        println("Cube $index")
-        map.forEach {
-            println(it)
-        }
-    }
+//    cubeMaps.forEachIndexed { index, map ->
+//        println("Cube $index")
+//        map.forEach {
+//            println(it)
+//        }
+//    }
     val cubeTranslocations = listOf(
         mapOf(UP to Translocation(5, RIGHT), RIGHT to Translocation(1, RIGHT), LEFT to Translocation(3, RIGHT), DOWN to Translocation(2, DOWN)),
         mapOf(UP to Translocation(5, UP), RIGHT to Translocation(4, LEFT), LEFT to Translocation(0, LEFT), DOWN to Translocation(2, LEFT)),

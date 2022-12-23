@@ -27,6 +27,8 @@ private fun List<String>.humanNumber(): Long {
     while (true) {
         val halfDiff = max - (max - min) / 2
 
+//        println("$min | $halfDiff | $max")
+
         val tests = listOf(min, halfDiff, max)
             .map { checkValue ->
                 val checkMap = inputMap.toMutableMap()
