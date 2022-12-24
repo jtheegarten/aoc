@@ -1,8 +1,6 @@
 import Adjacencies.*
 import Direction8.*
 
-typealias Position = Pair<Long, Long>
-
 fun main() {
     Day23().run()
 }
@@ -32,7 +30,7 @@ private fun MutableMap<Position, Char>.executeMoves(rounds: Int? = null): Long {
 
             for (dir in dirQueue) {
                 if (elf.neighbours(dir.directions).none { elves.contains(it) }) {
-                    (elf + dir.direction8.coords).let {
+                    (elf + dir.direction8.longCoords).let {
                         moves[it] = moves.getOrDefault(it, mutableListOf()).apply { add(elf) }
                     }
                     break
