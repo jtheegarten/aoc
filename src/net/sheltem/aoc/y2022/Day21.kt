@@ -1,6 +1,6 @@
 package net.sheltem.aoc.y2022
 
-import net.sheltem.aoc.common.Day
+
 import net.sheltem.aoc.common.MathOperation
 import net.sheltem.aoc.common.MathOperation.*
 import net.sheltem.aoc.common.MathOperation.Companion.fromSign

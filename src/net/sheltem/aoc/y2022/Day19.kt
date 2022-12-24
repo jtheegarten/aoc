@@ -2,7 +2,7 @@ package net.sheltem.aoc.y2022
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import net.sheltem.aoc.common.Day
+
 import net.sheltem.aoc.common.mapParallel
 
 fun main() {

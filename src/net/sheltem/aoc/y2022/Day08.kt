@@ -1,7 +1,5 @@
 package net.sheltem.aoc.y2022
 
-import net.sheltem.aoc.common.Day
-
 class Day08 : Day<Int>(21, 8) {
     override fun part1(input: List<String>): Int = input.trees().countVisible()
 

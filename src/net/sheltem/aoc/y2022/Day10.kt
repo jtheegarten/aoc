@@ -1,6 +1,5 @@
 package net.sheltem.aoc.y2022
 
-import net.sheltem.aoc.common.Day
 import net.sheltem.aoc.common.lastAsInt
 
 class Day10 : Day<Int>(13140, 0) {
