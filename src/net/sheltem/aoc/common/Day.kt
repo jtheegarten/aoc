@@ -14,8 +14,8 @@ abstract class Day<T>(
 
         val number = this::class.java.simpleName.takeLast(2)
 
-        val testInput = File("src/net/sheltem/aoc/y$year.Day${number}_test.txt").readLines()
-        val input = File("src/net/sheltem/aoc/y$year.Day${number}.txt").readLines()
+        val testInput = File("src/net/sheltem/aoc/y$year/Day${number}_test.txt").readLines()
+        val input = File("src/net/sheltem/aoc/y$year/Day${number}.txt").readLines()
 
         println("=== net.sheltem.aoc.common.Day $number: ===\n")
 
