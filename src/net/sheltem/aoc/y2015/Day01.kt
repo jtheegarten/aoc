@@ -9,14 +9,13 @@ class Day01 : Day<Int>(3, 0) {
 
     override fun part2(input: List<String>): Int {
         var position = 0
-        val iter = input.first().iterator()
-        for (i in input.first().indices) {
-            when (input.first()[i]) {
+        input.first().forEachIndexed { index, c ->
+            when (c) {
                 '(' -> position++
                 ')' -> position--
 
             }
-            if (position == -1) return i + 1
+            if (position == -1) return index + 1
         }
         return 0
     }

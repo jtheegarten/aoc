@@ -53,6 +53,16 @@ enum class Direction8(val coords: PositionInt) {
 
     companion object {
         fun cardinalValues() = listOf(NORTH, EAST, SOUTH, WEST)
+
+        fun fromCaret(caret: Char): Direction8 {
+            return when(caret) {
+                '>' -> EAST
+                '^' -> NORTH
+                '<' -> WEST
+                'v' -> SOUTH
+                else -> error("Not a valid caret")
+            }
+        }
     }
 }
 
