@@ -49,7 +49,9 @@ enum class Direction8(val coords: PositionInt) {
 
     val longCoords = coords.first.toLong() to coords.second.toLong()
 
-    fun cardinalValues() = listOf(NORTH, EAST, SOUTH, WEST)
+    companion object {
+        fun cardinalValues() = listOf(NORTH, EAST, SOUTH, WEST)
+    }
 }
 
 fun Pair<Long, Long>.neighbours(other: Collection<Direction8>): List<Pair<Long, Long>> = other.map { it.coords.first + first to it.coords.second + second }

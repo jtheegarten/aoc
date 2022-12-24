@@ -48,7 +48,7 @@ private fun FieldMap.traverseMap(
 
 
         frontier.forEach { (location, cost: Int) ->
-            listOf(NEUTRAL, NORTH, SOUTH, WEST, EAST).forEach {
+            (Direction8.cardinalValues() + NEUTRAL).forEach {
                 val (newX, newY) = location.move(it)
                 if (newX in this[0].indices && newY in indices) {
                     if (currentState[newY][newX].all { field -> field is Empty }) {
