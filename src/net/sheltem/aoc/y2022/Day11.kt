@@ -1,3 +1,9 @@
+package net.sheltem.aoc.y2022
+
+import net.sheltem.aoc.common.Day
+import net.sheltem.aoc.common.MathOperation
+import net.sheltem.aoc.common.lastAsInt
+
 class Day11 : Day<Long>(10605, 2713310158) {
     override fun part1(input: List<String>) = input.windowed(6, 7)
         .map { it.toMonkey() }

@@ -1,3 +1,7 @@
+package net.sheltem.aoc.y2022
+
+import net.sheltem.aoc.common.Day
+
 const val maxSpace: Long = 70_000_000
 const val spaceNeeded: Long = 30_000_000
 

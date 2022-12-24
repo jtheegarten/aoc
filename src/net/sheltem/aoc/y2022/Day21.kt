@@ -1,5 +1,9 @@
-import MathOperation.*
-import MathOperation.Companion.fromSign
+package net.sheltem.aoc.y2022
+
+import net.sheltem.aoc.common.Day
+import net.sheltem.aoc.common.MathOperation
+import net.sheltem.aoc.common.MathOperation.*
+import net.sheltem.aoc.common.MathOperation.Companion.fromSign
 import kotlin.math.absoluteValue
 
 fun main() {

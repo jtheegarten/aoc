@@ -1,5 +1,11 @@
-import Direction8.*
-import Field.*
+package net.sheltem.aoc.y2022
+
+import net.sheltem.aoc.common.Day
+import net.sheltem.aoc.common.Direction8
+import net.sheltem.aoc.common.Direction8.*
+import net.sheltem.aoc.common.PositionInt
+import net.sheltem.aoc.common.move
+import net.sheltem.aoc.y2022.Field.*
 import java.lang.Integer.min
 
 fun main() {

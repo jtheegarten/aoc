@@ -1,4 +1,7 @@
-import D3Direction.*
+package net.sheltem.aoc.y2022
+
+import net.sheltem.aoc.common.Day
+import net.sheltem.aoc.y2022.D3Direction.*
 
 fun main() {
     Day18().run()

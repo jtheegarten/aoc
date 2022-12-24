@@ -1,9 +1,12 @@
-import RPS.PAPER
-import RPS.ROCK
-import RPS.SCISSORS
-import Result.DRAW
-import Result.LOSS
-import Result.WIN
+package net.sheltem.aoc.y2022
+
+import net.sheltem.aoc.y2022.RPS.PAPER
+import net.sheltem.aoc.y2022.RPS.ROCK
+import net.sheltem.aoc.y2022.RPS.SCISSORS
+import net.sheltem.aoc.y2022.Result.DRAW
+import net.sheltem.aoc.y2022.Result.LOSS
+import net.sheltem.aoc.y2022.Result.WIN
+import net.sheltem.aoc.common.readInput
 
 fun main() {
 

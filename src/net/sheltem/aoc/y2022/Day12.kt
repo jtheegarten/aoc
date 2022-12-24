@@ -1,3 +1,7 @@
+package net.sheltem.aoc.y2022
+
+import net.sheltem.aoc.common.Day
+
 class Day12 : Day<Int>(31, 29) {
     override fun part1(input: List<String>) = HeightMap(input).dijkstra().goal.cost
 

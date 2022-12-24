@@ -1,3 +1,5 @@
+package net.sheltem.aoc.common
+
 import java.io.File
 import java.time.Duration
 import java.time.Instant
@@ -11,10 +13,10 @@ abstract class Day<T>(
 
         val number = this::class.java.simpleName.takeLast(2)
 
-        val testInput = File("src/Day${number}_test.txt").readLines()
-        val input = File("src/Day${number}.txt").readLines()
+        val testInput = File("src/net.sheltem.aoc.common.Day${number}_test.txt").readLines()
+        val input = File("src/net.sheltem.aoc.common.Day${number}.txt").readLines()
 
-        println("=== Day $number: ===\n")
+        println("=== net.sheltem.aoc.common.Day $number: ===\n")
 
         listOf(part1Test, part2Test).forEachIndexed { i, it ->
             println("Part${i+1}: ")

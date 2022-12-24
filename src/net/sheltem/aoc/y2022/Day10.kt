@@ -1,3 +1,8 @@
+package net.sheltem.aoc.y2022
+
+import net.sheltem.aoc.common.Day
+import net.sheltem.aoc.common.lastAsInt
+
 class Day10 : Day<Int>(13140, 0) {
     override fun part1(input: List<String>): Int = input.filter { it.isNotBlank() }.toSignalStrengths().sumRegisters(listOf(20, 60, 100, 140, 180, 220))
 

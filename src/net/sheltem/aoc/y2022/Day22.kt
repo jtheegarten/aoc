@@ -1,4 +1,7 @@
-import Facing.*
+package net.sheltem.aoc.y2022
+
+import net.sheltem.aoc.common.Day
+import net.sheltem.aoc.y2022.Facing.*
 
 fun main() {
     Day22().run(true)
@@ -68,7 +71,7 @@ private fun List<String>.toCube(): Pair<String, Cube> {
         }
     }
 //    cubeMaps.forEachIndexed { index, map ->
-//        println("Cube $index")
+//        println("net.sheltem.aoc.y2022.Cube $index")
 //        map.forEach {
 //            println(it)
 //        }

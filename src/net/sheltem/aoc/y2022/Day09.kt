@@ -1,3 +1,6 @@
+package net.sheltem.aoc.y2022
+
+import net.sheltem.aoc.common.Day
 import kotlin.math.absoluteValue
 
 fun main() {

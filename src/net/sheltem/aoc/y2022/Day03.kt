@@ -1,3 +1,7 @@
+package net.sheltem.aoc.y2022
+
+import net.sheltem.aoc.common.Day
+
 fun main() {
     Day03().run()
 }

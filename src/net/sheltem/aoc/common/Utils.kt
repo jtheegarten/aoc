@@ -1,3 +1,5 @@
+package net.sheltem.aoc.common
+
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import java.io.File

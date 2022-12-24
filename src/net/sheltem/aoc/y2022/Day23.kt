@@ -1,5 +1,8 @@
-import Adjacencies.*
-import Direction8.*
+package net.sheltem.aoc.y2022
+
+import net.sheltem.aoc.common.*
+import net.sheltem.aoc.y2022.Adjacencies.*
+import net.sheltem.aoc.common.Direction8.*
 
 fun main() {
     Day23().run()
