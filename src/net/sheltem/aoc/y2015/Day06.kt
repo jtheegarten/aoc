@@ -9,9 +9,9 @@ fun main() {
 }
 
 class Day06 : Day<Int>(998996, 1001996) {
-    override fun part1(input: List<String>): Int = buildLightMap().followInstructions(input.map { it.toInstruction() }).values.count { it }
+    override fun part1(input: List<String>): Int = buildLightMap().followInstructions(input.map { it.toInstruction() }).sumOf { row -> row.count { it } }
 
-    override fun part2(input: List<String>): Int = buildIntLightMap().followIntInstructions(input.map { it.toInstruction() }).values.sum()
+    override fun part2(input: List<String>): Int = buildIntLightMap().followIntInstructions(input.map { it.toInstruction() }).sumOf { it.sum() }
 }
 
 
@@ -25,44 +25,30 @@ private fun String.toInstruction(): Instruction {
     }
 }
 
-private fun MutableMap<PositionInt, Boolean>.followInstructions(instructions: List<Instruction>) = apply {
+private fun Array<BooleanArray>.followInstructions(instructions: List<Instruction>) = apply {
     instructions.forEach {
         for (x in it.start.first..it.end.first) {
             for (y in it.start.second..it.end.second) {
-                this.compute(x to y) { _, old -> old!!.applyAction(it.action) }
+                this[y][x] = this[y][x].applyAction(it.action)
             }
         }
     }
 }
 
-private fun MutableMap<PositionInt, Int>.followIntInstructions(instructions: List<Instruction>) = apply {
+private fun Array<IntArray>.followIntInstructions(instructions: List<Instruction>) = apply {
     instructions.forEach {inst ->
         for (x in inst.start.first..inst.end.first) {
             for (y in inst.start.second..inst.end.second) {
-                this.compute(x to y) { _, old -> old!!.applyAction(inst.action) }
+                this[y][x] = this[y][x].applyAction(inst.action)
             }
         }
     }
 }
 
-private fun buildIntLightMap(): MutableMap<PositionInt, Int> =
-    buildMap {
-        for (x in 0..999) {
-            for (y in 0..999) {
-                put(x to y, 0)
-            }
-        }
-    }.toMutableMap()
+private fun buildIntLightMap(): Array<IntArray> = Array(1000) { IntArray(1000) { 0 } }
 
 
-private fun buildLightMap(): MutableMap<PositionInt, Boolean> =
-    buildMap {
-        for (x in 0..999) {
-            for (y in 0..999) {
-                put(x to y, false)
-            }
-        }
-    }.toMutableMap()
+private fun buildLightMap(): Array<BooleanArray> = Array(1000) { BooleanArray(1000) { false } }
 
 private class Instruction(val start: PositionInt, val end: PositionInt, val action: Action)
 
