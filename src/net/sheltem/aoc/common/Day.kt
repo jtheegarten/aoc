@@ -14,8 +14,8 @@ abstract class Day<T>(
 
         val number = this::class.java.simpleName.takeLast(2)
 
-        val testInput = File("src/net/sheltem/aoc/y$year/Day${number}_test.txt").readLines()
-        val input = File("src/net/sheltem/aoc/y$year/Day${number}.txt").readLines()
+        val testInput = File("src/net/sheltem/aoc/y$year/data/Day${number}_test.txt").readLines()
+        val input = File("src/net/sheltem/aoc/y$year/data/Day${number}.txt").readLines()
 
         println("=== $year Day $number: ===\n")
 
@@ -29,7 +29,7 @@ abstract class Day<T>(
     private fun runPart(part: Int, testResult: T, testInput: List<String>, input: List<String>, skipTest: Boolean) {
 
 
-        val list = if (skipTest) listOf("real" to input) else listOf("Test" to testInput, "Real" to input)
+        val list = if (skipTest) listOf("Real" to input) else listOf("Test" to testInput, "Real" to input)
 
         list.forEach { (step, input) ->
             val start = Instant.now()
