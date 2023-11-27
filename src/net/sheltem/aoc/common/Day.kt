@@ -17,7 +17,7 @@ abstract class Day<T>(
         val testInput = File("src/net/sheltem/aoc/y$year/Day${number}_test.txt").readLines()
         val input = File("src/net/sheltem/aoc/y$year/Day${number}.txt").readLines()
 
-        println("=== net.sheltem.aoc.common.Day $number: ===\n")
+        println("=== $year Day $number: ===\n")
 
         listOf(part1Test, part2Test).forEachIndexed { i, it ->
             println("Part${i+1}: ")
