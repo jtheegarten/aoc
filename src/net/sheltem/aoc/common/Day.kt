@@ -15,23 +15,25 @@ abstract class Day<T>(
         val number = this::class.java.simpleName.takeLast(2)
 
         val testInput = File("src/net/sheltem/aoc/y$year/data/Day${number}_test.txt").readLines()
+        val test2Input = File("src/net/sheltem/aoc/y$year/data/Day${number}_2_test.txt").readLines()
         val input = File("src/net/sheltem/aoc/y$year/data/Day${number}.txt").readLines()
 
         println("=== $year Day $number: ===\n")
 
         listOf(part1Test, part2Test).forEachIndexed { i, it ->
             println("Part${i+1}: ")
-            runPart(i+1, it, testInput, input, skipTest)
+            runPart(i+1, it, testInput, test2Input, input, skipTest)
         }
 
     }
 
-    private fun runPart(part: Int, testResult: T, testInput: List<String>, input: List<String>, skipTest: Boolean) {
+    private fun runPart(part: Int, testResult: T, testInput: List<String>, test2Input: List<String>, input: List<String>, skipTest: Boolean) {
 
 
-        val list = if (skipTest) listOf("Real" to input) else listOf("Test" to testInput, "Real" to input)
+        val data = if (skipTest) mutableMapOf("Real" to input) else mutableMapOf("Test" to testInput, "Real" to input)
+        if (part == 2) data["Test"] = test2Input
 
-        list.forEach { (step, input) ->
+        data.entries.forEach { (step, input) ->
             val start = Instant.now()
             val partResult = (if (part == 1) ::part1 else ::part2).invoke(input)
             if (step == "Test") require(partResult == testResult) { "Result $partResult is not correct, expecting $testResult" }
