@@ -4,14 +4,14 @@ import net.sheltem.aoc.common.MathOperation
 import net.sheltem.aoc.common.lastAsInt
 
 class Day11 : Day<Long>(10605, 2713310158) {
-    override fun part1(input: List<String>) = input.windowed(6, 7)
+    override suspend fun part1(input: List<String>) = input.windowed(6, 7)
         .map { it.toMonkey() }
         .playRounds(20)
         .map { it.inspections }
         .sortedDescending()
         .take(2).let { (one, two) -> one * two }
 
-    override fun part2(input: List<String>): Long = input.windowed(6, 7)
+    override suspend fun part2(input: List<String>): Long = input.windowed(6, 7)
         .map { it.toMonkey(false) }
         .playRounds(10000)
         .map { it.inspections }
@@ -19,7 +19,7 @@ class Day11 : Day<Long>(10605, 2713310158) {
         .take(2).let { (one, two) -> one * two }
 }
 
-fun main() {
+suspend fun main() {
     Day11().run()
 }
 

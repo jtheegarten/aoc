@@ -2,15 +2,15 @@ package net.sheltem.aoc.y2022
 
 import kotlin.math.absoluteValue
 
-fun main() {
+suspend fun main() {
     Day09().run()
 }
 
 class Day09 : Day<Int>(88, 36) {
 
-    override fun part1(input: List<String>): Int = input.toInstructions().moveMatrix(2).flatMap { it.toList() }.filter { it != 0 }.size
+    override suspend fun part1(input: List<String>): Int = input.toInstructions().moveMatrix(2).flatMap { it.toList() }.filter { it != 0 }.size
 
-    override fun part2(input: List<String>): Int = input.toInstructions().moveMatrix(10).flatMap { it.toList() }.filter { it != 0 }.size
+    override suspend fun part2(input: List<String>): Int = input.toInstructions().moveMatrix(10).flatMap { it.toList() }.filter { it != 0 }.size
     private fun List<String>.moveMatrix(pieces: Int): Array<IntArray> {
         val ropeList = List(pieces) { Rope(500, 500) }
         val moveMatrix = Array(1000) { IntArray(1000) }

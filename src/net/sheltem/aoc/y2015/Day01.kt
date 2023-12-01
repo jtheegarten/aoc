@@ -1,13 +1,13 @@
 package net.sheltem.aoc.y2015
 
-fun main() {
+suspend fun main() {
     Day01().run()
 }
 
 class Day01 : Day<Int>(3, 0) {
-    override fun part1(input: List<String>): Int = input.first().let { instructions -> instructions.count { it == '(' } - instructions.count { it == ')' } }
+    override suspend fun part1(input: List<String>): Int = input.first().let { instructions -> instructions.count { it == '(' } - instructions.count { it == ')' } }
 
-    override fun part2(input: List<String>): Int {
+    override suspend fun part2(input: List<String>): Int {
         var position = 0
         input.first().forEachIndexed { index, c ->
             when (c) {

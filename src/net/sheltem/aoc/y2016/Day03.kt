@@ -1,16 +1,16 @@
 package net.sheltem.aoc.y2016
 
-fun main() {
+suspend fun main() {
     Day03().run()
 }
 
 class Day03 : Day<Int>(3, 4) {
 
-    override fun part1(input: List<String>): Int {
+    override suspend fun part1(input: List<String>): Int {
         return input.map { it.toTriangleStringList() }.map { Triangle.from(it) }.count { it.isValid() }
     }
 
-    override fun part2(input: List<String>): Int {
+    override suspend fun part2(input: List<String>): Int {
         return input.map { it.toTriangleStringList() }.windowed(3, 3).zipColumns().flatten().map { Triangle.from(it) }.count { it.isValid() }
     }
 

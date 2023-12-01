@@ -2,14 +2,14 @@ package net.sheltem.aoc.y2022
 
 
 
-fun main() {
+suspend fun main() {
     Day16().run()
 }
 
 class Day16 : Day<Int>(1651, 1707) {
 
 
-    override fun part1(input: List<String>): Int {
+    override suspend fun part1(input: List<String>): Int {
         val valves = input.map(Valve.Companion::from)
         val valvesMap = valves.associateBy { it.name }
         val paths = valves.associate { it.name to it.neighbours.associateWith { 1 }.toMutableMap() }.toMutableMap()
@@ -17,7 +17,7 @@ class Day16 : Day<Int>(1651, 1707) {
         return paths.floydWarshall(valvesMap).dfs(valvesMap, 0, "AA", emptySet(), 0, 30)
     }
 
-    override fun part2(input: List<String>): Int {
+    override suspend fun part2(input: List<String>): Int {
         val valves = input.map(Valve.Companion::from)
         val valvesMap = valves.associateBy { it.name }
         val paths = valves.associate { it.name to it.neighbours.associateWith { 1 }.toMutableMap() }.toMutableMap()

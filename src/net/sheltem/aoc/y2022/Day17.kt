@@ -4,15 +4,15 @@ package net.sheltem.aoc.y2022
 import net.sheltem.aoc.y2022.Direction.*
 import java.util.function.Predicate
 
-fun main() {
+suspend fun main() {
     Day17().run(true)
 }
 
 class Day17 : Day<Long>(3068, 1514285714288) {
 
-    override fun part1(input: List<String>): Long = input.first().toDirectionList().simulateRocks(2022) { _ -> false }.height.toLong()
+    override suspend fun part1(input: List<String>): Long = input.first().toDirectionList().simulateRocks(2022) { _ -> false }.height.toLong()
 
-    override fun part2(input: List<String>): Long = input.first().toDirectionList().part2()
+    override suspend fun part2(input: List<String>): Long = input.first().toDirectionList().part2()
 }
 
 private fun List<Direction>.part2(): Long {

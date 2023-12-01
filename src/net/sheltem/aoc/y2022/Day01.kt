@@ -1,6 +1,6 @@
 package net.sheltem.aoc.y2022
 
-fun main() {
+suspend fun main() {
     Day01().run()
 }
 
@@ -13,11 +13,11 @@ class Day01 : Day<Int>(24000, 45000) {
                 elf.lines().sumOf { it.toIntOrNull() ?: 0 }
             }
 
-    override fun part1(input: List<String>): Int {
+    override suspend fun part1(input: List<String>): Int {
         return generateElvesList(input.joinToString("\n")).max()
     }
 
-    override fun part2(input: List<String>): Int {
+    override suspend fun part2(input: List<String>): Int {
         return generateElvesList(input.joinToString("\n")).sortedDescending().take(3).sum()
     }
 }

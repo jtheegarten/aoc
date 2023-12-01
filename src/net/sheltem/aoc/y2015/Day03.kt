@@ -4,14 +4,14 @@ import net.sheltem.aoc.common.Direction8
 import net.sheltem.aoc.common.PositionInt
 import net.sheltem.aoc.common.move
 
-fun main() {
+suspend fun main() {
     Day03().run()
 }
 
 class Day03 : Day<Int>(4, 3) {
-    override fun part1(input: List<String>): Int = input.first().map { Direction8.fromCaret(it) }.travel().keys.size
+    override suspend fun part1(input: List<String>): Int = input.first().map { Direction8.fromCaret(it) }.travel().keys.size
 
-    override fun part2(input: List<String>): Int = input.first().map { Direction8.fromCaret(it) }.travelTogether().keys.size
+    override suspend fun part2(input: List<String>): Int = input.first().map { Direction8.fromCaret(it) }.travelTogether().keys.size
 }
 
 

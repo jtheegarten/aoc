@@ -1,6 +1,6 @@
 package net.sheltem.aoc.y2023
 
-fun main() {
+suspend fun main() {
     Day01().run()
 }
 
@@ -9,11 +9,11 @@ private val allDigits = digits + mapOf("one" to 1, "two" to 2, "three" to 3, "fo
 
 class Day01 : Day<Int>(142, 281) {
 
-    override fun part1(input: List<String>): Int {
+    override suspend fun part1(input: List<String>): Int {
         return input.sumOf { it.firstAndLastDigit() }
     }
 
-    override fun part2(input: List<String>): Int {
+    override suspend fun part2(input: List<String>): Int {
         return input.sumOf { it.firstAndLastDigit(allDigits) }
     }
 }

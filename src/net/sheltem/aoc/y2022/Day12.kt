@@ -2,13 +2,13 @@ package net.sheltem.aoc.y2022
 
 
 class Day12 : Day<Int>(31, 29) {
-    override fun part1(input: List<String>) = HeightMap(input).dijkstra().goal.cost
+    override suspend fun part1(input: List<String>) = HeightMap(input).dijkstra().goal.cost
 
-    override fun part2(input: List<String>) = HeightMap(input, true).dijkstra().goal.cost
+    override suspend fun part2(input: List<String>) = HeightMap(input, true).dijkstra().goal.cost
 
 }
 
-fun main() {
+suspend fun main() {
     Day12().run()
 }
 

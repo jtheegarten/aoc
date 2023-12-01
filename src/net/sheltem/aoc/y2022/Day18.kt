@@ -3,15 +3,15 @@ package net.sheltem.aoc.y2022
 
 import net.sheltem.aoc.y2022.D3Direction.*
 
-fun main() {
+suspend fun main() {
     Day18().run()
 }
 
 class Day18 : Day<Long>(64, 58) {
 
-    override fun part1(input: List<String>): Long = input.toMatrix().countEmptyEdges()
+    override suspend fun part1(input: List<String>): Long = input.toMatrix().countEmptyEdges()
 
-    override fun part2(input: List<String>): Long = input.toMatrix().countSurfaceEdges()
+    override suspend fun part2(input: List<String>): Long = input.toMatrix().countSurfaceEdges()
 }
 
 private fun List<String>.toMatrix() = map { Point(it.split(",").map(String::toInt)) }.toSet()

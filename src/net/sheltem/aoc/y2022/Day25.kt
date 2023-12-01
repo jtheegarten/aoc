@@ -2,15 +2,15 @@ package net.sheltem.aoc.y2022
 
 import kotlin.math.pow
 
-fun main() {
+suspend fun main() {
     Day25().run()
 }
 
 class Day25 : Day<String>("2=-1=0", "19") {
 
-    override fun part1(input: List<String>): String = input.sumOf { it.toLong() }.toSnafu()
+    override suspend fun part1(input: List<String>): String = input.sumOf { it.toLong() }.toSnafu()
 
-    override fun part2(input: List<String>): String = "19"
+    override suspend fun part2(input: List<String>): String = "19"
 }
 
 private fun String.toLong(): Long = this.toCharArray().reversed()

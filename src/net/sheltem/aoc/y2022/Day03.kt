@@ -1,14 +1,14 @@
 package net.sheltem.aoc.y2022
 
-fun main() {
+suspend fun main() {
     Day03().run()
 }
 
 class Day03: Day<Int>(157, 70) {
-    override fun part1(input: List<String>): Int =
+    override suspend fun part1(input: List<String>): Int =
         input.flatMap { it.duplicates() }.sumOf { it.score() }
 
-    override fun part2(input: List<String>): Int =
+    override suspend fun part2(input: List<String>): Int =
         input.chunked(3).flatMap { it.badge() }.sumOf { it.score() }
 }
 

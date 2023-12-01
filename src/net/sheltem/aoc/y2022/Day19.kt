@@ -5,13 +5,13 @@ import kotlinx.coroutines.runBlocking
 
 import net.sheltem.aoc.common.mapParallel
 
-fun main() {
+suspend fun main() {
     Day19().run()
 }
 
 class Day19 : Day<Int>(33, 3472) {
 
-    override fun part1(input: List<String>): Int = runBlocking(Dispatchers.Default) {
+    override suspend fun part1(input: List<String>): Int = runBlocking(Dispatchers.Default) {
         input
             .map { it.toBlueprint() }
             .mapParallel { it.toMaxGeodes(robots = intArrayOf(1, 0, 0, 0)) }
@@ -19,7 +19,7 @@ class Day19 : Day<Int>(33, 3472) {
             .sum()
     }
 
-    override fun part2(input: List<String>): Int = runBlocking(Dispatchers.Default) {
+    override suspend fun part2(input: List<String>): Int = runBlocking(Dispatchers.Default) {
         input
             .map { it.toBlueprint() }
             .take(3)

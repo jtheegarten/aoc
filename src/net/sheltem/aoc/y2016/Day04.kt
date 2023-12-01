@@ -2,17 +2,17 @@ package net.sheltem.aoc.y2016
 
 import net.sheltem.aoc.common.ALPHABET
 
-fun main() {
+suspend fun main() {
     Day04().run(true)
 }
 
 class Day04 : Day<Int>(1514, 4) {
 
-    override fun part1(input: List<String>): Int {
+    override suspend fun part1(input: List<String>): Int {
         return input.map { Room.from(it) }.filter { it.isValid() }.sumOf { it.id }
     }
 
-    override fun part2(input: List<String>): Int {
+    override suspend fun part2(input: List<String>): Int {
         return input.map { Room.from(it, true) }.first { it.name.contains("northpole") }.id
     }
 

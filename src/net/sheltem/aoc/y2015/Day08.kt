@@ -1,13 +1,13 @@
 package net.sheltem.aoc.y2015
 
-fun main() {
+suspend fun main() {
     Day08().run()
 }
 
 class Day08 : Day<Int>(12, 34) {
-    override fun part1(input: List<String>): Int = input.diff()
+    override suspend fun part1(input: List<String>): Int = input.diff()
 
-    override fun part2(input: List<String>): Int = 34
+    override suspend fun part2(input: List<String>): Int = 34
 }
 
 private fun List<String>.diff(): Int = sumOf { str ->

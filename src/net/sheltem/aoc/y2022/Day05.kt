@@ -44,12 +44,12 @@ class Day05 : Day<String>("CMZ", "MCD") {
         return stacks.values.joinToString("") { it.pop() }
     }
 
-    override fun part1(input: List<String>): String = solve(input)
+    override suspend fun part1(input: List<String>): String = solve(input)
 
-    override fun part2(input: List<String>): String = solve(input, true)
+    override suspend fun part2(input: List<String>): String = solve(input, true)
 
 }
 
-fun main() {
+suspend fun main() {
     Day05().run()
 }

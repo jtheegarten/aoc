@@ -2,15 +2,15 @@ package net.sheltem.aoc.y2022
 
 
 
-fun main() {
+suspend fun main() {
     Day14().run()
 }
 
 class Day14 : Day<Int>(24, 93) {
 
-    override fun part1(input: List<String>): Int = input.toCave().countMaxSandDrops()
+    override suspend fun part1(input: List<String>): Int = input.toCave().countMaxSandDrops()
 
-    override fun part2(input: List<String>): Int = input.toCave().addFloor().countMaxSandDrops()
+    override suspend fun part2(input: List<String>): Int = input.toCave().addFloor().countMaxSandDrops()
 }
 
 private fun Array<CharArray>.addFloor(): Array<CharArray> = apply { this[this.size - 1] = "#".repeat(1000).toCharArray() }

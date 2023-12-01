@@ -10,7 +10,7 @@ abstract class Day<T>(
     private val part2Test: T,
 ) {
 
-    fun run(skipTest: Boolean = false) {
+    suspend fun run(skipTest: Boolean = false) {
 
         val number = this::class.java.simpleName.takeLast(2)
 
@@ -32,7 +32,7 @@ abstract class Day<T>(
 
     }
 
-    private fun runPart(part: Int, testResult: T, testInput: List<String>, test2Input: List<String>, input: List<String>, skipTest: Boolean) {
+    private suspend fun runPart(part: Int, testResult: T, testInput: List<String>, test2Input: List<String>, input: List<String>, skipTest: Boolean) {
 
 
         val data = if (skipTest) mutableMapOf("Real" to input) else mutableMapOf("Test" to testInput, "Real" to input)
@@ -51,7 +51,7 @@ abstract class Day<T>(
         println("Total time: ${Duration.between(total, Instant.now())}")
     }
 
-    abstract fun part1(input: List<String>): T
-    abstract fun part2(input: List<String>): T
+    abstract suspend fun part1(input: List<String>): T
+    abstract suspend fun part2(input: List<String>): T
 
 }

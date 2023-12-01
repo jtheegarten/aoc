@@ -1,14 +1,14 @@
 package net.sheltem.aoc.y2015
 
-fun main() {
+suspend fun main() {
     Day07().run()
 }
 
 class Day07 : Day<Int>(72, 72) {
-    override fun part1(input: List<String>): Int = solve(input)
+    override suspend fun part1(input: List<String>): Int = solve(input)
 
 
-    override fun part2(input: List<String>): Int = solve(input, 956)
+    override suspend fun part2(input: List<String>): Int = solve(input, 956)
 
 
     private fun solve(input:List<String>, overrideB: Int? = null): Int {

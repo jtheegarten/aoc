@@ -4,14 +4,14 @@ import net.sheltem.aoc.common.PositionInt
 import net.sheltem.aoc.y2015.Action.*
 import java.lang.Integer.max
 
-fun main() {
+suspend fun main() {
     Day06().run()
 }
 
 class Day06 : Day<Int>(998996, 1001996) {
-    override fun part1(input: List<String>): Int = buildLightMap().followInstructions(input.map { it.toInstruction() }).sumOf { row -> row.count { it } }
+    override suspend fun part1(input: List<String>): Int = buildLightMap().followInstructions(input.map { it.toInstruction() }).sumOf { row -> row.count { it } }
 
-    override fun part2(input: List<String>): Int = buildIntLightMap().followIntInstructions(input.map { it.toInstruction() }).sumOf { it.sum() }
+    override suspend fun part2(input: List<String>): Int = buildIntLightMap().followIntInstructions(input.map { it.toInstruction() }).sumOf { it.sum() }
 }
 
 

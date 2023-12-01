@@ -1,14 +1,14 @@
 package net.sheltem.aoc.y2022
 
-fun main() {
+suspend fun main() {
     Day04().run()
 }
 
 class Day04: Day<Int>(2, 4) {
 
-    override fun part1(input: List<String>): Int = input.count { it.fullyContained() }
+    override suspend fun part1(input: List<String>): Int = input.count { it.fullyContained() }
 
-    override fun part2(input: List<String>): Int = input.count { it.overlap() }
+    override suspend fun part2(input: List<String>): Int = input.count { it.overlap() }
 }
 
 fun String.fullyContained() = split(",").map { it.toNumberList() }

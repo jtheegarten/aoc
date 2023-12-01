@@ -1,13 +1,13 @@
 package net.sheltem.aoc.y2015
 
-fun main() {
+suspend fun main() {
     Day05().run()
 }
 
 class Day05 : Day<Int>(1, 0) {
-    override fun part1(input: List<String>): Int = input.count { it.isNice() }
+    override suspend fun part1(input: List<String>): Int = input.count { it.isNice() }
 
-    override fun part2(input: List<String>): Int = input.count { it.isRealNice() }
+    override suspend fun part2(input: List<String>): Int = input.count { it.isRealNice() }
 }
 
 private val vowels = listOf('a', 'e', 'i', 'o', 'u')

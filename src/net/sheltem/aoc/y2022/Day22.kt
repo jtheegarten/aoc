@@ -3,13 +3,13 @@ package net.sheltem.aoc.y2022
 
 import net.sheltem.aoc.y2022.Facing.*
 
-fun main() {
+suspend fun main() {
     Day22().run(true)
 }
 
 class Day22 : Day<Int>(6032, 19) {
-    override fun part1(input: List<String>): Int = input.toMaze().let { it.second.traverse(it.first) }.let { (x, y, facing) -> 4 * x + 1000 * y + facing.value }
-    override fun part2(input: List<String>): Int = input.toCube().let { it.second.traverse(it.first) }.let { (x, y, facing) -> 4 * x + 1000 * y + facing.value }
+    override suspend fun part1(input: List<String>): Int = input.toMaze().let { it.second.traverse(it.first) }.let { (x, y, facing) -> 4 * x + 1000 * y + facing.value }
+    override suspend fun part2(input: List<String>): Int = input.toCube().let { it.second.traverse(it.first) }.let { (x, y, facing) -> 4 * x + 1000 * y + facing.value }
 }
 
 private fun Cube.traverse(instructions: String): Triple<Int, Int, Facing> {

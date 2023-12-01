@@ -8,7 +8,7 @@ import net.sheltem.aoc.y2022.Result.LOSS
 import net.sheltem.aoc.y2022.Result.WIN
 import net.sheltem.aoc.common.readInput
 
-fun main() {
+suspend fun main() {
 
     fun part1(input: List<String>): Int =
         input.sumOf { it.toGame().score() }

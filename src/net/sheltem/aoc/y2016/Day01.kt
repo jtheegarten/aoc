@@ -5,20 +5,20 @@ import net.sheltem.aoc.common.PositionInt
 import net.sheltem.aoc.common.move
 import kotlin.math.absoluteValue
 
-fun main() {
+suspend fun main() {
     Day01().run()
 }
 
 class Day01 : Day<Int>(12, 12) {
 
-    override fun part1(input: List<String>): Int {
+    override suspend fun part1(input: List<String>): Int {
         return input[0]
             .split(", ")
             .walk()
 
     }
 
-    override fun part2(input: List<String>): Int {
+    override suspend fun part2(input: List<String>): Int {
         return input[0]
             .split(", ")
             .walk(true)

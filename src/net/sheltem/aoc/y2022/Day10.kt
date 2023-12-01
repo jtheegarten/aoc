@@ -3,9 +3,9 @@ package net.sheltem.aoc.y2022
 import net.sheltem.aoc.common.lastAsInt
 
 class Day10 : Day<Int>(13140, 0) {
-    override fun part1(input: List<String>): Int = input.filter { it.isNotBlank() }.toSignalStrengths().sumRegisters(listOf(20, 60, 100, 140, 180, 220))
+    override suspend fun part1(input: List<String>): Int = input.filter { it.isNotBlank() }.toSignalStrengths().sumRegisters(listOf(20, 60, 100, 140, 180, 220))
 
-    override fun part2(input: List<String>): Int = input.filter { it.isNotBlank() }.toSignalStrengths().printCRT()
+    override suspend fun part2(input: List<String>): Int = input.filter { it.isNotBlank() }.toSignalStrengths().printCRT()
 
 }
 
@@ -24,7 +24,7 @@ private fun List<Int>.sumRegisters(targets: List<Int>): Int {
     return result
 }
 
-fun main() {
+suspend fun main() {
     Day10().run()
 }
 

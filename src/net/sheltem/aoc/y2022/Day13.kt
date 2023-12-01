@@ -2,7 +2,7 @@ package net.sheltem.aoc.y2022
 
 
 
-fun main() {
+suspend fun main() {
     Day13().run()
 }
 
@@ -12,8 +12,8 @@ class Day13 : Day<Int>(13, 140) {
 
     private val secondDivider = "[[6]]".toSignal()
 
-    override fun part1(input: List<String>): Int = input.toPairsOfSignals().map { it.compare() }.mapIndexed { index, b -> if (b) (index + 1) else 0 }.sum()
-    override fun part2(input: List<String>): Int = input.filter { it.isNotBlank() }.toListOfSignals().asSequence().plus(firstDivider).plus(secondDivider).sorted()
+    override suspend fun part1(input: List<String>): Int = input.toPairsOfSignals().map { it.compare() }.mapIndexed { index, b -> if (b) (index + 1) else 0 }.sum()
+    override suspend fun part2(input: List<String>): Int = input.filter { it.isNotBlank() }.toListOfSignals().asSequence().plus(firstDivider).plus(secondDivider).sorted()
         .mapIndexedNotNull { index, signal ->
             if (signal == firstDivider || signal == secondDivider) {
                 index + 1

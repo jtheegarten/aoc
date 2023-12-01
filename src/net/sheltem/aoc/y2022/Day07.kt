@@ -3,14 +3,14 @@ package net.sheltem.aoc.y2022
 const val maxSpace: Long = 70_000_000
 const val spaceNeeded: Long = 30_000_000
 
-fun main() {
+suspend fun main() {
     Day07().run()
 }
 
 class Day07 : Day<Long>(95437, 24933642) {
 
-    override fun part1(input: List<String>): Long = input.buildTree().getAllFolders().map { it.size }.filter { it <= 100_000 }.sum()
-    override fun part2(input: List<String>): Long {
+    override suspend fun part1(input: List<String>): Long = input.buildTree().getAllFolders().map { it.size }.filter { it <= 100_000 }.sum()
+    override suspend fun part2(input: List<String>): Long {
         val root = input.buildTree()
         val deletionTarget = (spaceNeeded - (maxSpace - root.size))
         return root.getAllFolders().filter { it.size >= deletionTarget }.minOf { it.size }

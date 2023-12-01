@@ -8,7 +8,7 @@ import net.sheltem.aoc.common.move
 import net.sheltem.aoc.y2022.Field.*
 import java.lang.Integer.min
 
-fun main() {
+suspend fun main() {
     Day24().run()
 }
 
@@ -16,9 +16,9 @@ private typealias FieldMap = List<List<MutableList<Field>>>
 
 class Day24 : Day<Int>(18, 54) {
 
-    override fun part1(input: List<String>): Int = input.toFieldMap().travel()
+    override suspend fun part1(input: List<String>): Int = input.toFieldMap().travel()
 
-    override fun part2(input: List<String>): Int = input.toFieldMap().travel(3)
+    override suspend fun part2(input: List<String>): Int = input.toFieldMap().travel(3)
 }
 
 private fun FieldMap.travel(trips: Int = 1): Int {

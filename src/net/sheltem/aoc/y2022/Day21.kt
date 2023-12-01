@@ -6,15 +6,15 @@ import net.sheltem.aoc.common.MathOperation.*
 import net.sheltem.aoc.common.MathOperation.Companion.fromSign
 import kotlin.math.absoluteValue
 
-fun main() {
+suspend fun main() {
     Day21().run()
 }
 
 class Day21 : Day<Long>(152, 301) {
 
-    override fun part1(input: List<String>): Long = input.toMonkey().value.toLong()
+    override suspend fun part1(input: List<String>): Long = input.toMonkey().value.toLong()
 
-    override fun part2(input: List<String>): Long = input.humanNumber()
+    override suspend fun part2(input: List<String>): Long = input.humanNumber()
 }
 
 

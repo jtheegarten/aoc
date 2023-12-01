@@ -3,15 +3,15 @@ package net.sheltem.aoc.y2022
 
 import kotlin.math.absoluteValue
 
-fun main() {
+suspend fun main() {
     Day15().run()
 }
 
 class Day15 : Day<Long>(0, 24) {
 
-    override fun part1(input: List<String>): Long = input.map { it.toSensorAndBeacon() }.toCaveMap(2000000).countInRow(2000000).toLong()
+    override suspend fun part1(input: List<String>): Long = input.map { it.toSensorAndBeacon() }.toCaveMap(2000000).countInRow(2000000).toLong()
 
-    override fun part2(input: List<String>): Long =
+    override suspend fun part2(input: List<String>): Long =
         input.map { it.toSensorAndBeacon() }.findHole(4000000) //.also { println("Candidate: ${it.first}, ${it.second}") }
             .toFrequency()
 }

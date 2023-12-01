@@ -4,15 +4,15 @@ import net.sheltem.aoc.common.*
 import net.sheltem.aoc.y2022.Adjacencies.*
 import net.sheltem.aoc.common.Direction8.*
 
-fun main() {
+suspend fun main() {
     Day23().run()
 }
 
 class Day23 : Day<Long>(110, 20) {
 
-    override fun part1(input: List<String>): Long = input.toElvesMap().executeMoves(10)
+    override suspend fun part1(input: List<String>): Long = input.toElvesMap().executeMoves(10)
 
-    override fun part2(input: List<String>): Long = input.toElvesMap().executeMoves()
+    override suspend fun part2(input: List<String>): Long = input.toElvesMap().executeMoves()
 }
 
 private fun MutableMap<Position, Char>.executeMoves(rounds: Int? = null): Long {

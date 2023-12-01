@@ -2,14 +2,14 @@ package net.sheltem.aoc.y2015
 
 import java.security.MessageDigest
 
-fun main() {
+suspend fun main() {
     Day04().run(true)
 }
 
 class Day04 : Day<Long>(609043, 3) {
-    override fun part1(input: List<String>): Long = input.first().findMD5()
+    override suspend fun part1(input: List<String>): Long = input.first().findMD5()
 
-    override fun part2(input: List<String>): Long = input.first().findMD5(6)
+    override suspend fun part2(input: List<String>): Long = input.first().findMD5(6)
 }
 
 private fun String.findMD5(leadingZeros: Int = 5): Long {
