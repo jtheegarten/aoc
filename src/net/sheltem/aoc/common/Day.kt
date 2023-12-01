@@ -15,7 +15,12 @@ abstract class Day<T>(
         val number = this::class.java.simpleName.takeLast(2)
 
         val testInput = File("src/net/sheltem/aoc/y$year/data/Day${number}_test.txt").readLines()
-        val test2Input = File("src/net/sheltem/aoc/y$year/data/Day${number}_2_test.txt").readLines()
+        val test2Input = File("src/net/sheltem/aoc/y$year/data/Day${number}_2_test.txt").let {
+            if (it.exists())
+                it.readLines()
+            else
+                testInput
+        }
         val input = File("src/net/sheltem/aoc/y$year/data/Day${number}.txt").readLines()
 
         println("=== $year Day $number: ===\n")
