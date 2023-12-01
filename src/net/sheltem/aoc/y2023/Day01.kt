@@ -29,7 +29,6 @@ fun String.replaceWrittenNumbers(): String {
         s = s.replaceFirstWrittenNumber(map)
         map = s.writtenNumberMap()
     } while (map.isNotEmpty())
-    println("$this -> $s -> ${s.extractDigits()}")
 
     return s
 }
