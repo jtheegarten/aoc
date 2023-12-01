@@ -25,7 +25,7 @@ class Day01 : Day<Int>(12, 12) {
     }
 }
 
-fun List<String>.walk(cancelOnDuplicate: Boolean = false): Int {
+private fun List<String>.walk(cancelOnDuplicate: Boolean = false): Int {
     var position = PositionInt(0, 0) to Direction.NORTH
     val visitedCoordinates = mutableListOf<Pair<Int, Int>>()
     for (move in this) {
