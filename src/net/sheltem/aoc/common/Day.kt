@@ -33,6 +33,7 @@ abstract class Day<T>(
         val data = if (skipTest) mutableMapOf("Real" to input) else mutableMapOf("Test" to testInput, "Real" to input)
         if (part == 2) data["Test"] = test2Input
 
+        val total = Instant.now()
         data.entries.forEach { (step, input) ->
             val start = Instant.now()
             val partResult = (if (part == 1) ::part1 else ::part2).invoke(input)
@@ -42,6 +43,7 @@ abstract class Day<T>(
         }
 
         println()
+        println("Total time: ${Duration.between(total, Instant.now())}")
     }
 
     abstract fun part1(input: List<String>): T
