@@ -38,6 +38,29 @@ enum class MathOperation(val sign: String) {
     }
 }
 
+enum class Direction(val coords: PositionInt) {
+    NORTH(0 to -1),
+    EAST(1 to 0),
+    SOUTH(0 to 1),
+    WEST(-1 to 0),
+    NEUTRAL(0 to 0);
+
+    fun turnRight() = when (this) {
+        NORTH -> EAST
+        EAST -> SOUTH
+        SOUTH -> WEST
+        WEST -> NORTH
+        else -> NORTH
+    }
+    fun turnLeft() = when (this) {
+        NORTH -> WEST
+        EAST -> NORTH
+        SOUTH -> EAST
+        WEST -> SOUTH
+        else -> NORTH
+    }
+}
+
 enum class Direction8(val coords: PositionInt) {
     NORTH(0 to -1),
     NORTH_EAST(1 to -1),
@@ -55,7 +78,7 @@ enum class Direction8(val coords: PositionInt) {
         fun cardinalValues() = listOf(NORTH, EAST, SOUTH, WEST)
 
         fun fromCaret(caret: Char): Direction8 {
-            return when(caret) {
+            return when (caret) {
                 '>' -> EAST
                 '^' -> NORTH
                 '<' -> WEST
@@ -71,5 +94,6 @@ fun Pair<Long, Long>.neighbour(other: Direction8): Pair<Long, Long> = this.first
 fun Collection<Pair<Long, Long>>.bounds() = (minOf { it.first } to minOf { it.second }) to (maxOf { it.first } to maxOf { it.second })
 
 fun PositionInt.move(direction: Direction8) = first + direction.coords.first to second + direction.coords.second
+fun PositionInt.move(direction: Direction, distance: Int = 1) = first + (direction.coords.first * distance) to second + (direction.coords.second * distance)
 
 infix operator fun Pair<Long, Long>.plus(other: Pair<Long, Long>): Pair<Long, Long> = first + other.first to second + other.second
