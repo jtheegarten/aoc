@@ -36,7 +36,7 @@ abstract class Day<T>(
 
 
         val data = if (skipTest) mutableMapOf("Real" to input) else mutableMapOf("Test" to testInput, "Real" to input)
-        if (part == 2) data["Test"] = test2Input
+        if (part == 2 && !skipTest) data["Test"] = test2Input
 
         val total = Instant.now()
         data.entries.forEach { (step, input) ->

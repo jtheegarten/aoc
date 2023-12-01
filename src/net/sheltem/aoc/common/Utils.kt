@@ -7,6 +7,8 @@ import java.io.File
 typealias PositionInt = Pair<Int, Int>
 typealias Position = Pair<Long, Long>
 
+const val ALPHABET = "abcdefghijklmnopqrstuvwxyz"
+
 /**
  * Reads lines from the given input txt file.
  */
