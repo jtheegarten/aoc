@@ -4,19 +4,14 @@ suspend fun main() {
     Day08().run()
 }
 
-class Day08 : Day<Int>(12, 34) {
-    override suspend fun part1(input: List<String>): Int = input.diff()
+class Day08 : Day<Int>(12, 19) {
+    override suspend fun part1(input: List<String>): Int = input.fold(0) { acc, line ->
+        val mem = line.replace("\\\\", "?").replace("\\\"", "?").replace("""\\x..""".toRegex(), "?")
+        acc + line.length - mem.substring(1, mem.length - 1).length
+    }
 
-    override suspend fun part2(input: List<String>): Int = 34
-}
-
-private fun List<String>.diff(): Int = sumOf { str ->
-    val new = str
-        .replace("\\\\", "^")
-        .replace(Regex("[^\\\\]\\\\x\\w{2}")) { "${it.value[0]}_" }
-        .replace(Regex("[^\\\\]\\\\x\\w{2}")) { "${it.value[0]}_" }
-        .replace("\\\"", "\"")
-        .replace("^", "\\")
-        .drop(1).dropLast(1)
-    str.length - new.length
+    override suspend fun part2(input: List<String>) = input.fold(0) { acc, line ->
+        val mem = '"' + line.replace("\\", "\\\\").replace("\"", "\\\"") + '"'
+        acc + mem.length - line.length
+    }
 }
