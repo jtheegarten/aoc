@@ -12,14 +12,14 @@ class Day02 : Day<Long>(8, 2286) {
 
     override suspend fun part1(input: List<String>): Long {
         return input
-            .mapIndexed { index, s -> (index + 1) to s.toCubeMap() }
+            .mapIndexed { index, s -> (index + 1) to s.toMinCubeMap() }
             .filterNot { setToTest -> maxCubes.any { setToTest.second[it.key]!! > it.value } }
             .sumOf { it.first }.toLong()
     }
 
     override suspend fun part2(input: List<String>): Long {
         return input
-            .map{ it.toCubeMap() }
+            .map{ it.toMinCubeMap() }
             .sumOf {
                 it.values.reduce { accumulator, element ->
                     accumulator * element
@@ -28,7 +28,7 @@ class Day02 : Day<Long>(8, 2286) {
     }
 }
 
-private fun String.toCubeMap(): Map<String, Long> =
+private fun String.toMinCubeMap(): Map<String, Long> =
     this.split(": ")
         .last()
         .split("; ")
