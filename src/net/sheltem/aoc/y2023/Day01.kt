@@ -19,7 +19,17 @@ class Day01 : Day<Int>(142, 281) {
 }
 
 private fun String.firstAndLastDigit(digitsMap: Map<String, Int> = digits): Int {
-    val first = digitsMap.entries.map { e -> this.indexOf(e.key) to e.value }.filter { it.first != -1 }.minBy { it.first }.second.toString()
-    val last = digitsMap.entries.map { e -> this.lastIndexOf(e.key) to e.value }.filter { it.first != -1 }.maxBy { it.first }.second.toString()
+    val first = digitsMap
+        .entries
+        .map { e -> this.indexOf(e.key) to e.value }
+        .filter { it.first != -1 }
+        .minBy { it.first }.second.toString()
+
+    val last = digitsMap
+        .entries
+        .map { e -> this.lastIndexOf(e.key) to e.value }
+        .filter { it.first != -1 }
+        .maxBy { it.first }.second.toString()
+
     return "$first$last".toInt()
 }
