@@ -1,5 +1,7 @@
 package net.sheltem.aoc.y2023
 
+import kotlin.math.max
+
 suspend fun main() {
     Day02().run()
 }
@@ -9,15 +11,20 @@ private val maxCubes = mapOf("red" to 12, "green" to 13, "blue" to 14)
 class Day02 : Day<Long>(8, 2286) {
 
     override suspend fun part1(input: List<String>): Long {
-        return input.mapIndexed { index, s -> s.toCubeMap(index + 1L) }.filterNot { setToTest -> maxCubes.any { setToTest.second[it.key]!! > it.value } }.sumOf { it.first }
+        return input
+            .mapIndexed { index, s -> s.toCubeMap(index + 1L) }
+            .filterNot { setToTest -> maxCubes.any { setToTest.second[it.key]!! > it.value } }
+            .sumOf { it.first }
     }
 
     override suspend fun part2(input: List<String>): Long {
-        return input.mapIndexed { index, s -> s.toCubeMap(index + 1L) }.sumOf {
-            it.second.values.reduce { accumulator, element ->
-                accumulator * element
+        return input
+            .mapIndexed { index, s -> s.toCubeMap(index + 1L) }
+            .sumOf {
+                it.second.values.reduce { accumulator, element ->
+                    accumulator * element
+                }
             }
-        }
     }
 }
 
@@ -26,7 +33,8 @@ private fun String.toCubeMap(index: Long): Pair<Long, Map<String, Long>> =
         .last()
         .split("; ")
         .flatMap { cubeSet ->
-            cubeSet.split(", ")
+            cubeSet
+                .split(", ")
                 .map { cube ->
                     cube
                         .split(" ")
@@ -34,10 +42,10 @@ private fun String.toCubeMap(index: Long): Pair<Long, Map<String, Long>> =
                 }
         }//.also { println(it) }
         .groupingBy { it.first }
-        .aggregate { key, accumulator: Long?, element, first ->
+        .aggregate { _, accumulator: Long?, element, first ->
             if (first) {
                 element.second
             } else {
-                kotlin.math.max(accumulator!!, element.second)
+                max(accumulator!!, element.second)
             }
         }//.also { println(it) }
