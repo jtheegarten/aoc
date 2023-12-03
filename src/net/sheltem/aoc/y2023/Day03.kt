@@ -21,17 +21,19 @@ class Day03 : Day<Long>(4361, 467835) {
 private val numberRegex = Regex("\\d+")
 
 private fun List<String>.toEngineNumbers(): List<Long> = this.mapIndexed { index, line ->
-    val numberMatches = numberRegex.findAll(line)
-    numberMatches.filter { match ->
-        val startIndex = max(match.range.first - 1, 0)
-        val endIndex = min(match.range.last + 2, line.length - 1)
-        val previousRow = this[max(index - 1, 0)].substring(startIndex, endIndex)
-        val thisRow = this[index].substring(startIndex, endIndex)
-        val nextRow = this[min(index + 1, this.size - 1)].substring(startIndex, endIndex)
+    numberRegex
+        .findAll(line)
+        .filter { match ->
+            val startIndex = max(match.range.first - 1, 0)
+            val endIndex = min(match.range.last + 2, line.length - 1)
+            val previousRow = this[max(index - 1, 0)].substring(startIndex, endIndex)
+            val thisRow = this[index].substring(startIndex, endIndex)
+            val nextRow = this[min(index + 1, this.size - 1)].substring(startIndex, endIndex)
 
-        (previousRow + thisRow + nextRow).any { it.isSymbol() }
+            (previousRow + thisRow + nextRow).any { it.isSymbol() }
 
-    }.map { it.value.toLong() }.toList()
+        }.map { it.value.toLong() }
+        .toList()
 }.flatten()
 
 private fun Char.isSymbol() = !isDigit() && this != '.'
