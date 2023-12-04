@@ -11,7 +11,7 @@ abstract class Day<T>(
 ) {
 
     suspend fun run(skipTest: Boolean = false) {
-        val total = Instant.now()
+
         val number = this::class.java.simpleName.takeLast(2)
 
         val testInput = File("src/net/sheltem/aoc/y$year/data/Day${number}_test.txt").readLines()
@@ -23,6 +23,8 @@ abstract class Day<T>(
         }
         val input = File("src/net/sheltem/aoc/y$year/data/Day${number}.txt").readLines()
 
+        val total = Instant.now()
+
         println("=== $year Day $number: ===\n")
 
         listOf(part1Test, part2Test).forEachIndexed { i, it ->
@@ -30,11 +32,10 @@ abstract class Day<T>(
             runPart(i+1, it, testInput, test2Input, input, skipTest)
         }
 
-        println("Total time: ${Duration.between(total, Instant.now())}")
+        println("Total time: ${Duration.between(total, Instant.now()).toNanos().toDouble() / 1_000_000} ms")
     }
 
     private suspend fun runPart(part: Int, testResult: T, testInput: List<String>, test2Input: List<String>, input: List<String>, skipTest: Boolean) {
-
 
         val data = if (skipTest) mutableMapOf("Real" to input) else mutableMapOf("Test" to testInput, "Real" to input)
         if (part == 2 && !skipTest) data["Test"] = test2Input
@@ -43,8 +44,8 @@ abstract class Day<T>(
             val start = Instant.now()
             val partResult = (if (part == 1) ::part1 else ::part2).invoke(input)
             if (step == "Test") require(partResult == testResult) { "Result $partResult is not correct, expecting $testResult" }
-            val partDuration = Duration.between(start, Instant.now())
-            println("${step}: $partResult\n  in $partDuration")
+            val partDuration = Duration.between(start, Instant.now()).toNanos().toDouble() / 1_000_000
+            println("${step}: $partResult\n  in $partDuration ms")
         }
 
         println()
