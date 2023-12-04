@@ -15,6 +15,8 @@ class Day04 : Day<Long>(13, 30) {
         .map { it.first to it.second.count() }
         .countCards()
 
+//    override suspend fun part2(input: List<String>): Long {
+//        val indexedWinners = input.indexWinners()
 //        return coroutineScope {
 //            indexedWinners
 //                .map {
@@ -24,15 +26,21 @@ class Day04 : Day<Long>(13, 30) {
 //                }.awaitAll()
 //                .flatten()
 //                .count().toLong()
-
+//        }
+//    }
 }
+
+//private fun Pair<Int, List<Long>>.unwrap(indexedWinners: List<Pair<Int, List<Long>>>): List<Int> = if (this.second.score() == 0L) {
+//    listOf(this.first)
+//} else {
+//    listOf(this.first) + ((this.first + 1)..(this.first + this.second.count())).map { indexedWinners[it].unwrap(indexedWinners) }.flatten()
+//}
 
 private fun List<String>.indexWinners(): List<Pair<Int, List<Long>>> = toLotteryNumbers()
     .mapIndexed { index, outerList ->
         index to outerList.component2()
             .filter { outerList.component1().contains(it) }
     }
-
 
 private fun List<String>.toLotteryNumbers(): List<List<List<Long>>> = this.map { line ->
     line.substringAfter(":")
@@ -41,6 +49,7 @@ private fun List<String>.toLotteryNumbers(): List<List<List<Long>>> = this.map {
         .map { it.split(" ").filter { it.isNotBlank() }.map { it.toLong() } }
         .let { listOf(it.component1(), it.component2()) }
 }
+
 
 private fun List<Long>.score(): Long = if (isNotEmpty()) 2.toDouble().pow(size - 1).toLong() else 0
 
@@ -59,11 +68,3 @@ private fun MutableMap<Int, Int>.addCards(index: Int, rangeLength: Int, amountTo
     }
     return this
 }
-
-//private fun Pair<Int, List<Long>>.unwrap(indexedWinners: List<Pair<Int, List<Long>>>): List<Int> {
-//    return if (this.second.score() == 0L) {
-//        listOf(this.first)
-//    } else {
-//        listOf(this.first) + ((this.first + 1)..(this.first + this.second.count())).map { indexedWinners[it].unwrap(indexedWinners) }.flatten()
-//    }
-//}
