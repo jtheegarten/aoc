@@ -1,15 +1,20 @@
 plugins {
-    kotlin("jvm") version "1.9.20"
+    kotlin("jvm") version "1.9.21"
 }
 
 repositories {
     mavenCentral()
 }
 
+kotlin {
+    jvmToolchain(21)
+
+}
+
 tasks {
     sourceSets {
         main {
-            java.srcDirs("src")
+            kotlin.srcDirs("src")
         }
     }
 
@@ -19,7 +24,5 @@ tasks {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:multik-core:0.2.0")
-    implementation("org.jetbrains.kotlinx:multik-default:0.2.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 }
