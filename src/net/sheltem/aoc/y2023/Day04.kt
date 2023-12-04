@@ -1,8 +1,5 @@
 package net.sheltem.aoc.y2023
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlin.math.pow
 
 suspend fun main() {
@@ -11,33 +8,31 @@ suspend fun main() {
 
 class Day04 : Day<Long>(13, 30) {
 
-    override suspend fun part1(input: List<String>): Long {
-        return input.toLotteryNumbers()
-            .map { outerList ->
-                outerList.component2()
-                    .filter { outerList.component1().contains(it) }
-            }
-            .sumOf { it.score() }
+    override suspend fun part1(input: List<String>): Long = input.indexWinners()
+        .sumOf { it.second.score() }
+
+    override suspend fun part2(input: List<String>): Long = input.indexWinners()
+        .map { it.first to it.second.count() }
+        .countCards()
+
+//        return coroutineScope {
+//            indexedWinners
+//                .map {
+//                    async {
+//                        it.unwrap(indexedWinners)
+//                    }
+//                }.awaitAll()
+//                .flatten()
+//                .count().toLong()
+
+}
+
+private fun List<String>.indexWinners(): List<Pair<Int, List<Long>>> = toLotteryNumbers()
+    .mapIndexed { index, outerList ->
+        index to outerList.component2()
+            .filter { outerList.component1().contains(it) }
     }
 
-    override suspend fun part2(input: List<String>): Long {
-        val indexedWinners = input.toLotteryNumbers()
-            .mapIndexed { index, outerList ->
-                index to outerList.component2()
-                    .filter { outerList.component1().contains(it) }
-            }
-        return coroutineScope {
-            indexedWinners
-                .map {
-                    async {
-                        it.unwrap(indexedWinners)
-                    }
-                }.awaitAll()
-                .flatten()
-                .count().toLong()
-        }
-    }
-}
 
 private fun List<String>.toLotteryNumbers(): List<List<List<Long>>> = this.map { line ->
     line.substringAfter(":")
@@ -49,10 +44,26 @@ private fun List<String>.toLotteryNumbers(): List<List<List<Long>>> = this.map {
 
 private fun List<Long>.score(): Long = if (isNotEmpty()) 2.toDouble().pow(size - 1).toLong() else 0
 
-private fun Pair<Int, List<Long>>.unwrap(indexedWinners: List<Pair<Int, List<Long>>>): List<Int> {
-    return if (this.second.score() == 0L) {
-        listOf(this.first)
-    } else {
-        listOf(this.first) + ((this.first + 1)..(this.first + this.second.count())).map { indexedWinners[it].unwrap(indexedWinners) }.flatten()
+private fun List<Pair<Int, Int>>.countCards(): Long {
+    val cardCounts = this.associate { it.first to 1 }.toMutableMap()
+    for (index in 0..this.last().first) {
+        if (this[index].second > 0) cardCounts.addCards(index, this[index].second, cardCounts[index]!!)
     }
+
+    return cardCounts.values.sum().toLong()
 }
+
+private fun MutableMap<Int, Int>.addCards(index: Int, rangeLength: Int, amountToAdd: Int): MutableMap<Int, Int> {
+    for (i in index + 1..(index + rangeLength)) {
+        this[i] = this[i]!! + amountToAdd
+    }
+    return this
+}
+
+//private fun Pair<Int, List<Long>>.unwrap(indexedWinners: List<Pair<Int, List<Long>>>): List<Int> {
+//    return if (this.second.score() == 0L) {
+//        listOf(this.first)
+//    } else {
+//        listOf(this.first) + ((this.first + 1)..(this.first + this.second.count())).map { indexedWinners[it].unwrap(indexedWinners) }.flatten()
+//    }
+//}
