@@ -11,7 +11,7 @@ abstract class Day<T>(
 ) {
 
     suspend fun run(skipTest: Boolean = false) {
-
+        val total = Instant.now()
         val number = this::class.java.simpleName.takeLast(2)
 
         val testInput = File("src/net/sheltem/aoc/y$year/data/Day${number}_test.txt").readLines()
@@ -30,6 +30,7 @@ abstract class Day<T>(
             runPart(i+1, it, testInput, test2Input, input, skipTest)
         }
 
+        println("Total time: ${Duration.between(total, Instant.now())}")
     }
 
     private suspend fun runPart(part: Int, testResult: T, testInput: List<String>, test2Input: List<String>, input: List<String>, skipTest: Boolean) {
@@ -38,7 +39,6 @@ abstract class Day<T>(
         val data = if (skipTest) mutableMapOf("Real" to input) else mutableMapOf("Test" to testInput, "Real" to input)
         if (part == 2 && !skipTest) data["Test"] = test2Input
 
-        val total = Instant.now()
         data.entries.forEach { (step, input) ->
             val start = Instant.now()
             val partResult = (if (part == 1) ::part1 else ::part2).invoke(input)
@@ -48,7 +48,6 @@ abstract class Day<T>(
         }
 
         println()
-        println("Total time: ${Duration.between(total, Instant.now())}")
     }
 
     abstract suspend fun part1(input: List<String>): T
