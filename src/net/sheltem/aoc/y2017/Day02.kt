@@ -18,5 +18,17 @@ class Day02 : Day<Long>(18, 9) {
             }//.also { println(" -> $it") }
     }
 
-    override suspend fun part2(input: List<String>): Long = TODO()
+    override suspend fun part2(input: List<String>): Long = input.sumOf {
+        numericRegex.findAll(it)
+            .mapNotNull { number ->
+                number.value.toLongOrNull()
+            }
+            .toList()
+            .let { list ->
+                list.associateWith { number -> list - number }
+            }.mapNotNull { (divisor, everyOther) ->
+//                println("$divisor | $everyOther")
+                everyOther.firstOrNull() { dividend -> dividend.mod(divisor) == 0L }?.let { dividend -> dividend / divisor }
+            }.single()
+    }
 }
