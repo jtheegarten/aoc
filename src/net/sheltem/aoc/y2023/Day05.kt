@@ -18,11 +18,13 @@ class Day05 : Day<Long>(35, 46) {
         val ranges = input[0].toSeedList().chunked(2).map { it.first()..(it.first() + it.last()) }
 
         return coroutineScope {
-            ranges.map { range ->
-                async {
-                    almanac.minLocationNumber(range)
+            generateSequence(0L) { it + 1 }
+                .first { result ->
+                    almanac.resultToSeed(result)
+                        .let { seed ->
+                            ranges.any { it.contains(seed) }
+                        }
                 }
-            }.awaitAll().min()
         }
     }
 }
@@ -40,7 +42,7 @@ private fun List<AlmanacSection>.findMapping(mappingNumber: Long) =
     fold(mappingNumber) { acc, almanacMapping -> almanacMapping.map(acc) }
 
 private fun List<AlmanacSection>.findReverseMapping(result: Long) =
-    reversed().fold(result) { acc, almanacMapping -> almanacMapping.reverseMap(acc) ?: -1 }
+    reversed().fold(result) { acc, almanacMapping -> almanacMapping.reverseMap(acc) }
 
 private data class Almanac(val mappings: List<AlmanacSection>) {
     fun minLocationNumber(seeds: List<Long>) =
@@ -51,15 +53,13 @@ private data class Almanac(val mappings: List<AlmanacSection>) {
     fun resultToSeed(result: Long): Long =
         mappings.findReverseMapping(result)
 
-    fun minLocationNumber(range: LongRange) = range.minOf { mappings.findMapping(it) }
-        .also { println("($range) -> $it") }
 }
 
 private data class AlmanacSection(
     val mappings: List<AlmanacMapping>
 ) {
     fun map(number: Long): Long = mappings.find { it.canMap(number) }?.map(number) ?: number
-    fun reverseMap(number: Long): Long? = mappings.find { it.canReverseMap(number) }?.reverseMap(number)
+    fun reverseMap(number: Long): Long = mappings.find { it.canReverseMap(number) }?.reverseMap(number) ?: number
 }
 
 private data class AlmanacMapping(val target: Long, val start: Long, val size: Long) {

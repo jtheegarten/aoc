@@ -27,7 +27,7 @@ private fun String.toFishMap() = split(",")
 private fun spawn(repeats: Int, startMap: Map<Int, Long>): Long {
     var resultMap = startMap
 
-    repeat(repeats) { index ->
+    repeat(repeats) { _ ->
         resultMap = mapOf(8 to (resultMap[0] ?: 0)) + resultMap.map {
             when (it.key) {
                 0 -> 6 to (it.value + (resultMap[7] ?: 0))
