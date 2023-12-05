@@ -9,6 +9,8 @@ typealias Position = Pair<Long, Long>
 
 const val ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 
+val numericRegex = Regex("\\d")
+
 /**
  * Reads lines from the given input txt file.
  */

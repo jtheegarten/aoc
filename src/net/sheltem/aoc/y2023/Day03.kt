@@ -1,5 +1,6 @@
 package net.sheltem.aoc.y2023
 
+import net.sheltem.aoc.common.numericRegex
 import kotlin.math.max
 import kotlin.math.min
 
@@ -18,11 +19,11 @@ class Day03 : Day<Long>(4361, 467835) {
         .sum()
 }
 
-private val numberRegex = Regex("\\d+")
+private val gearRegex = Regex("\\*")
 
 private fun List<String>.toEngineNumbers(): List<Long> = this
     .mapIndexed { index, line ->
-        numberRegex
+        numericRegex
             .findAll(line)
             .filter { match ->
                 val startIndex = max(match.range.first - 1, 0)
@@ -41,7 +42,7 @@ private fun Char.isSymbol() = !isDigit() && this != '.'
 
 private fun List<String>.toGearRatios(): List<Long> = this
     .mapIndexed { index, line ->
-        Regex("\\*")
+        gearRegex
             .findAll(line)
             .map { it.range.first }
             .mapNotNull { gearIndex ->
@@ -55,9 +56,9 @@ private fun List<String>.toGearRatios(): List<Long> = this
     }.flatten()
 
 private fun List<String>.findAdjacentNumbers(index: Int, gearIndex: Int): List<Long> =
-    (numberRegex.findAll(this[index - 1]).toList()
-            + numberRegex.findAll(this[index]).toList()
-            + numberRegex.findAll(this[index + 1]).toList())
+    (numericRegex.findAll(this[index - 1]).toList()
+            + numericRegex.findAll(this[index]).toList()
+            + numericRegex.findAll(this[index + 1]).toList())
         .filter { gearIndex in it.numberRange() }
         .map { it.value.toLong() }
 
