@@ -17,7 +17,6 @@ class Day06 : Day<Long>(288, 71503) {
 
 private fun List<String>.toRaces() = map {
     numericRegex.findAll(it)
-        .toList()
         .mapToLong()
 }.let { it.first().zip(it.last()) }
     .map { Race(it.first, it.second) }

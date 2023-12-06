@@ -35,8 +35,7 @@ private fun List<String>.toEngineNumbers(): List<Long> = this
 
                 (previousRow + thisRow + nextRow).any { it.isSymbol() }
 
-            }.toList()
-            .mapToLong()
+            }.mapToLong()
 
     }.flatten()
 

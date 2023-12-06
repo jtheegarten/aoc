@@ -102,7 +102,8 @@ fun PositionInt.move(direction: Direction, distance: Int = 1) = first + (directi
 
 fun Collection<Long>.multiply(): Long = reduce { acc, l -> acc * l }
 
-fun List<MatchResult>.mapToLong(): List<Long> = mapNotNull { number -> number.value.toLong() }
+fun Collection<MatchResult>.mapToLong(): List<Long> = mapNotNull { number -> number.value.toLong() }
+fun Sequence<MatchResult>.mapToLong(): List<Long> = toList().mapToLong()
 
 
 infix operator fun Pair<Long, Long>.plus(other: Pair<Long, Long>): Pair<Long, Long> = first + other.first to second + other.second
