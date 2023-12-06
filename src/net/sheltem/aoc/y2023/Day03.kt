@@ -1,5 +1,6 @@
 package net.sheltem.aoc.y2023
 
+import net.sheltem.aoc.common.mapToLong
 import net.sheltem.aoc.common.numericRegex
 import kotlin.math.max
 import kotlin.math.min
@@ -34,8 +35,9 @@ private fun List<String>.toEngineNumbers(): List<Long> = this
 
                 (previousRow + thisRow + nextRow).any { it.isSymbol() }
 
-            }.map { it.value.toLong() }
-            .toList()
+            }.toList()
+            .mapToLong()
+
     }.flatten()
 
 private fun Char.isSymbol() = !isDigit() && this != '.'
@@ -60,6 +62,6 @@ private fun List<String>.findAdjacentNumbers(index: Int, gearIndex: Int): List<L
             + numericRegex.findAll(this[index]).toList()
             + numericRegex.findAll(this[index + 1]).toList())
         .filter { gearIndex in it.numberRange() }
-        .map { it.value.toLong() }
+        .mapToLong()
 
 private fun MatchResult.numberRange() = (range.first - 1)..(range.last + 1)

@@ -1,5 +1,6 @@
 package net.sheltem.aoc.y2023
 
+import net.sheltem.aoc.common.mapToLong
 import net.sheltem.aoc.common.multiply
 import net.sheltem.aoc.common.numericRegex
 
@@ -17,10 +18,9 @@ class Day06 : Day<Long>(288, 71503) {
 private fun List<String>.toRaces() = map {
     numericRegex.findAll(it)
         .toList()
-        .map { number -> number.value.toLong() }
+        .mapToLong()
 }.let { it.first().zip(it.last()) }
     .map { Race(it.first, it.second) }
-
 
 private data class Race(val time: Long, val distanceToBeat: Long) {
     fun waysToWin(): Long = (1..time)
