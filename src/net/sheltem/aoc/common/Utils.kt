@@ -9,7 +9,7 @@ typealias Position = Pair<Long, Long>
 
 const val ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 
-val numericRegex = Regex("\\d*")
+val numericRegex = Regex("\\d+")
 
 /**
  * Reads lines from the given input txt file.
@@ -99,5 +99,7 @@ fun Collection<Pair<Long, Long>>.bounds() = (minOf { it.first } to minOf { it.se
 
 fun PositionInt.move(direction: Direction8) = first + direction.coords.first to second + direction.coords.second
 fun PositionInt.move(direction: Direction, distance: Int = 1) = first + (direction.coords.first * distance) to second + (direction.coords.second * distance)
+
+fun Collection<Long>.multiply(): Long = reduce { acc, l -> acc * l }
 
 infix operator fun Pair<Long, Long>.plus(other: Pair<Long, Long>): Pair<Long, Long> = first + other.first to second + other.second
