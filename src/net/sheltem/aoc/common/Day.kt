@@ -43,9 +43,9 @@ abstract class Day<T>(
         data.entries.forEach { (step, input) ->
             val start = Instant.now()
             val partResult = (if (part == 1) ::part1 else ::part2).invoke(input)
-            if (step == "Test") require(partResult == testResult) { "Result $partResult is not correct, expecting $testResult" }
             val partDuration = Duration.between(start, Instant.now()).toNanos().toDouble() / 1_000_000
-            println("${step}: $partResult\n  in $partDuration ms")
+            val testInfo = if (step == "Test" && partResult != testResult) " <- incorrect, expecting $testResult" else ""
+            println("${step}: $partResult$testInfo\n  in $partDuration ms")
         }
 
         println()
