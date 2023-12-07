@@ -1,5 +1,7 @@
 package net.sheltem.aoc.y2023
 
+import net.sheltem.aoc.common.count
+
 suspend fun main() {
     Day07().run()
 }
@@ -19,7 +21,7 @@ class Day07 : Day<Long>(6440, 5905) {
 
 private fun String.toPokerHand(jokerRule: Boolean = false) = this.split(" ").let { PokerHand(it.first(), it.last().toLong(), jokerRule) }
 
-private fun List<PokerHand>.toWinnings(): Long = this.foldIndexed(0) { index, acc, pokerHand ->
+private fun List<PokerHand>.toWinnings(): Long = this.foldIndexed(0L) { index, acc, pokerHand ->
     acc + ((index + 1) * pokerHand.bid)
 }
 
@@ -27,20 +29,20 @@ private data class PokerHand(val hand: String, val bid: Long, val jokerRule: Boo
 
     private val cards = listOf('A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2').let { if (jokerRule) it - 'J' + 'J' else it }
 
-    val handMap = hand
-        .let { initialHand ->
-            if (!jokerRule)
-                initialHand
-            else
-                initialHand.replace(
-                    "J", initialHand.groupingBy {
-                        it.toString()
-                    }.eachCount()
-                        .maxBy { it.value }.key
-                )
-        }
+    val handCountMap = hand
         .groupingBy { it.toString() }
         .eachCount()
+
+    val maxElement = handCountMap.minus("J").maxByOrNull { it.value }
+
+    val handMap =
+        if (!jokerRule || hand == "JJJJJ" || hand.count("J") == 0)
+            handCountMap
+        else
+            handCountMap
+                .minus("J")
+                .minus(maxElement!!.key)
+                .plus(maxElement.key.let { it to hand.count(it) + hand.count("J") })
 
     val type: Int
         get() = when {
@@ -51,7 +53,7 @@ private data class PokerHand(val hand: String, val bid: Long, val jokerRule: Boo
             handMap.size == 3 && handMap.values.count { it == 2 } == 2 -> 3 // two pair
             handMap.values.count { it == 2 } == 1 -> 2 // pair
             handMap.values.sum() == 5 -> 1 // high card
-            else -> (-1).also { println("Could not determine type of $hand") }
+            else -> (-1).also { println("Could not determine type of $hand | $handCountMap | $handMap") }
         }
 
     override fun compareTo(other: PokerHand): Int = (this.type - other.type).let { typeDifference ->
@@ -64,3 +66,5 @@ private data class PokerHand(val hand: String, val bid: Long, val jokerRule: Boo
         }
     }
 }
+
+
