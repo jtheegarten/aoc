@@ -27,15 +27,20 @@ private data class PokerHand(val hand: String, val bid: Long, val jokerRule: Boo
 
     private val cards = listOf('A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2').let { if (jokerRule) it - 'J' + 'J' else it }
 
-    val handMap = hand.groupingBy { it.toString() }.eachCount().let { map ->
-        if (jokerRule && map.keys.contains("J") && map.size != 1) {
-            val jokerlessMap = map.minus("J")
-            val maxChar = jokerlessMap.entries.maxBy { it.value }.key
-            jokerlessMap.minus(maxChar).plus(maxChar to (map[maxChar]!! + map["J"]!!))
-        } else {
-            map
-        }//.also { println("$hand -> $it") }
-    }
+    val handMap = hand
+        .let { initialHand ->
+            if (!jokerRule)
+                initialHand
+            else
+                initialHand.replace(
+                    "J", initialHand.groupingBy {
+                        it.toString()
+                    }.eachCount()
+                        .maxBy { it.value }.key
+                )
+        }
+        .groupingBy { it.toString() }
+        .eachCount()
 
     val type: Int
         get() = when {
