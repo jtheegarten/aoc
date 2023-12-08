@@ -30,7 +30,7 @@ class Day05 : Day<Long>(35, 46) {
 private fun String.toSeedList() = split(": ").last().split(" ").mapNotNull { it.toLongOrNull() }
 
 private fun List<String>.toAlmanac(): Almanac {
-    val almanac = this.subList(2, this.size).joinToString("\n").split("\n\n").map { xToYMap ->
+    val almanac = this.drop(2).joinToString("\n").split("\n\n").map { xToYMap ->
         xToYMap.split("\n").drop(1).map(AlmanacMapping::from)
     }
     return Almanac(almanac.map(::AlmanacSection))

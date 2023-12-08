@@ -18,7 +18,6 @@ class Day02 : Day<String>("1985", "5DB3") {
 
     override suspend fun part1(input: List<String>): String {
         return input.inputNumbers()
-
     }
 
     override suspend fun part2(input: List<String>): String {
