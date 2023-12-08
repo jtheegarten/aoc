@@ -14,5 +14,6 @@ fun readInput(name: String) = File("src", "$name.txt")
 
 fun Collection<MatchResult>.toListLong(): List<Long> = mapNotNull { number -> number.value.toLong() }
 fun Sequence<MatchResult>.toListLong(): List<Long> = toList().toListLong()
+
 fun String.regex(r: String) = Regex(r).findAll(this).map { it.value }.toList()
 fun String.regexNumbers() = numericRegex.findAll(this).map { it.value }.mapNotNull { it.toLongOrNull() }.toList()
