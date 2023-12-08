@@ -14,27 +14,7 @@ class Day04 : Day<Long>(13, 30) {
     override suspend fun part2(input: List<String>): Long = input.indexWinners()
         .map { it.first to it.second.count() }
         .countCards()
-
-//    override suspend fun part2(input: List<String>): Long {
-//        val indexedWinners = input.indexWinners()
-//        return coroutineScope {
-//            indexedWinners
-//                .map {
-//                    async {
-//                        it.unwrap(indexedWinners)
-//                    }
-//                }.awaitAll()
-//                .flatten()
-//                .count().toLong()
-//        }
-//    }
 }
-
-//private fun Pair<Int, List<Long>>.unwrap(indexedWinners: List<Pair<Int, List<Long>>>): List<Int> = if (this.second.score() == 0L) {
-//    listOf(this.first)
-//} else {
-//    listOf(this.first) + ((this.first + 1)..(this.first + this.second.count())).map { indexedWinners[it].unwrap(indexedWinners) }.flatten()
-//}
 
 private fun List<String>.indexWinners(): List<Pair<Int, List<Long>>> = toLotteryNumbers()
     .mapIndexed { index, outerList ->

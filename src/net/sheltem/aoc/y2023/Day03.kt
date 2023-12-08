@@ -1,7 +1,7 @@
 package net.sheltem.aoc.y2023
 
-import net.sheltem.aoc.common.toListLong
 import net.sheltem.aoc.common.numericRegex
+import net.sheltem.aoc.common.toListLong
 import kotlin.math.max
 import kotlin.math.min
 

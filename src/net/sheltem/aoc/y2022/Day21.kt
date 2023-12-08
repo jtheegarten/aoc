@@ -2,8 +2,11 @@ package net.sheltem.aoc.y2022
 
 
 import net.sheltem.aoc.common.MathOperation
-import net.sheltem.aoc.common.MathOperation.*
+import net.sheltem.aoc.common.MathOperation.ADD
 import net.sheltem.aoc.common.MathOperation.Companion.fromSign
+import net.sheltem.aoc.common.MathOperation.DIVIDE
+import net.sheltem.aoc.common.MathOperation.MULTIPLY
+import net.sheltem.aoc.common.MathOperation.SUBSTRACT
 import kotlin.math.absoluteValue
 
 suspend fun main() {

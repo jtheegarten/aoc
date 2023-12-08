@@ -1,7 +1,5 @@
 package net.sheltem.aoc.y2021
 
-import java.lang.IllegalStateException
-
 suspend fun main() {
     Day06().run()
 }

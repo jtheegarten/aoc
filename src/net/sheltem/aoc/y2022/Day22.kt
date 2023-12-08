@@ -1,7 +1,10 @@
 package net.sheltem.aoc.y2022
 
 
-import net.sheltem.aoc.y2022.Facing.*
+import net.sheltem.aoc.y2022.Facing.DOWN
+import net.sheltem.aoc.y2022.Facing.LEFT
+import net.sheltem.aoc.y2022.Facing.RIGHT
+import net.sheltem.aoc.y2022.Facing.UP
 
 suspend fun main() {
     Day22().run(true)
@@ -152,7 +155,7 @@ private enum class Facing(val x: Int, val y: Int, val value: Int) {
 
     fun turn(dir: Char): Facing {
         val position = ordinal + if (dir == 'R') 1 else -1
-        return values()[position.mod(values().size)]
+        return entries[position.mod(entries.size)]
     }
 }
 

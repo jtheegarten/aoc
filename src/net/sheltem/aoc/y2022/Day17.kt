@@ -1,7 +1,10 @@
 package net.sheltem.aoc.y2022
 
 
-import net.sheltem.aoc.y2022.Direction.*
+import net.sheltem.aoc.y2022.Direction.DOWN
+import net.sheltem.aoc.y2022.Direction.LEFT
+import net.sheltem.aoc.y2022.Direction.RIGHT
+import net.sheltem.aoc.y2022.Direction.UP
 import java.util.function.Predicate
 
 suspend fun main() {
@@ -47,7 +50,7 @@ private fun List<Direction>.simulateRocks(
             return currentCycle
         }
 
-        val rockToDrop = Shape.values()[(rocksDropped % 5).toInt()]
+        val rockToDrop = Shape.entries[(rocksDropped % 5).toInt()]
         var position = (if (rockToDrop == Shape.PLUS) 4 else 3) to (caveMap.keys.maxOrNull() ?: 0) + 4
 
         while (true) {

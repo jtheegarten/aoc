@@ -1,14 +1,20 @@
 package net.sheltem.aoc.y2022
 
+import net.sheltem.aoc.common.readInput
 import net.sheltem.aoc.y2022.RPS.PAPER
 import net.sheltem.aoc.y2022.RPS.ROCK
 import net.sheltem.aoc.y2022.RPS.SCISSORS
 import net.sheltem.aoc.y2022.Result.DRAW
 import net.sheltem.aoc.y2022.Result.LOSS
 import net.sheltem.aoc.y2022.Result.WIN
-import net.sheltem.aoc.common.readInput
+import kotlin.Int
+import kotlin.Pair
+import kotlin.String
+import kotlin.enumValues
+import kotlin.let
+import kotlin.to
 
-suspend fun main() {
+fun main() {
 
     fun part1(input: List<String>): Int =
         input.sumOf { it.toGame().score() }

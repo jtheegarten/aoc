@@ -1,8 +1,7 @@
 package net.sheltem.aoc.y2023
 
-import net.sheltem.aoc.common.toListLong
 import net.sheltem.aoc.common.multiply
-import net.sheltem.aoc.common.numericRegex
+import net.sheltem.aoc.common.regexNumbers
 
 suspend fun main() {
     Day06().run()
@@ -12,12 +11,11 @@ class Day06 : Day<Long>(288, 71503) {
 
     override suspend fun part1(input: List<String>): Long = input.toRaces().map { it.waysToWin() }.multiply()
 
-    override suspend fun part2(input: List<String>): Long = input.map { it.replace(" ","") }.toRaces().first().waysToWin()
+    override suspend fun part2(input: List<String>): Long = input.map { it.replace(" ", "") }.toRaces().first().waysToWin()
 }
 
 private fun List<String>.toRaces() = map {
-    numericRegex.findAll(it)
-        .toListLong()
+    it.regexNumbers()
 }.let { it.first().zip(it.last()) }
     .map { Race(it.first, it.second) }
 

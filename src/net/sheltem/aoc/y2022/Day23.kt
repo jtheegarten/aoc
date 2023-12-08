@@ -1,8 +1,22 @@
 package net.sheltem.aoc.y2022
 
-import net.sheltem.aoc.common.*
-import net.sheltem.aoc.y2022.Adjacencies.*
-import net.sheltem.aoc.common.Direction8.*
+import net.sheltem.aoc.common.Direction8
+import net.sheltem.aoc.common.Direction8.EAST
+import net.sheltem.aoc.common.Direction8.NORTH
+import net.sheltem.aoc.common.Direction8.NORTH_EAST
+import net.sheltem.aoc.common.Direction8.NORTH_WEST
+import net.sheltem.aoc.common.Direction8.SOUTH
+import net.sheltem.aoc.common.Direction8.SOUTH_EAST
+import net.sheltem.aoc.common.Direction8.SOUTH_WEST
+import net.sheltem.aoc.common.Direction8.WEST
+import net.sheltem.aoc.common.Position
+import net.sheltem.aoc.common.bounds
+import net.sheltem.aoc.common.neighbours
+import net.sheltem.aoc.common.plus
+import net.sheltem.aoc.y2022.Adjacencies.E
+import net.sheltem.aoc.y2022.Adjacencies.N
+import net.sheltem.aoc.y2022.Adjacencies.S
+import net.sheltem.aoc.y2022.Adjacencies.W
 
 suspend fun main() {
     Day23().run()

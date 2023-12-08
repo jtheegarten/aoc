@@ -2,10 +2,16 @@ package net.sheltem.aoc.y2022
 
 
 import net.sheltem.aoc.common.Direction8
-import net.sheltem.aoc.common.Direction8.*
+import net.sheltem.aoc.common.Direction8.EAST
+import net.sheltem.aoc.common.Direction8.NEUTRAL
+import net.sheltem.aoc.common.Direction8.NORTH
+import net.sheltem.aoc.common.Direction8.SOUTH
+import net.sheltem.aoc.common.Direction8.WEST
 import net.sheltem.aoc.common.PositionInt
 import net.sheltem.aoc.common.move
-import net.sheltem.aoc.y2022.Field.*
+import net.sheltem.aoc.y2022.Field.Blizzard
+import net.sheltem.aoc.y2022.Field.Empty
+import net.sheltem.aoc.y2022.Field.Wall
 import java.lang.Integer.min
 
 suspend fun main() {

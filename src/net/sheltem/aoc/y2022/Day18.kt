@@ -1,7 +1,12 @@
 package net.sheltem.aoc.y2022
 
 
-import net.sheltem.aoc.y2022.D3Direction.*
+import net.sheltem.aoc.y2022.D3Direction.BACKWARD
+import net.sheltem.aoc.y2022.D3Direction.DOWN
+import net.sheltem.aoc.y2022.D3Direction.FORWARD
+import net.sheltem.aoc.y2022.D3Direction.LEFT
+import net.sheltem.aoc.y2022.D3Direction.RIGHT
+import net.sheltem.aoc.y2022.D3Direction.UP
 
 suspend fun main() {
     Day18().run()
