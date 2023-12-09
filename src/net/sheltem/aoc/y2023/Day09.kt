@@ -13,11 +13,9 @@ class Day09 : Day<Long>(114, 2) {
             .sumOf { it.last() }
     }
 
-    override suspend fun part2(input: List<String>): Long = input.toChart().sumOf { line ->
+    override suspend fun part2(input: List<String>): Long = input.toChart().map { it.reversed() }.sumOf { line ->
         line.extrapolate()
-            .map { it.first() }
-            .reversed()
-            .fold(0L) { acc, number -> number - acc }
+            .sumOf { it.last() }
     }
 }
 
@@ -29,3 +27,9 @@ private fun List<Long>.extrapolate(): List<List<Long>> =
     }.takeWhile { line ->
         !line.all { it == 0L }
     }.toList()
+
+//        input.toChart().sumOf { line ->
+//        line.extrapolate()
+//            .map { it.first() }
+//            .reversed()
+//            .fold(0L) { acc, number -> number - acc }
