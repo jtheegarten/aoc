@@ -2,7 +2,7 @@ package net.sheltem.aoc.common
 
 import java.io.File
 
-val numericRegex = Regex("\\d+")
+val numericRegex = Regex("-?\\d+")
 
 fun String.count(s: String) = this.count { it == s[0] }
 fun String.lastAsInt(delimiter: String) = this.split(delimiter).last().toInt()
