@@ -25,7 +25,7 @@ class Day09 : Day<Long>(605, 982) {
 
 private fun List<String>.toSearchGraph(): SearchGraph<String> {
     val nodes = mutableSetOf<Node<String>>()
-    val edges = mutableSetOf<Edge>()
+    val edges = mutableSetOf<Edge<String>>()
     this.forEach { routeDescription ->
         val distance = routeDescription.split(" = ").last().toLong()
         val fromTo = routeDescription.split(" = ").first().split(" to ").take(2).map { Node(it) }
