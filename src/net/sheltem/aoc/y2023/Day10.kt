@@ -3,6 +3,7 @@ package net.sheltem.aoc.y2023
 import net.sheltem.aoc.common.Direction
 import net.sheltem.aoc.common.Direction.*
 import net.sheltem.aoc.common.move
+import kotlin.math.abs
 
 suspend fun main() {
     Day10().run()
@@ -12,7 +13,7 @@ class Day10 : Day<Long>(8, 10) {
 
     override suspend fun part1(input: List<String>): Long = input.findLoop().first / 2 + 1
 
-    override suspend fun part2(input: List<String>): Long = input.findLoop().second.inside(input)
+    override suspend fun part2(input: List<String>): Long = input.findLoop().second.shoelace()
 }
 
 private fun List<String>.findLoop(): Pair<Long, List<Pair<Int, Int>>> {
@@ -125,11 +126,19 @@ private fun List<String>.findLoop(): Pair<Long, List<Pair<Int, Int>>> {
         }
         loop.add(currentPosition)
 
-//        println("$currentPosition = $currentChar => $lastMove")
     } while (this[currentPosition.second][currentPosition.first] != 'S')
 
-//    println(steps)
     return steps to loop
+}
+
+private fun List<Pair<Int, Int>>.shoelace(): Long {
+    val n = size
+    var area = 0L
+    for (i in this.dropLast(1).indices) {
+        area += this[i].second * this[i + 1].first - this[i + 1].second * this[i].first
+    }
+
+    return abs(area + last().second * first().first - first().second * last().first) / 2
 }
 
 private fun List<Pair<Int, Int>>.inside(inputMap: List<String>): Long {
@@ -157,19 +166,15 @@ private fun List<Pair<Int, Int>>.inside(inputMap: List<String>): Long {
                         count++
                     }
                 }
+
                 '|' -> inside = !inside
-                '-' -> inside = inside
+                '-' -> continue
                 else -> {
                     if (lastImportantChar == '.') {
                         lastImportantChar = currentChar
                         inside = !inside
                     } else {
-                        if (
-                            lastImportantChar == 'J' && currentChar == 'L' ||
-                            lastImportantChar == 'L' && currentChar == 'J' ||
-                            lastImportantChar == '7' && currentChar == 'F' ||
-                            lastImportantChar == 'F' && currentChar == '7'
-                        ) {
+                        if ("$lastImportantChar$currentChar".isSignificantCombination()) {
                             inside = !inside
                         }
                         lastImportantChar = '.'
@@ -184,3 +189,5 @@ private fun List<Pair<Int, Int>>.inside(inputMap: List<String>): Long {
 private fun throwException(currentPosition: Pair<Int, Int>, currentChar: Char, lastMove: Direction): Nothing {
     throw IllegalStateException("Impossible Situation: [${currentPosition.second}][${currentPosition.first}] => $currentChar | lastMove =$lastMove ")
 }
+
+private fun String.isSignificantCombination() = contains("J") && contains("L") || contains("7") && contains("F")
