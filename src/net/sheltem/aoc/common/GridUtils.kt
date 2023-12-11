@@ -65,3 +65,4 @@ fun PositionInt.move(direction: Direction8) = first + direction.coords.first to 
 fun PositionInt.move(direction: Direction, distance: Int = 1) = first + (direction.coords.first * distance) to second + (direction.coords.second * distance)
 
 fun Pair<PositionInt, PositionInt>.manhattan(): Long = (abs(this.first.first - this.second.first) + abs(this.first.second - this.second.second)).toLong()
+infix fun PositionInt.manhattan(other: PositionInt): Long = (this to other).manhattan()

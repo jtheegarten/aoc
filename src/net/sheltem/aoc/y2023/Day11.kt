@@ -9,9 +9,9 @@ suspend fun main() {
 
 class Day11 : Day<Long>(374, 82000210) {
 
-    override suspend fun part1(input: List<String>): Long = input.toUniverseMap(1).pairUp().sumOf { it.manhattan() }
+    override suspend fun part1(input: List<String>): Long = input.toUniverseMap(1).pairUp().sumOf { it.first manhattan it.second }
 
-    override suspend fun part2(input: List<String>): Long = input.toUniverseMap(999_999).pairUp().sumOf { it.manhattan() }
+    override suspend fun part2(input: List<String>): Long = input.toUniverseMap(999_999).pairUp().sumOf { it.first manhattan it.second }
 }
 
 private fun List<PositionInt>.pairUp(): List<Pair<PositionInt, PositionInt>> {

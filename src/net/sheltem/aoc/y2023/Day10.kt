@@ -2,6 +2,7 @@ package net.sheltem.aoc.y2023
 
 import net.sheltem.aoc.common.Direction
 import net.sheltem.aoc.common.Direction.*
+import net.sheltem.aoc.common.PositionInt
 import net.sheltem.aoc.common.move
 import kotlin.math.abs
 
@@ -13,10 +14,10 @@ class Day10 : Day<Long>(8, 10) {
 
     override suspend fun part1(input: List<String>): Long = input.findLoop().first / 2 + 1
 
-    override suspend fun part2(input: List<String>): Long = input.findLoop().second.shoelace()
+    override suspend fun part2(input: List<String>): Long = input.findLoop().second.inside(input)
 }
 
-private fun List<String>.findLoop(): Pair<Long, List<Pair<Int, Int>>> {
+private fun List<String>.findLoop(): Pair<Long, List<PositionInt>> {
     val start = this.mapIndexed { index, s -> s.indexOf("S") to index }.single { it.first != -1 }
 
     var steps = 0L
@@ -131,7 +132,7 @@ private fun List<String>.findLoop(): Pair<Long, List<Pair<Int, Int>>> {
     return steps to loop
 }
 
-private fun List<Pair<Int, Int>>.shoelace(): Long {
+private fun List<PositionInt>.shoelace(): Long {
     val n = size
     var area = 0L
     for (i in this.dropLast(1).indices) {
@@ -141,7 +142,7 @@ private fun List<Pair<Int, Int>>.shoelace(): Long {
     return abs(area + last().second * first().first - first().second * last().first) / 2
 }
 
-private fun List<Pair<Int, Int>>.inside(inputMap: List<String>): Long {
+private fun List<PositionInt>.inside(inputMap: List<String>): Long {
     val newMap = mutableListOf<String>()
     newMap.forEach(::println)
     for (i in inputMap.indices) {
@@ -158,8 +159,7 @@ private fun List<Pair<Int, Int>>.inside(inputMap: List<String>): Long {
         var inside = false
         var lastImportantChar = '.'
         for (j in newMap[0].indices) {
-            val currentChar = newMap[i][j]
-            when (currentChar) {
+            when (val currentChar = newMap[i][j]) {
                 '.' -> {
                     lastImportantChar = '.'
                     if (inside) {
@@ -186,7 +186,7 @@ private fun List<Pair<Int, Int>>.inside(inputMap: List<String>): Long {
     return count
 }
 
-private fun throwException(currentPosition: Pair<Int, Int>, currentChar: Char, lastMove: Direction): Nothing {
+private fun throwException(currentPosition: PositionInt, currentChar: Char, lastMove: Direction): Nothing {
     throw IllegalStateException("Impossible Situation: [${currentPosition.second}][${currentPosition.first}] => $currentChar | lastMove =$lastMove ")
 }
 
