@@ -13,6 +13,13 @@ fun readInput(name: String) = File("src", "$name.txt")
     .readLines()
 
 fun Collection<MatchResult>.toListLong(): List<Long> = mapNotNull { number -> number.value.toLong() }
+fun List<String>.rotateCockwise(): List<String> = this.let { list ->
+    (0 until list[0].length)
+        .map { i ->
+            list.map { it[i] }.joinToString("")
+        }
+}
+
 fun Sequence<MatchResult>.toListLong(): List<Long> = toList().toListLong()
 
 fun String.regex(r: String) = Regex(r).findAll(this).map { it.value }.toList()

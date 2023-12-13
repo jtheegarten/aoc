@@ -1,5 +1,7 @@
 package net.sheltem.aoc.y2023
 
+import net.sheltem.aoc.common.rotateCockwise
+
 suspend fun main() {
     Day13().run()
 }
@@ -21,12 +23,7 @@ private fun String.mirrorSum(smudgeCount: Int = 0): Long {
     return horizontal + vertical
 }
 
-private fun verticalMirrorLine(mirrorMap: List<String>, smudgeCount: Int): Int? {
-    return (0 until mirrorMap[0].length)
-        .map { i ->
-            mirrorMap.map { it[i] }.joinToString("")
-        }.let { horizontalMirrorLine(it, smudgeCount) }
-}
+private fun verticalMirrorLine(mirrorMap: List<String>, smudgeCount: Int): Int? = horizontalMirrorLine(mirrorMap.rotateCockwise(), smudgeCount)
 
 private fun horizontalMirrorLine(mirrorMap: List<String>, smudgeCount: Int = 0): Int? = mirrorMap
     .mapIndexedNotNull { index, _ ->
