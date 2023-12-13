@@ -1,7 +1,5 @@
 package net.sheltem.aoc.y2023
 
-import kotlin.math.min
-
 suspend fun main() {
     Day13().run()
 }
@@ -32,20 +30,13 @@ private fun verticalMirrorLine(mirrorMap: List<String>, smudgeCount: Int): Int? 
 
 private fun horizontalMirrorLine(mirrorMap: List<String>, smudgeCount: Int = 0): Int? = mirrorMap
     .mapIndexedNotNull { index, _ ->
-        val up = index < mirrorMap.size / 2
 
-        val halves = when (up) {
-            true -> {
-                val upperHalf = mirrorMap.take(index + 1)
-                val lowerHalf = mirrorMap.subList(index + 1, min(mirrorMap.size, index + 2 + index))
-                upperHalf to lowerHalf
-            }
-
-            false -> {
-                val lowerHalf = mirrorMap.subList(index + 1, mirrorMap.size)
-                val upperHalf = mirrorMap.take(index + 1).let { it.drop(it.size - lowerHalf.size) }
-                upperHalf to lowerHalf
-            }
+        val upper = mirrorMap.take(index + 1)
+        val lower = mirrorMap.drop(upper.size)
+        val halves = if (upper.size >= lower.size) {
+            upper.drop(upper.size - lower.size) to lower
+        } else {
+            upper to lower.dropLast(lower.size - upper.size)
         }
 
         val identical = halves.second.reversed().zip(halves.first).sumOf { (stringA, stringB) -> stringA.zip(stringB).count { (charA, charB) -> charA != charB } } == smudgeCount
