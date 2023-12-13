@@ -13,30 +13,21 @@ class Day13 : Day<Long>(405, 400) {
     override suspend fun part2(input: List<String>): Long = input.joinToString("\n").split("\n\n").sumOf { it.mirrorSum(1) }
 
 }
+
 private fun String.mirrorSum(smudgeCount: Int = 0): Long {
     val mirrorMap = this.split("\n")
 
-    val horizontal = horizontalMirrorLine(mirrorMap, smudgeCount)?.let { (it + 1) * 100L }?: 0L
+    val horizontal = horizontalMirrorLine(mirrorMap, smudgeCount)?.let { (it + 1) * 100L } ?: 0L
     val vertical = (if (horizontal == 0L) verticalMirrorLine(mirrorMap, smudgeCount) else null)?.let { it + 1L } ?: 0L
 
     return horizontal + vertical
 }
 
 private fun verticalMirrorLine(mirrorMap: List<String>, smudgeCount: Int): Int? {
-    val maxSize = mirrorMap.maxOf { it.length }
-    val rotatedMap = mutableListOf<String>()
-
-    for (i in 0 until maxSize) {
-        val stringBuilder = StringBuilder()
-        for (j in mirrorMap.indices.reversed()) {
-            if (i < mirrorMap[j].length) {
-                stringBuilder.append(mirrorMap[j][i])
-            }
-        }
-        rotatedMap.add(stringBuilder.toString())
-    }
-
-    return horizontalMirrorLine(rotatedMap,smudgeCount)
+    return (0 until mirrorMap[0].length)
+        .map { i ->
+            mirrorMap.map { it[i] }.joinToString("")
+        }.let { horizontalMirrorLine(it, smudgeCount) }
 }
 
 private fun horizontalMirrorLine(mirrorMap: List<String>, smudgeCount: Int = 0): Int? = mirrorMap
@@ -57,7 +48,7 @@ private fun horizontalMirrorLine(mirrorMap: List<String>, smudgeCount: Int = 0):
             }
         }
 
-        val identical = halves.second.reversed().zip(halves.first).sumOf { (stringA, stringB) -> stringA.zip(stringB).count{ (charA, charB) -> charA != charB } } == smudgeCount
+        val identical = halves.second.reversed().zip(halves.first).sumOf { (stringA, stringB) -> stringA.zip(stringB).count { (charA, charB) -> charA != charB } } == smudgeCount
 
         if (index != mirrorMap.size - 1 && identical) index else null
     }.firstOrNull()
