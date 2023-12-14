@@ -36,9 +36,9 @@ private fun List<CharArray>.tilt(direction: Direction, i: Int, j: Int) {
                     }
                 }
         val newPosition = (j to i).move(direction, distanceRolled)
-        this[newPosition.second][newPosition.first] = 'O'
 
         if (newPosition != j to i) {
+            this[newPosition.second][newPosition.first] = 'O'
             this[i][j] = '.'
         }
     }
