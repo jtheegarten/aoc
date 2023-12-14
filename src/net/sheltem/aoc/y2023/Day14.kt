@@ -1,10 +1,11 @@
 package net.sheltem.aoc.y2023
 
 import net.sheltem.aoc.common.Direction
-import net.sheltem.aoc.common.Direction.*
+import net.sheltem.aoc.common.Direction.EAST
+import net.sheltem.aoc.common.Direction.NORTH
+import net.sheltem.aoc.common.Direction.SOUTH
+import net.sheltem.aoc.common.Direction.WEST
 import net.sheltem.aoc.common.move
-import java.time.Duration
-import java.time.Instant
 
 suspend fun main() {
     Day14().run()
@@ -53,54 +54,51 @@ private fun List<String>.tilt(): Long {
         for (j in mapWithBorder[0].indices) {
             result.tilt(NORTH, i, j)
         }
-
-//        println()
-//        result.forEach { println(it) }
     }
 
     return result.reversed().mapIndexed { index, line -> index to line.count { char -> char == 'O' } }.sumOf { it.first * it.second }.toLong()
 }
 
-private fun List<String>.tilt2(cycles: Int): Long {
-    val start = Instant.now()
+private fun List<String>.tilt2(runs: Int): Long {
     val border = "#".repeat(this[0].length + 2)
     val mapWithBorder = listOf(border) + this.map { "#$it#" } + listOf(border)
 
     val result = mapWithBorder.map { it.toCharArray() }
 
     val memory = mutableMapOf<String, Int>()
+    var cycleFound = false
 
-    var cycle = 1
-    while (cycle < cycles) {
+    var run = 1
+    while (run <= runs) {
         for (direction in listOf(NORTH, WEST, SOUTH, EAST)) {
             when (direction) {
                 NORTH -> {
-                    for (i in mapWithBorder.indices.drop(1)) {
-                        for (j in mapWithBorder[0].indices) {
+                    for (i in mapWithBorder.indices.dropBorder()) {
+                        for (j in mapWithBorder[0].indices.dropBorder()) {
                             result.tilt(direction, i, j)
                         }
                     }
                 }
 
                 WEST -> {
-                    for (i in mapWithBorder.indices.drop(1)) {
-                        for (j in mapWithBorder[0].indices) {
+                    for (i in mapWithBorder.indices.dropBorder()) {
+                        for (j in mapWithBorder[0].indices.dropBorder()) {
                             result.tilt(direction, i, j)
                         }
                     }
                 }
 
                 SOUTH -> {
-                    for (i in mapWithBorder.indices.reversed().drop(1)) {
-                        for (j in mapWithBorder[0].indices) {
+                    for (i in mapWithBorder.indices.reversed().dropBorder()) {
+                        for (j in mapWithBorder[0].indices.dropBorder()) {
                             result.tilt(direction, i, j)
                         }
                     }
                 }
 
                 EAST -> {
-                    for (i in mapWithBorder.indices.drop(1)) {
-                        for (j in mapWithBorder[0].indices.reversed()) {
+                    for (i in mapWithBorder.indices.dropBorder()) {
+                        for (j in mapWithBorder[0].indices.reversed().dropBorder()) {
                             result.tilt(direction, i, j)
                         }
                     }
@@ -111,17 +109,19 @@ private fun List<String>.tilt2(cycles: Int): Long {
         }
         val current = result.joinToString("") { it.joinToString("") }
         if (!memory.contains(current)) {
-            memory[current] = cycle
-        } else {
-            println("Repeated cycle found => ${memory[current]} to $cycle")
-            break
+            memory[current] = run
+        } else if (!cycleFound) {
+            println("Repeated cycle found => ${memory[current]} to $run")
+            val remainder = (runs - run).mod(run - memory[current]!!)
+            run = runs - remainder
+            cycleFound = true
+            println("New run: $run")
         }
-        if (cycle.mod(1000000) == 0) {
-            println("Cycle $cycle after ${Duration.between(start, Instant.now()).toSeconds()}s ...")
-        }
-        cycle++
+        run += 1
     }
 
 
     return result.reversed().mapIndexed { index, line -> index to line.count { char -> char == 'O' } }.sumOf { it.first * it.second }.toLong()
 }
+
+private fun IntProgression.dropBorder() = drop(1).dropLast(1)
