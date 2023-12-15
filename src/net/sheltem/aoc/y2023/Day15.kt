@@ -31,9 +31,14 @@ private fun part2(input: String): Long {
             else -> boxes[labelHash]!!.add(label to instruction.takeLast(1).toInt())
         }
     }
+    boxes.entries.filter{ it.value.isNotEmpty() }.forEach { entry ->
+        println("${entry.key} => ${entry.value.foldIndexed(0) { lensIndex, innerAcc, lens ->
+            innerAcc + ((entry.key + 1) * (lensIndex + 1) * lens.second)
+        }} (${entry.value.joinToString(", ")})")
+    }
     return boxes.entries.foldIndexed(0) { index, acc, box ->
-        acc + box.value.foldIndexed(0) { lensIndex, innerAcc, lens ->
-            innerAcc + ((index + 1) * (lensIndex + 1) * lens.second)
+        acc + (index + 1) * box.value.foldIndexed(0) { lensIndex, innerAcc, lens ->
+            innerAcc + ((lensIndex + 1) * lens.second)
         }
     }
 }
