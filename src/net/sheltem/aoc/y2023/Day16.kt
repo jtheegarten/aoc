@@ -1,14 +1,12 @@
 package net.sheltem.aoc.y2023
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import net.sheltem.aoc.common.Direction
 import net.sheltem.aoc.common.Direction.EAST
 import net.sheltem.aoc.common.Direction.NORTH
 import net.sheltem.aoc.common.Direction.SOUTH
 import net.sheltem.aoc.common.Direction.WEST
 import net.sheltem.aoc.common.PositionInt
+import net.sheltem.aoc.common.mapParallel
 import net.sheltem.aoc.common.move
 import net.sheltem.aoc.common.within
 
@@ -25,13 +23,9 @@ class Day16 : Day<Long>(46, 51) {
 
     override suspend fun part2(input: List<String>): Long = input
         .toStarts()
-        .map { start ->
-            coroutineScope {
-                async {
-                    input.beam(start.first, start.second)
-                }
-            }
-        }.awaitAll()
+        .mapParallel { start ->
+            input.beam(start.first, start.second)
+        }
         .maxOf { it.size }.toLong()
 
 }
