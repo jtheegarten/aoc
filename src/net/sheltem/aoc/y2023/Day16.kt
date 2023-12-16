@@ -14,27 +14,24 @@ suspend fun main() {
     Day16().run()
 }
 
-class Day16 : Day<Long>(46, 51) {
+class Day16 : Day<Int>(46, 51) {
 
-    override suspend fun part1(input: List<String>): Long = input
+    override suspend fun part1(input: List<String>): Int = input
         .beam()
-        .count()
-        .toLong()
 
-    override suspend fun part2(input: List<String>): Long = input
+    override suspend fun part2(input: List<String>): Int = input
         .toStarts()
         .mapParallel { (position, direction) ->
             input.beam(position, direction)
         }
-        .maxOf { it.size }.toLong()
-
+        .max()
 }
 
 
 private fun List<String>.toStarts(): MutableSet<Pair<PositionInt, Direction>> =
     (this.indices.flatMap { setOf((0 to it) to EAST, (this[0].length - 1 to it) to WEST) } +
-    this.first().mapIndexed { index, _ -> (index to 0) to SOUTH } +
-    this.last().mapIndexed { index, _ -> (index to this.size - 1) to NORTH }).toMutableSet()
+            this.first().mapIndexed { index, _ -> (index to 0) to SOUTH } +
+            this.last().mapIndexed { index, _ -> (index to this.size - 1) to NORTH }).toMutableSet()
 
 
 private fun List<String>.beam(
@@ -42,7 +39,7 @@ private fun List<String>.beam(
     startDirection: Direction = EAST,
     visited: MutableSet<PositionInt> = mutableSetOf(),
     splitsDone: MutableSet<PositionInt> = mutableSetOf()
-): MutableSet<PositionInt> {
+): Int {
 
     var direction = startDirection
     var position: PositionInt = startPosition
@@ -91,5 +88,5 @@ private fun List<String>.beam(
         position = position.move(direction)
     }
 
-    return visited
+    return visited.size
 }
