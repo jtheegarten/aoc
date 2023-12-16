@@ -18,7 +18,10 @@ suspend fun main() {
 
 class Day16 : Day<Long>(46, 51) {
 
-    override suspend fun part1(input: List<String>): Long = input.beam().count().toLong()
+    override suspend fun part1(input: List<String>): Long = input
+        .beam()
+        .count()
+        .toLong()
 
     override suspend fun part2(input: List<String>): Long = input
         .toStarts()
@@ -83,7 +86,7 @@ private fun List<String>.beam(
                     this.beam(position, EAST, visited, splitsDone)
                 }
 
-                else -> direction = direction
+                else -> {}
             }
 
             '|' -> when (direction) {
@@ -94,7 +97,7 @@ private fun List<String>.beam(
                     this.beam(position, NORTH, visited, splitsDone)
                 }
 
-                else -> direction = direction
+                else -> {}
             }
         }
         position = position.move(direction)
