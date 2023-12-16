@@ -23,25 +23,19 @@ class Day16 : Day<Long>(46, 51) {
 
     override suspend fun part2(input: List<String>): Long = input
         .toStarts()
-        .mapParallel { start ->
-            input.beam(start.first, start.second)
+        .mapParallel { (position, direction) ->
+            input.beam(position, direction)
         }
         .maxOf { it.size }.toLong()
 
 }
 
 
-private fun List<String>.toStarts(): MutableSet<Pair<PositionInt, Direction>> {
-    val resultSet = mutableSetOf<Pair<PositionInt, Direction>>()
-    for (y in indices) {
-        resultSet.add((0 to y) to EAST)
-        resultSet.add((this[0].indices.max() to y) to WEST)
-    }
-    this.first().mapIndexed { index, _ -> (index to 0) to SOUTH }.let(resultSet::addAll)
-    this.last().mapIndexed { index, _ -> (index to this.indices.last()) to NORTH }.let(resultSet::addAll)
+private fun List<String>.toStarts(): MutableSet<Pair<PositionInt, Direction>> =
+    (this.indices.flatMap { setOf((0 to it) to EAST, (this[0].length - 1 to it) to WEST) } +
+    this.first().mapIndexed { index, _ -> (index to 0) to SOUTH } +
+    this.last().mapIndexed { index, _ -> (index to this.size - 1) to NORTH }).toMutableSet()
 
-    return resultSet
-}
 
 private fun List<String>.beam(
     startPosition: PositionInt = 0 to 0,
