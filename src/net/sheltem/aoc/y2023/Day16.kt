@@ -10,6 +10,7 @@ import net.sheltem.aoc.common.Direction.SOUTH
 import net.sheltem.aoc.common.Direction.WEST
 import net.sheltem.aoc.common.PositionInt
 import net.sheltem.aoc.common.move
+import net.sheltem.aoc.common.within
 
 suspend fun main() {
     Day16().run()
@@ -42,7 +43,6 @@ private fun List<String>.toStarts(): MutableSet<Pair<PositionInt, Direction>> {
     this.first().mapIndexed { index, _ -> (index to 0) to SOUTH }.let(resultSet::addAll)
     this.last().mapIndexed { index, _ -> (index to this.indices.last()) to NORTH }.let(resultSet::addAll)
 
-    println(resultSet.size)
     return resultSet
 }
 
@@ -102,5 +102,3 @@ private fun List<String>.beam(
 
     return visited
 }
-
-private fun PositionInt.within(map: List<String>) = this.first in map[0].indices && this.second in map.indices
