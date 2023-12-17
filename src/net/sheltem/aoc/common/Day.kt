@@ -3,6 +3,7 @@ package net.sheltem.aoc.common
 import java.io.File
 import java.time.Duration
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 abstract class Day<T>(
     private val year: Int,
@@ -43,7 +44,7 @@ abstract class Day<T>(
         data.entries.forEach { (step, input) ->
             val start = Instant.now()
             val partResult = (if (part == 1) ::part1 else ::part2).invoke(input)
-            val partDuration = Duration.between(start, Instant.now()).toNanos().toDouble() / 1_000_000
+            val partDuration = start.until(Instant.now(), ChronoUnit.NANOS).toDouble() / 1_000_000
             val testInfo = if (step == "Test" && partResult != testResult) " <- incorrect, expecting $testResult" else ""
             println("${step}: $partResult$testInfo\n  in $partDuration ms")
         }
