@@ -46,7 +46,7 @@ private fun List<String>.bfs(start: PositionInt, target: PositionInt, maxStraigh
 
         val cacheEntry = CacheEntry(position, direction, straight)
 
-        if (visited.contains(cacheEntry) && visited[cacheEntry]!! <= totalLoss) {
+        if ((visited[cacheEntry] ?: Int.MAX_VALUE) <= totalLoss) {
             continue
         }
 
