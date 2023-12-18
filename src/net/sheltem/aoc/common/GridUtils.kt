@@ -27,6 +27,16 @@ enum class Direction(val coords: PositionInt) {
         WEST -> SOUTH
         else -> NORTH
     }
+
+    companion object {
+        fun from(dirString: String): Direction = when (dirString) {
+            "U" -> NORTH
+            "D" -> SOUTH
+            "L" -> WEST
+            "R" -> EAST
+            else -> NEUTRAL
+        }
+    }
 }
 
 enum class Direction8(val coords: PositionInt) {
@@ -68,3 +78,12 @@ fun PositionInt.move(direction: Direction, distance: Int = 1) = first + (directi
 
 fun Pair<PositionInt, PositionInt>.manhattan(): Long = (abs(this.first.first - this.second.first) + abs(this.first.second - this.second.second)).toLong()
 infix fun PositionInt.manhattan(other: PositionInt): Long = (this to other).manhattan()
+
+fun List<PositionInt>.gaussArea(): Long {
+    val last = this.lastIndex
+    val area = (0..<last).fold(0L) { acc, i ->
+        acc + this[i].first.toLong() * this[i + 1].second - this[i + 1].first.toLong() * this[i].second
+    } + this[last].first.toLong() * this[0].second - this[0].first.toLong() * this[last].second
+
+    return abs(area) / 2
+}
