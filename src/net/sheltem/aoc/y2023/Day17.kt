@@ -40,7 +40,7 @@ private fun List<String>.bfs(start: PositionInt, target: PositionInt, maxStraigh
         }
         val totalLoss = this[position.second][position.first].digitToInt() + loss
 
-        if (position == target) {
+        if (position == target && straight >= minStraight) {
             return totalLoss
         }
 
