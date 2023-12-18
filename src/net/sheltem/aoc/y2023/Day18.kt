@@ -38,7 +38,6 @@ class Day18 : Day<Long>(62, 952408144115) {
 private fun List<String>.toTrenches(parser: (String) -> Pair<Direction, Int>): List<PositionInt> =
     this.map(parser::invoke)
         .scan(0 to 0) { acc, (dir, length) -> acc.move(dir, length) }
-        .toList()
 
 private fun List<PositionInt>.calculateArea(): Long =
     this.windowed(2, 1)
