@@ -38,18 +38,12 @@ class Day18 : Day<Long>(62, 952408144115) {
 
 }
 
-private fun List<String>.toTrenches(parser: (String) -> Pair<Direction, Int>): List<Trench> {
-    val result = mutableListOf<Trench>()
-    var currentPosition = 0 to 0
-
-    this.forEach { line ->
-        val (dir, length) = parser(line)
-        currentPosition = currentPosition.move(dir, length)
-        result.add(Trench(currentPosition, length))
-    }
-
-    return result
-}
+private fun List<String>.toTrenches(parser: (String) -> Pair<Direction, Int>): List<Trench> =
+    this.map(parser::invoke)
+        .scan(Trench(0 to 0, 0)) { acc, (dir, length) ->
+            Trench(acc.position.move(dir, length), length)
+        }
+        .toList()
 
 private fun List<Trench>.calculateArea(): Long = this
     .sumOf { it.length }
