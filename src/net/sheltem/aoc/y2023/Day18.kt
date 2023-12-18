@@ -18,26 +18,31 @@ suspend fun main() {
 @OptIn(ExperimentalStdlibApi::class)
 class Day18 : Day<Long>(62, 952408144115) {
 
-    override suspend fun part1(input: List<String>): Long = input.toTrenches { line ->
-        line.split(" ")
-            .let { (dir, len) ->
-                dir.toDirection() to len.toInt()
-            }
-    }.calculateArea()
+    override suspend fun part1(input: List<String>): Long = input
+        .map { line ->
+            line.split(" ")
+                .let { (dir, len) ->
+                    dir.toDirection() to len.toInt()
+                }
+        }
+        .toTrenches()
+        .calculateArea()
 
-    override suspend fun part2(input: List<String>): Long = input.toTrenches { line ->
-        line.split("(#")
-            .last()
-            .dropLast(1)
-            .let {
-                it.last().toDirection() to it.dropLast(1).hexToInt()
-            }
-    }.calculateArea()
+    override suspend fun part2(input: List<String>): Long = input
+        .map { line ->
+            line.split("(#")
+                .last()
+                .dropLast(1)
+                .let {
+                    it.last().toDirection() to it.dropLast(1).hexToInt()
+                }
+        }
+        .toTrenches()
+        .calculateArea()
 }
 
-private fun List<String>.toTrenches(parser: (String) -> Pair<Direction, Int>): List<PositionInt> =
-    this.map(parser::invoke)
-        .scan(0 to 0) { acc, (dir, length) -> acc.move(dir, length) }
+private fun List<Pair<Direction, Int>>.toTrenches(): List<PositionInt> =
+    this.scan(0 to 0) { acc, (dir, length) -> acc.move(dir, length) }
 
 private fun List<PositionInt>.calculateArea(): Long =
     this.windowed(2, 1)
