@@ -7,9 +7,9 @@ import net.sheltem.aoc.common.Direction.SOUTH
 import net.sheltem.aoc.common.Direction.WEST
 import net.sheltem.aoc.common.PositionInt
 import net.sheltem.aoc.common.gaussArea
+import net.sheltem.aoc.common.manhattan
 import net.sheltem.aoc.common.move
 import net.sheltem.aoc.common.toDirection
-import net.sheltem.aoc.y2023.Day18.Trench
 
 suspend fun main() {
     Day18().run()
@@ -33,19 +33,16 @@ class Day18 : Day<Long>(62, 952408144115) {
                 it.last().toDirection() to it.dropLast(1).hexToInt()
             }
     }.calculateArea()
-
-    data class Trench(val position: PositionInt, val length: Int)
 }
 
-private fun List<String>.toTrenches(parser: (String) -> Pair<Direction, Int>): List<Trench> =
+private fun List<String>.toTrenches(parser: (String) -> Pair<Direction, Int>): List<PositionInt> =
     this.map(parser::invoke)
-        .scan(Trench(0 to 0, 0)) { acc, (dir, length) ->
-            Trench(acc.position.move(dir, length), length)
-        }
+        .scan(0 to 0) { acc, (dir, length) -> acc.move(dir, length) }
         .toList()
 
-private fun List<Trench>.calculateArea(): Long = this
-    .sumOf { it.length }
-    .let { border -> border + (this.map { it.position }.gaussArea() + 1 - border / 2) }
+private fun List<PositionInt>.calculateArea(): Long =
+    this.windowed(2, 1)
+        .sumOf { (left, right) -> left manhattan right }
+        .let { border -> border + (this.gaussArea() + 1 - border / 2) }
 
 private fun Char.toDirection() = listOf(EAST, SOUTH, WEST, NORTH)[this.digitToInt()]
