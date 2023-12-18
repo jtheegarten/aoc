@@ -30,10 +30,10 @@ enum class Direction(val coords: PositionInt) {
 
     companion object {
         fun from(dirString: String): Direction = when (dirString) {
-            "U" -> NORTH
-            "D" -> SOUTH
-            "L" -> WEST
-            "R" -> EAST
+            "U", "^", "N" -> NORTH
+            "D", "v", "S" -> SOUTH
+            "L", ">", "W" -> WEST
+            "R", "<", "E" -> EAST
             else -> NEUTRAL
         }
     }
