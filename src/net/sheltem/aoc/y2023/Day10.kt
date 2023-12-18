@@ -132,16 +132,6 @@ private fun List<String>.findLoop(): Pair<Long, List<PositionInt>> {
     return steps to loop
 }
 
-private fun List<PositionInt>.shoelace(): Long {
-    val n = size
-    var area = 0L
-    for (i in this.dropLast(1).indices) {
-        area += this[i].second * this[i + 1].first - this[i + 1].second * this[i].first
-    }
-
-    return abs(area + last().second * first().first - first().second * last().first) / 2
-}
-
 private fun List<PositionInt>.inside(inputMap: List<String>): Long {
     val newMap = mutableListOf<String>()
     newMap.forEach(::println)
