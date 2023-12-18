@@ -80,10 +80,11 @@ fun Pair<PositionInt, PositionInt>.manhattan(): Long = (abs(this.first.first - t
 infix fun PositionInt.manhattan(other: PositionInt): Long = (this to other).manhattan()
 
 fun List<PositionInt>.gaussArea(): Long {
-    val last = this.lastIndex
-    val area = (0..<last).fold(0L) { acc, i ->
+    val last = this.last()
+    val first = this.first()
+    val area = (0..<indices.last).fold(0L) { acc, i ->
         acc + this[i].first.toLong() * this[i + 1].second - this[i + 1].first.toLong() * this[i].second
-    } + this[last].first.toLong() * this[0].second - this[0].first.toLong() * this[last].second
+    } + last.first.toLong() * first.second - first.first.toLong() * last.second
 
     return abs(area) / 2
 }
