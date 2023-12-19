@@ -1,5 +1,6 @@
 package net.sheltem.aoc.y2023
 
+import net.sheltem.aoc.common.multiply
 import net.sheltem.aoc.y2023.Day19.Part
 import net.sheltem.aoc.y2023.Day19.RangePart
 import net.sheltem.aoc.y2023.Day19.Rule
@@ -13,14 +14,21 @@ class Day19 : Day<Long>(19114, 167409079868000) {
 
     override suspend fun part1(input: List<String>): Long = input.toRuleAndPartLists().filter().sumOf { it.value }.toLong()
 
-    override suspend fun part2(input: List<String>): Long = input.toRuleAndPartLists().first.let { RangePart(startRange, startRange, startRange, startRange).possibilities("in", it) }
+    override suspend fun part2(input: List<String>): Long =
+        input.toRuleAndPartLists().first.let { RangePart(mutableMapOf('x' to startRange, 'm' to startRange, 'a' to startRange, 's' to startRange)).possibilities("in", it) }
 
     data class Part(val values: Map<Char, Int>) {
         val value = values.values.sum()
     }
 
-    data class RangePart(val x: List<Int>, val m: List<Int>, val a: List<Int>, val s: List<Int>) {
-        val value = x.size.toLong() * m.size * a.size * s.size
+    data class RangePart(val values: Map<Char, List<Int>>) {
+        val value = values.values.map { it.size.toLong() }.multiply()
+
+        fun filterLarger(char: Char, compare: Int): RangePart = this
+            .copy(values = values.minus(char).plus(char to values[char]!!.filter { it > compare }))
+
+        fun filterSmaller(char: Char, compare: Int): RangePart = this
+            .copy(values = values.minus(char).plus(char to values[char]!!.filter { it < compare }))
     }
 
     data class RuleSet(val name: String, val rules: List<Rule>) {
@@ -43,38 +51,12 @@ class Day19 : Day<Long>(19114, 167409079868000) {
         }
 
         fun apply(rangePart: RangePart): RangePart =
-            when (field!!) {
-                'x' -> if (greaterThan!!) rangePart.copy(x = rangePart.x.filter { it > comparator!! })
-                else rangePart.copy(x = rangePart.x.filter { it < comparator!! })
-
-                'm' -> if (greaterThan!!) rangePart.copy(m = rangePart.m.filter { it > comparator!! })
-                else rangePart.copy(m = rangePart.m.filter { it < comparator!! })
-
-                'a' -> if (greaterThan!!) rangePart.copy(a = rangePart.a.filter { it > comparator!! })
-                else rangePart.copy(a = rangePart.a.filter { it < comparator!! })
-
-                's' -> if (greaterThan!!) rangePart.copy(s = rangePart.s.filter { it > comparator!! })
-                else rangePart.copy(s = rangePart.s.filter { it < comparator!! })
-
-                else -> rangePart
-            }
+            if (greaterThan!!) rangePart.filterLarger(field!!, comparator!!)
+            else rangePart.filterSmaller(field!!, comparator!!)
 
         fun complement(rangePart: RangePart): RangePart =
-            when (field!!) {
-                'x' -> if (!greaterThan!!) rangePart.copy(x = rangePart.x.filter { it >= comparator!! })
-                else rangePart.copy(x = rangePart.x.filter { it <= comparator!! })
-
-                'm' -> if (!greaterThan!!) rangePart.copy(m = rangePart.m.filter { it >= comparator!! })
-                else rangePart.copy(m = rangePart.m.filter { it <= comparator!! })
-
-                'a' -> if (!greaterThan!!) rangePart.copy(a = rangePart.a.filter { it >= comparator!! })
-                else rangePart.copy(a = rangePart.a.filter { it <= comparator!! })
-
-                's' -> if (!greaterThan!!) rangePart.copy(s = rangePart.s.filter { it >= comparator!! })
-                else rangePart.copy(s = rangePart.s.filter { it <= comparator!! })
-
-                else -> rangePart
-            }
+            if (!greaterThan!!) rangePart.filterLarger(field!!, comparator!! - 1)
+            else rangePart.filterSmaller(field!!, comparator!! + 1)
     }
 }
 
