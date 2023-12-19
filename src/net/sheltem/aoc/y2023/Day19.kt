@@ -15,8 +15,8 @@ class Day19 : Day<Long>(19114, 167409079868000) {
 
     override suspend fun part2(input: List<String>): Long = input.toRuleAndPartLists().first.let { RangePart(startRange, startRange, startRange, startRange).possibilities("in", it) }
 
-    data class Part(val x: Int, val m: Int, val a: Int, val s: Int) {
-        val value = x + m + a + s
+    data class Part(val values: Map<Char, Int>) {
+        val value = values.values.sum()
     }
 
     data class RangePart(val x: List<Int>, val m: List<Int>, val a: List<Int>, val s: List<Int>) {
@@ -25,11 +25,10 @@ class Day19 : Day<Long>(19114, 167409079868000) {
 
     data class RuleSet(val name: String, val rules: List<Rule>) {
         fun apply(part: Part): String {
-            var target: String?
-            for (rule in rules) {
-                target = rule.apply(part)
+            rules.forEach { rule ->
+                val target = rule.apply(part)
                 if (target != null) {
-                    return target
+                    return@apply target
                 }
             }
             throw IllegalStateException("RuleSet $this not applicable to part $part")
@@ -39,53 +38,40 @@ class Day19 : Day<Long>(19114, 167409079868000) {
     data class Rule(val field: Char? = null, val greaterThan: Boolean? = null, val comparator: Int? = null, val target: String) {
         fun apply(part: Part): String? = when {
             field == null -> target
-            greaterThan!! -> when (field) {
-                'x' -> if (part.x > comparator!!) target else null
-                'm' -> if (part.m > comparator!!) target else null
-                'a' -> if (part.a > comparator!!) target else null
-                's' -> if (part.s > comparator!!) target else null
-                else -> null
-            }
-
-            else -> when (field) {
-                'x' -> if (part.x < comparator!!) target else null
-                'm' -> if (part.m < comparator!!) target else null
-                'a' -> if (part.a < comparator!!) target else null
-                's' -> if (part.s < comparator!!) target else null
-                else -> null
-            }
+            greaterThan!! -> if (part.values[field]!! > comparator!!) target else null
+            else -> if (part.values[field]!! < comparator!!) target else null
         }
 
         fun apply(rangePart: RangePart): RangePart =
             when (field!!) {
-                'x' -> if (greaterThan!!) RangePart(rangePart.x.filter { it > comparator!! }, rangePart.m, rangePart.a, rangePart.s)
-                else RangePart(rangePart.x.filter { it < comparator!! }, rangePart.m, rangePart.a, rangePart.s)
+                'x' -> if (greaterThan!!) rangePart.copy(x = rangePart.x.filter { it > comparator!! })
+                else rangePart.copy(x = rangePart.x.filter { it < comparator!! })
 
-                'm' -> if (greaterThan!!) RangePart(rangePart.x, rangePart.m.filter { it > comparator!! }, rangePart.a, rangePart.s)
-                else RangePart(rangePart.x, rangePart.m.filter { it < comparator!! }, rangePart.a, rangePart.s)
+                'm' -> if (greaterThan!!) rangePart.copy(m = rangePart.m.filter { it > comparator!! })
+                else rangePart.copy(m = rangePart.m.filter { it < comparator!! })
 
-                'a' -> if (greaterThan!!) RangePart(rangePart.x, rangePart.m, rangePart.a.filter { it > comparator!! }, rangePart.s)
-                else RangePart(rangePart.x, rangePart.m, rangePart.a.filter { it < comparator!! }, rangePart.s)
+                'a' -> if (greaterThan!!) rangePart.copy(a = rangePart.a.filter { it > comparator!! })
+                else rangePart.copy(a = rangePart.a.filter { it < comparator!! })
 
-                's' -> if (greaterThan!!) RangePart(rangePart.x, rangePart.m, rangePart.a, rangePart.s.filter { it > comparator!! })
-                else RangePart(rangePart.x, rangePart.m, rangePart.a, rangePart.s.filter { it < comparator!! })
+                's' -> if (greaterThan!!) rangePart.copy(s = rangePart.s.filter { it > comparator!! })
+                else rangePart.copy(s = rangePart.s.filter { it < comparator!! })
 
                 else -> rangePart
             }
 
         fun complement(rangePart: RangePart): RangePart =
             when (field!!) {
-                'x' -> if (!greaterThan!!) RangePart(rangePart.x.filter { it >= comparator!! }, rangePart.m, rangePart.a, rangePart.s)
-                else RangePart(rangePart.x.filter { it <= comparator!! }, rangePart.m, rangePart.a, rangePart.s)
+                'x' -> if (!greaterThan!!) rangePart.copy(x = rangePart.x.filter { it >= comparator!! })
+                else rangePart.copy(x = rangePart.x.filter { it <= comparator!! })
 
-                'm' -> if (!greaterThan!!) RangePart(rangePart.x, rangePart.m.filter { it >= comparator!! }, rangePart.a, rangePart.s)
-                else RangePart(rangePart.x, rangePart.m.filter { it <= comparator!! }, rangePart.a, rangePart.s)
+                'm' -> if (!greaterThan!!) rangePart.copy(m = rangePart.m.filter { it >= comparator!! })
+                else rangePart.copy(m = rangePart.m.filter { it <= comparator!! })
 
-                'a' -> if (!greaterThan!!) RangePart(rangePart.x, rangePart.m, rangePart.a.filter { it >= comparator!! }, rangePart.s)
-                else RangePart(rangePart.x, rangePart.m, rangePart.a.filter { it <= comparator!! }, rangePart.s)
+                'a' -> if (!greaterThan!!) rangePart.copy(a = rangePart.a.filter { it >= comparator!! })
+                else rangePart.copy(a = rangePart.a.filter { it <= comparator!! })
 
-                's' -> if (!greaterThan!!) RangePart(rangePart.x, rangePart.m, rangePart.a, rangePart.s.filter { it >= comparator!! })
-                else RangePart(rangePart.x, rangePart.m, rangePart.a, rangePart.s.filter { it <= comparator!! })
+                's' -> if (!greaterThan!!) rangePart.copy(s = rangePart.s.filter { it >= comparator!! })
+                else rangePart.copy(s = rangePart.s.filter { it <= comparator!! })
 
                 else -> rangePart
             }
@@ -145,7 +131,7 @@ private fun String.toPart(): Part = this.split(",")
     .map { it.split("=") }
     .map { it.last().toInt() }
     .let { (x, m, a, s) ->
-        Part(x, m, a, s)
+        Part(mapOf('x' to x, 'm' to m, 'a' to a, 's' to s))
     }
 
 private val startRange = (1..4000).toList()
