@@ -1,10 +1,12 @@
 package net.sheltem.aoc.y2023
 
 import net.sheltem.aoc.common.Direction
-import net.sheltem.aoc.common.Direction.*
+import net.sheltem.aoc.common.Direction.EAST
+import net.sheltem.aoc.common.Direction.NORTH
+import net.sheltem.aoc.common.Direction.SOUTH
+import net.sheltem.aoc.common.Direction.WEST
 import net.sheltem.aoc.common.PositionInt
 import net.sheltem.aoc.common.move
-import kotlin.math.abs
 
 suspend fun main() {
     Day10().run()
@@ -134,7 +136,6 @@ private fun List<String>.findLoop(): Pair<Long, List<PositionInt>> {
 
 private fun List<PositionInt>.inside(inputMap: List<String>): Long {
     val newMap = mutableListOf<String>()
-    newMap.forEach(::println)
     for (i in inputMap.indices) {
         newMap.add("")
         for (j in inputMap[0].indices) {
