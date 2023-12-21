@@ -75,6 +75,7 @@ fun Collection<Pair<Long, Long>>.bounds() = (minOf { it.first } to minOf { it.se
 
 fun PositionInt.within(map: List<String>) = this.first in map[0].indices && this.second in map.indices
 
+fun PositionInt.neighbours() = (Direction.entries - Direction.NEUTRAL).map { this.move(it) }
 fun PositionInt.move(direction: Direction8) = first + direction.coords.first to second + direction.coords.second
 fun PositionInt.move(direction: Direction, distance: Int = 1) = first + (direction.coords.first * distance) to second + (direction.coords.second * distance)
 
