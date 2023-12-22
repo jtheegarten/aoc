@@ -1,5 +1,7 @@
 package net.sheltem.aoc.y2023
 
+import net.sheltem.aoc.common.mapParallel
+
 suspend fun main() {
     Day22().run()
 }
@@ -12,8 +14,8 @@ class Day22 : Day<Long>(5, 7) {
 
 }
 
-private fun List<Brick>.disintegrate(): List<Long> =
-    map { disBrick ->
+private suspend fun List<Brick>.disintegrate(): List<Long> =
+    mapParallel { disBrick ->
         val stack = this.toMutableList()
         val removedBricks = mutableListOf(disBrick)
         stack.remove(disBrick)
