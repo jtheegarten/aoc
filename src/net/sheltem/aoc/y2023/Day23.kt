@@ -1,7 +1,6 @@
 package net.sheltem.aoc.y2023
 
 import net.sheltem.aoc.common.*
-import net.sheltem.aoc.common.Direction.NEUTRAL
 
 suspend fun main() {
     Day23().run()
@@ -9,21 +8,31 @@ suspend fun main() {
 
 class Day23 : Day<Long>(94, 154) {
 
-    override suspend fun part1(input: List<String>): Long {
-        return input.dfs(input[0].indexOf('.') to 0, input.last().indexOf('.') to (input.size - 1))
-    }
+    override suspend fun part1(input: List<String>) = input
+        .adjacencies(true)
+        .dfs(input[0].indexOf('.') to 0, input.last().indexOf('.') to (input.size - 1))!!.toLong()
 
-    override suspend fun part2(input: List<String>) = input.adjacencies().dfs2(input[0].indexOf('.') to 0, input.last().indexOf('.') to (input.size - 1))!!.toLong()
+    override suspend fun part2(input: List<String>) = input
+        .adjacencies()
+        .dfs(input[0].indexOf('.') to 0, input.last().indexOf('.') to (input.size - 1))!!.toLong()
 }
 
-private fun List<String>.adjacencies(): Map<PositionInt, Map<PositionInt, Int>> {
+private fun List<String>.adjacencies(icy: Boolean = false): Map<PositionInt, Map<PositionInt, Int>> {
 
     val adjacencies = indices.flatMap { y ->
         this[y].indices.mapNotNull { x ->
             if (this[y][x] != '#') {
                 (x to y) to Direction.cardinals.mapNotNull { dir ->
-                    val next = (x to y).move(dir)
-                    if (next.within(this) && this.charAt(next) != '#') next to 1 else null
+                    val current = x to y
+                    val next = current.move(dir)
+                    if (next.within(this)
+                        && this.charAt(next) != '#'
+                        && (!icy || (this.charAt(current) == '.' || Direction.from(this.charAt(current).toString()) == dir))
+                    ) {
+                        next to 1
+                    } else {
+                        null
+                    }
                 }.toMap(mutableMapOf())
             } else null
         }
@@ -44,8 +53,7 @@ private fun List<String>.adjacencies(): Map<PositionInt, Map<PositionInt, Int>> 
     return adjacencies
 }
 
-private fun Map<PositionInt, Map<PositionInt, Int>>.dfs2(current: PositionInt, goal: PositionInt, visited: MutableMap<PositionInt, Int> = mutableMapOf()): Int? {
-
+private fun Map<PositionInt, Map<PositionInt, Int>>.dfs(current: PositionInt, goal: PositionInt, visited: MutableMap<PositionInt, Int> = mutableMapOf()): Int? {
     if (current == goal) {
         return visited.values.sum()
     }
@@ -55,28 +63,10 @@ private fun Map<PositionInt, Map<PositionInt, Int>>.dfs2(current: PositionInt, g
     (this[current] ?: emptyMap()).forEach { (neighbour, steps) ->
         if (neighbour !in visited) {
             visited[neighbour] = steps
-            val next = this.dfs2(neighbour, goal, visited)
+            val next = this.dfs(neighbour, goal, visited)
             max = next nullsafeMax max
             visited.remove(neighbour)
         }
     }
-    return max
-}
-
-private fun List<String>.dfs(start: PositionInt, goal: PositionInt, visited: MutableSet<PositionInt> = mutableSetOf(), steps: Long = 0L): Long {
-    if (start == goal) {
-        return steps
-    }
-    visited.add(start)
-    val max = (Direction.entries - NEUTRAL)
-        .mapNotNull { direction ->
-            val newPosition = start.move(direction)
-            if (newPosition !in visited
-                && newPosition.within(this)
-                && this.charAt(newPosition) != '#'
-                && (this.charAt(start) == '.' || Direction.from(this.charAt(start).toString()) == direction)
-            ) newPosition else null
-        }.maxOfOrNull { this.dfs(it, goal, visited, steps + 1) } ?: 0
-    if (start in visited) visited.remove(start)
     return max
 }
