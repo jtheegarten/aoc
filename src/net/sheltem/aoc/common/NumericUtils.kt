@@ -2,7 +2,11 @@ package net.sheltem.aoc.common
 
 import kotlin.math.abs
 
-
+infix fun Int?.nullsafeMax(other: Int?): Int? = when {
+    other == null -> this
+    this == null -> other
+    else -> maxOf(this, other)
+}
 infix operator fun Pair<Long, Long>.plus(other: Pair<Long, Long>): Pair<Long, Long> = first + other.first to second + other.second
 fun Pair<Long, Long>.absoluteDifference(): Long = let { (a, b) -> if (abs(a) >= abs(b)) abs(a) - abs(b) else abs(b) - abs(a) }
 
@@ -42,4 +46,12 @@ fun List<Long>.lcm(): Long {
         result = (result to this[i]).lcm()
     }
     return result
+}
+
+fun <T : Comparable<T>> maxOfOrNull(a: T?, b: T?): T? {
+    return when {
+        a == null -> b
+        b == null -> a
+        else -> maxOf(a, b)
+    }
 }

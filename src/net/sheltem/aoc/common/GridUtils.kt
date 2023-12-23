@@ -29,11 +29,13 @@ enum class Direction(val coords: PositionInt) {
     }
 
     companion object {
+        val cardinals = listOf(NORTH, EAST, SOUTH, WEST)
+
         fun from(dirString: String): Direction = when (dirString) {
             "U", "^", "N" -> NORTH
             "D", "v", "S" -> SOUTH
-            "L", ">", "W" -> WEST
-            "R", "<", "E" -> EAST
+            "L", "<", "W" -> WEST
+            "R", ">", "E" -> EAST
             else -> NEUTRAL
         }
     }
@@ -91,3 +93,6 @@ fun List<PositionInt>.gaussArea(): Long {
 
     return abs(area) / 2
 }
+
+fun List<String>.charAtOrNull(pos: PositionInt) = if (pos.within(this)) this[pos.second][pos.first] else null
+fun List<String>.charAt(pos: PositionInt) = this.charAtOrNull(pos)!!
