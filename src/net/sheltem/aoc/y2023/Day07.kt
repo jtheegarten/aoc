@@ -1,6 +1,6 @@
 package net.sheltem.aoc.y2023
 
-import net.sheltem.aoc.common.count
+import net.sheltem.common.count
 
 suspend fun main() {
     Day07().run()

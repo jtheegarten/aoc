@@ -1,7 +1,7 @@
-package net.sheltem.aoc.common
+package net.sheltem.common
 
-import net.sheltem.aoc.common.SearchGraph.Edge
-import net.sheltem.aoc.common.SearchGraph.Route
+import net.sheltem.common.SearchGraph.Edge
+import net.sheltem.common.SearchGraph.Route
 
 class SearchGraph<N>(val nodes: Set<Node<N>>, edges: Set<Edge<N>>, bidirectional: Boolean, val circular: Boolean = false) {
 

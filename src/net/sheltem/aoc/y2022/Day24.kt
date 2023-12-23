@@ -1,14 +1,14 @@
 package net.sheltem.aoc.y2022
 
 
-import net.sheltem.aoc.common.Direction8
-import net.sheltem.aoc.common.Direction8.EAST
-import net.sheltem.aoc.common.Direction8.NEUTRAL
-import net.sheltem.aoc.common.Direction8.NORTH
-import net.sheltem.aoc.common.Direction8.SOUTH
-import net.sheltem.aoc.common.Direction8.WEST
-import net.sheltem.aoc.common.PositionInt
-import net.sheltem.aoc.common.move
+import net.sheltem.common.Direction8
+import net.sheltem.common.Direction8.EAST
+import net.sheltem.common.Direction8.NEUTRAL
+import net.sheltem.common.Direction8.NORTH
+import net.sheltem.common.Direction8.SOUTH
+import net.sheltem.common.Direction8.WEST
+import net.sheltem.common.PositionInt
+import net.sheltem.common.move
 import net.sheltem.aoc.y2022.Field.Blizzard
 import net.sheltem.aoc.y2022.Field.Empty
 import net.sheltem.aoc.y2022.Field.Wall
@@ -60,7 +60,7 @@ private fun FieldMap.traverseMap(
 
 
         frontier.forEach { (location, cost: Int) ->
-            (Direction8.cardinalValues() + NEUTRAL).forEach {
+            (Direction8.cardinals + NEUTRAL).forEach {
                 val (newX, newY) = location.move(it)
                 if (newX in this[0].indices && newY in indices) {
                     if (currentState[newY][newX].all { field -> field is Empty }) {

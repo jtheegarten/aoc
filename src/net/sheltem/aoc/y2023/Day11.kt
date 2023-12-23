@@ -1,7 +1,7 @@
 package net.sheltem.aoc.y2023
 
-import net.sheltem.aoc.common.PositionInt
-import net.sheltem.aoc.common.manhattan
+import net.sheltem.common.PositionInt
+import net.sheltem.common.manhattan
 
 suspend fun main() {
     Day11().run()

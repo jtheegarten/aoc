@@ -1,8 +1,8 @@
 package net.sheltem.aoc.y2015
 
-import net.sheltem.aoc.common.Direction8
-import net.sheltem.aoc.common.PositionInt
-import net.sheltem.aoc.common.move
+import net.sheltem.common.Direction8
+import net.sheltem.common.PositionInt
+import net.sheltem.common.move
 
 suspend fun main() {
     Day03().run()

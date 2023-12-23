@@ -1,4 +1,4 @@
-package net.sheltem.aoc.common
+package net.sheltem.common
 
 import java.io.File
 

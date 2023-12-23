@@ -1,8 +1,8 @@
 package net.sheltem.aoc.y2016
 
-import net.sheltem.aoc.common.Direction
-import net.sheltem.aoc.common.PositionInt
-import net.sheltem.aoc.common.move
+import net.sheltem.common.Direction
+import net.sheltem.common.PositionInt
+import net.sheltem.common.move
 import kotlin.math.absoluteValue
 
 suspend fun main() {

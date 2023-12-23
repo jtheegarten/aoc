@@ -1,6 +1,6 @@
 package net.sheltem.aoc.y2022
 
-import net.sheltem.aoc.common.readInput
+import net.sheltem.common.readInput
 import net.sheltem.aoc.y2022.RPS.PAPER
 import net.sheltem.aoc.y2022.RPS.ROCK
 import net.sheltem.aoc.y2022.RPS.SCISSORS

@@ -1,7 +1,7 @@
 package net.sheltem.aoc.y2023
 
-import net.sheltem.aoc.common.multiply
-import net.sheltem.aoc.common.regexNumbers
+import net.sheltem.common.multiply
+import net.sheltem.common.regexNumbers
 
 suspend fun main() {
     Day06().run()

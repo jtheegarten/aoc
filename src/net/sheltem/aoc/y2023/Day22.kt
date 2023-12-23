@@ -1,6 +1,6 @@
 package net.sheltem.aoc.y2023
 
-import net.sheltem.aoc.common.mapParallel
+import net.sheltem.common.mapParallel
 
 suspend fun main() {
     Day22().run()

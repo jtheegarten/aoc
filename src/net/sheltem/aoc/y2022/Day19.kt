@@ -3,7 +3,7 @@ package net.sheltem.aoc.y2022
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
-import net.sheltem.aoc.common.mapParallel
+import net.sheltem.common.mapParallel
 
 suspend fun main() {
     Day19().run()

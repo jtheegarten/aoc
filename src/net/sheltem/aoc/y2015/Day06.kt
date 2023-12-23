@@ -1,6 +1,6 @@
 package net.sheltem.aoc.y2015
 
-import net.sheltem.aoc.common.PositionInt
+import net.sheltem.common.PositionInt
 import net.sheltem.aoc.y2015.Action.OFF
 import net.sheltem.aoc.y2015.Action.ON
 import net.sheltem.aoc.y2015.Action.TOGGLE

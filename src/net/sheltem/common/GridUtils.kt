@@ -1,4 +1,4 @@
-package net.sheltem.aoc.common
+package net.sheltem.common
 
 import kotlin.math.abs
 
@@ -55,19 +55,22 @@ enum class Direction8(val coords: PositionInt) {
     val longCoords = coords.first.toLong() to coords.second.toLong()
 
     companion object {
-        fun cardinalValues() = listOf(NORTH, EAST, SOUTH, WEST)
+        val cardinals = listOf(NORTH, EAST, SOUTH, WEST)
 
-        fun fromCaret(caret: Char): Direction8 {
-            return when (caret) {
-                '>' -> EAST
-                '^' -> NORTH
-                '<' -> WEST
-                'v' -> SOUTH
-                else -> error("Not a valid caret")
-            }
+        fun fromCaret(caret: Char): Direction8 = fromCaret(caret.toString())
+
+        fun fromCaret(caret: String): Direction8 = when (caret) {
+            "U", "^", "N" -> NORTH
+            "D", "v", "S" -> SOUTH
+            "L", "<", "W" -> WEST
+            "R", ">", "E" -> EAST
+            else -> error("Not a valid caret")
         }
     }
 }
+
+fun PositionInt.lineTo(direction: Direction, length: Int) = (0..length).map { this.move(direction, it) }
+fun PositionInt.lineTo(direction: Direction8, length: Int) = (0..length).map { this.move(direction, it) }
 
 fun String.toDirection() = Direction.from(this)
 
@@ -75,10 +78,11 @@ fun Pair<Long, Long>.neighbours(other: Collection<Direction8>): List<Pair<Long, 
 fun Pair<Long, Long>.neighbour(other: Direction8): Pair<Long, Long> = this.first + other.coords.first to this.second + other.coords.second
 fun Collection<Pair<Long, Long>>.bounds() = (minOf { it.first } to minOf { it.second }) to (maxOf { it.first } to maxOf { it.second })
 
-fun PositionInt.within(map: List<String>) = this.first in map[0].indices && this.second in map.indices
+fun PositionInt.within(map: List<CharSequence>) = this.first in map[0].indices && this.second in map.indices
+fun PositionInt.withinMap(map: List<List<*>>) = this.first in map[0].indices && this.second in map.indices
 
 fun PositionInt.neighbours() = (Direction.entries - Direction.NEUTRAL).map { this.move(it) }
-fun PositionInt.move(direction: Direction8) = first + direction.coords.first to second + direction.coords.second
+fun PositionInt.move(direction: Direction8, distance: Int = 1) = first + (direction.coords.first * distance) to second + (direction.coords.second * distance)
 fun PositionInt.move(direction: Direction, distance: Int = 1) = first + (direction.coords.first * distance) to second + (direction.coords.second * distance)
 
 fun Pair<PositionInt, PositionInt>.manhattan(): Long = (abs(this.first.first - this.second.first) + abs(this.first.second - this.second.second)).toLong()

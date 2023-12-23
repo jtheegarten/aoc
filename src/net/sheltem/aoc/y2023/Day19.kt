@@ -1,6 +1,6 @@
 package net.sheltem.aoc.y2023
 
-import net.sheltem.aoc.common.multiply
+import net.sheltem.common.multiply
 import net.sheltem.aoc.y2023.Day19.Part
 import net.sheltem.aoc.y2023.Day19.RangePart
 import net.sheltem.aoc.y2023.Day19.Rule

@@ -1,6 +1,6 @@
 package net.sheltem.aoc.y2016
 
-import net.sheltem.aoc.common.ALPHABET
+import net.sheltem.common.ALPHABET
 
 suspend fun main() {
     Day04().run(true)

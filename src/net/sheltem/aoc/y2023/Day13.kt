@@ -1,6 +1,6 @@
 package net.sheltem.aoc.y2023
 
-import net.sheltem.aoc.common.rotateCockwise
+import net.sheltem.common.rotateCockwise
 
 suspend fun main() {
     Day13().run()

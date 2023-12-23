@@ -1,9 +1,9 @@
 package net.sheltem.aoc.y2015
 
-import net.sheltem.aoc.common.SearchGraph
-import net.sheltem.aoc.common.SearchGraph.Edge
-import net.sheltem.aoc.common.SearchGraph.Node
-import net.sheltem.aoc.common.weight
+import net.sheltem.common.SearchGraph
+import net.sheltem.common.SearchGraph.Edge
+import net.sheltem.common.SearchGraph.Node
+import net.sheltem.common.weight
 
 suspend fun main() {
     Day09().run()

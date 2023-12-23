@@ -1,6 +1,6 @@
 package net.sheltem.aoc.y2023
 
-import net.sheltem.aoc.common.lcm
+import net.sheltem.common.lcm
 import net.sheltem.aoc.y2023.ModuleType.BC
 import net.sheltem.aoc.y2023.ModuleType.CON
 import net.sheltem.aoc.y2023.ModuleType.DUM

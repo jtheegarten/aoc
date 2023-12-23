@@ -1,4 +1,4 @@
-package net.sheltem.aoc.common
+package net.sheltem.common
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope

@@ -1,11 +1,11 @@
 package net.sheltem.aoc.y2023
 
-import net.sheltem.aoc.common.Direction
-import net.sheltem.aoc.common.Direction.EAST
-import net.sheltem.aoc.common.Direction.NORTH
-import net.sheltem.aoc.common.Direction.SOUTH
-import net.sheltem.aoc.common.Direction.WEST
-import net.sheltem.aoc.common.move
+import net.sheltem.common.Direction
+import net.sheltem.common.Direction.EAST
+import net.sheltem.common.Direction.NORTH
+import net.sheltem.common.Direction.SOUTH
+import net.sheltem.common.Direction.WEST
+import net.sheltem.common.move
 
 suspend fun main() {
     Day14().run()

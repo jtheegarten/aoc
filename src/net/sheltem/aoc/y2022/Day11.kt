@@ -1,7 +1,7 @@
 package net.sheltem.aoc.y2022
 
-import net.sheltem.aoc.common.MathOperation
-import net.sheltem.aoc.common.lastAsInt
+import net.sheltem.common.MathOperation
+import net.sheltem.common.lastAsInt
 
 class Day11 : Day<Long>(10605, 2713310158) {
     override suspend fun part1(input: List<String>) = input.windowed(6, 7)

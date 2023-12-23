@@ -1,7 +1,7 @@
 package net.sheltem.aoc.y2023
 
-import net.sheltem.aoc.common.lcm
-import net.sheltem.aoc.common.regex
+import net.sheltem.common.lcm
+import net.sheltem.common.regex
 import net.sheltem.aoc.y2023.Day08.Tree
 import net.sheltem.aoc.y2023.Day08.Tree.Node
 

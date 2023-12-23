@@ -1,7 +1,7 @@
 package net.sheltem.aoc.y2023
 
-import net.sheltem.aoc.common.PositionInt
-import net.sheltem.aoc.common.neighbours
+import net.sheltem.common.PositionInt
+import net.sheltem.common.neighbours
 
 suspend fun main() {
     Day21().run()

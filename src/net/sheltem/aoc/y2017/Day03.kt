@@ -1,11 +1,11 @@
 package net.sheltem.aoc.y2017
 
-import net.sheltem.aoc.common.Direction.EAST
-import net.sheltem.aoc.common.Direction.NORTH
-import net.sheltem.aoc.common.Direction.SOUTH
-import net.sheltem.aoc.common.Direction.WEST
-import net.sheltem.aoc.common.manhattan
-import net.sheltem.aoc.common.move
+import net.sheltem.common.Direction.EAST
+import net.sheltem.common.Direction.NORTH
+import net.sheltem.common.Direction.SOUTH
+import net.sheltem.common.Direction.WEST
+import net.sheltem.common.manhattan
+import net.sheltem.common.move
 import kotlin.math.abs
 
 suspend fun main() {

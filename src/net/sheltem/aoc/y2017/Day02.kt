@@ -1,6 +1,6 @@
 package net.sheltem.aoc.y2017
 
-import net.sheltem.aoc.common.numericRegex
+import net.sheltem.common.numericRegex
 
 suspend fun main() {
     Day02().run()
