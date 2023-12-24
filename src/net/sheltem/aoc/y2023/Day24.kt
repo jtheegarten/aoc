@@ -1,5 +1,6 @@
 package net.sheltem.aoc.y2023
 
+
 suspend fun main() {
     Day24().run()
 }
@@ -8,33 +9,49 @@ class Day24 : Day<Long>(0, 47) {
 
     override suspend fun part1(input: List<String>) = input.map { it.toHailstone() }.intersections()
 
-    override suspend fun part2(input: List<String>) = input.take(4).map { it.toHailstone() }.findStone().let { println(it); it.pos.x + it.pos.y + it.pos.z }
+    override suspend fun part2(input: List<String>) = input.map { it.toHailstone() }.findStone()
 }
 
-// We would have to solve
-// x + dx * t = other.x + other.dx * t
-// y + dy * t = other.y + other.dy * t
-// z + dz * t = other.z + other.dz * t
-// for 3 different hailstones
-private fun List<Hailstone>.findStone(): Hailstone {
-    val testRange = 0..50
-    val testSpeeds = 20 downTo -20
+private fun List<Hailstone>.findStone(): Long {
+    val h1 = this@findStone[0]
+    val h2 = this@findStone[1]
+
+    val testSpeeds = 350 downTo -350L
+
+
     testSpeeds.forEach { dx ->
         testSpeeds.forEach { dy ->
             testSpeeds.forEach { dz ->
-                testRange.forEach { x ->
-                    testRange.forEach { y ->
-                        testRange.forEach { z ->
-                            if (dx == 0 || dy == 0 || dz == 0) {
+                if (dx != 0L && dy != 0L && dz != 0L) {
 
-                            } else {
-                                val current = Hailstone(Position3D(x, y, z), Vector(dx, dy, dz))
-//                            println("$x $y $z | $dx $dy $dz")
-                                if (this.all { it.fullIntersects(current, 0, Long.MAX_VALUE) }) {
-                                    return current
-                                }
+                    val A: Long = h1.pos.x
+                    val a: Long = h1.speed.dx - dx
+                    val B: Long = h1.pos.y
+                    val b: Long = h1.speed.dy - dy
+                    val C: Long = h2.pos.x
+                    val c: Long = h2.speed.dx - dx
+                    val D: Long = h2.pos.y
+                    val d: Long = h2.speed.dy - dy
+
+                    if (c != 0L && (a * d) - (b * c) != 0L) {
+                        val t = (d * (C - A) - c * (D - B)) / ((a * d) - (b * c))
+
+                        val x = h1.pos.x + h1.speed.dx * t - dx * t
+                        val y = h1.pos.y + h1.speed.dy * t - dy * t
+                        val z = h1.pos.z + h1.speed.dz * t - dz * t
+
+                        val hitall = this@findStone.none { h ->
+                            val u = when {
+                                h.speed.dx.toLong() != dx -> (x - h.pos.x) / (h.speed.dx - dx)
+                                h.speed.dy.toLong() != dy -> (y - h.pos.y) / (h.speed.dy - dy)
+                                h.speed.dz.toLong() != dz -> (z - h.pos.z) / (h.speed.dz - dz)
+                                else -> TODO()
                             }
+                            (x + u * dx != h.pos.x + u * h.speed.dx)
+                                    || (y + u * dy != h.pos.y + u * h.speed.dy)
+                                    || (z + u * dz != h.pos.z + u * h.speed.dz)
                         }
+                        if (hitall) return x + y + z
                     }
                 }
             }

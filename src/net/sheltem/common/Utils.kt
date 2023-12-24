@@ -11,3 +11,4 @@ a local object or a nested function. In other words, you won’t be able to do a
 suspend inline fun <T, R> Iterable<T>.mapParallel(crossinline transform: (T) -> R): List<R> = coroutineScope {
     map { async { transform(it) } }.map { it.await() }
 }
+
