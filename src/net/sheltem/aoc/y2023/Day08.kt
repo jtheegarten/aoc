@@ -30,7 +30,7 @@ class Day08 : Day<Long>(2, 6) {
                     }.lcm()
             }
 
-    class Tree(val nodes: Map<String, Node>) {
+    internal class Tree(val nodes: Map<String, Node>) {
 
         fun traverse(start: String, goal: String, instructions: String, shortGoal: Boolean = false): Long {
             return step(start, goal, instructions, 0, 0, shortGoal)
@@ -49,7 +49,7 @@ class Day08 : Day<Long>(2, 6) {
 
         private fun traverseNode(name: String, left: Boolean) = nodes[name]!!.let { if (left) it.left else it.right }
 
-        data class Node(val name: String, val left: String, val right: String)
+        internal data class Node(val name: String, val left: String, val right: String)
     }
 
 

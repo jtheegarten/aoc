@@ -2,8 +2,9 @@ package net.sheltem.common
 
 import net.sheltem.common.SearchGraph.Edge
 import net.sheltem.common.SearchGraph.Route
+import kotlin.random.Random
 
-class SearchGraph<N>(val nodes: Set<Node<N>>, edges: Set<Edge<N>>, bidirectional: Boolean, val circular: Boolean = false) {
+class SearchGraph<N>(val nodes: Set<Node<N>>, edges: Set<Edge<N>>, val bidirectional: Boolean, val circular: Boolean = false) {
 
     val edges: Set<Edge<N>> = if (bidirectional) edges + edges.map { Edge(it.to, it.from, it.weight) } else edges
 
@@ -141,12 +142,45 @@ class SearchGraph<N>(val nodes: Set<Node<N>>, edges: Set<Edge<N>>, bidirectional
 
     }
 
+    @Deprecated("Doesn't work, fix later")
+    fun minCut(cuts: Int): Long {
+        val nodeSubsets = mutableListOf<MutableList<Node<N>>>()
+
+        do {
+            for (node in nodes) {
+                nodeSubsets.add(mutableListOf(node))
+            }
+            while (nodeSubsets.size > 2) {
+                val index = Random.nextInt(0, edges.size)
+                val s1 = nodeSubsets.firstOrNull { sub -> sub.contains(edges.toList()[index].from) }
+                val s2 = nodeSubsets.firstOrNull { sub -> sub.contains(edges.toList()[index].to) }
+
+                if (s1 == s2) {
+                    continue
+                }
+                nodeSubsets.remove(s2)
+                s1!! += s2!!
+            }
+
+            (print("."))
+        } while (countCuts(nodeSubsets) != cuts)
+
+        return nodeSubsets.map {it.size.toLong() }.multiply()
+    }
+
+    private fun countCuts(subgraphs: List<List<Node<N>>>) =
+        edges.count { edge ->
+            subgraphs.firstOrNull { sub -> sub.contains(edge.from) } != subgraphs.firstOrNull { sub -> sub.contains(edge.to) }
+        }
+
     data class Node<N>(val id: N) {
         override fun toString() = "$id"
     }
 
     data class Edge<N>(val from: Node<N>, val to: Node<N>, val weight: Long) {
         override fun toString() = "$from -($weight)-> $to"
+
+        fun reversed(): Edge<N> = Edge(to, from, weight)
     }
 
     data class Route<N>(val edges: List<Edge<N>> = listOf()) : List<Edge<N>> by edges, Comparable<Route<N>> {
