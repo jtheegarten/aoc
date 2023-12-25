@@ -1,3 +1,5 @@
+package net.sheltem.pe
+
 import java.math.BigInteger
 
 fun main() {
