@@ -15,25 +15,21 @@ class Day01 : Day<Long>(11, 31) {
 }
 
 private fun List<String>.toDistances() =
-    toSortedPairs()
+    toLists()
+        .let { (first, second) ->
+            first.sorted().zip(second.sorted())
+        }
         .map { (it.first - it.second).absoluteValue }
 
 private fun List<String>.toSimilaritiesSum() =
-    toNumberPairs()
-        .unzip()
+    toLists()
         .let { (left, right) ->
             left.fold(0L) { acc, lNumber ->
                 acc + (lNumber * right.count { it == lNumber })
             }
         }
 
-private fun List<String>.toSortedPairs(): List<Pair<Long, Long>> =
-    toNumberPairs()
-        .unzip()
-        .let { (first, second) ->
-            first.sorted().zip(second.sorted())
-        }
-
-private fun List<String>.toNumberPairs() =
+private fun List<String>.toLists() =
     map { it.regexNumbers() }
         .map { it.first() to it.last() }
+        .unzip()
