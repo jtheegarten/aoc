@@ -9,27 +9,24 @@ suspend fun main() {
 
 class Day01 : Day<Long>(11, 31) {
 
-    override suspend fun part1(input: List<String>): Long = input.toDistances().sum()
-
-    override suspend fun part2(input: List<String>): Long = input.toSimilaritiesSum()
-}
-
-private fun List<String>.toDistances() =
-    toLists()
+    override suspend fun part1(input: List<String>): Long = input.toLists()
         .let { (first, second) ->
             first.sorted().zip(second.sorted())
-        }
-        .map { (it.first - it.second).absoluteValue }
+        }.sumOf { (it.first - it.second).absoluteValue }
 
-private fun List<String>.toSimilaritiesSum() =
-    toLists()
+    override suspend fun part2(input: List<String>): Long = input.toLists()
         .let { (left, right) ->
             left.fold(0L) { acc, lNumber ->
                 acc + (lNumber * right.count { it == lNumber })
             }
         }
+//        .let { (left, right) ->
+//            left.sumOf { lNumber -> lNumber * right.count { lNumber == it } }
+//        }
+}
 
-private fun List<String>.toLists() =
-    map { it.regexNumbers() }
-        .map { it.first() to it.last() }
-        .unzip()
+fun List<String>.toLists() =
+    map {
+        val (n, m) = it.regexNumbers()
+        n to m
+    }.unzip()
