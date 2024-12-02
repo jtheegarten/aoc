@@ -23,11 +23,10 @@ private fun List<Long>.isSafeWithDampener(): Boolean =
 
 private fun List<Long>.isSafe() =
     zipWithNext()
-        .let { pairs ->
-            pairs.all { (left, right) ->
-                left > right && ((left - right) in 1..3)
-            } ||
-                    pairs.all { (left, right) ->
-                        right > left && ((right - left) in 1..3)
-                    }
+        .run {
+            all { (left, right) -> isSafe(left, right) } || all { (left, right) -> isSafe(right, left) }
         }
+
+private fun isSafe(a: Long, b: Long) =
+    a > b && ((a - b) in 1..3)
+
