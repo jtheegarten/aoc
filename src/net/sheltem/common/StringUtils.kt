@@ -22,5 +22,6 @@ fun List<String>.rotateCockwise(): List<String> = this.let { list ->
 
 fun Sequence<MatchResult>.toListLong(): List<Long> = toList().toListLong()
 
+fun String.regex(r: Regex) = r.findAll(this).map { it.value }.toList()
 fun String.regex(r: String) = Regex(r).findAll(this).map { it.value }.toList()
 fun String.regexNumbers() = numericRegex.findAll(this).map { it.value }.mapNotNull { it.toLongOrNull() }.toList()
