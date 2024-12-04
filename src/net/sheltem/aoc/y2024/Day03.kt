@@ -9,9 +9,15 @@ suspend fun main() {
 
 class Day03 : Day<Long>(161, 48) {
 
-    override suspend fun part1(input: List<String>): Long = input.joinToString().regex(mulRegex).doMults()
+    override suspend fun part1(input: List<String>): Long = input
+        .joinToString()
+        .regex(mulRegex)
+        .doMults()
 
-    override suspend fun part2(input: List<String>): Long = input.joinToString().replace(cutRegex, "").regex(mulRegex).doMults()
+    override suspend fun part2(input: List<String>): Long = input
+        .joinToString()
+        .replace(cutRegex, "")
+        .regex(mulRegex).doMults()
 }
 
 private val mulRegex = Regex("mul\\(\\d{1,3},\\d{1,3}\\)")
