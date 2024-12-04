@@ -98,6 +98,5 @@ fun Long.wordify(): String {
             else -> ""
         }
     }
-    println("$result = ${result.length}")
     return result
 }
