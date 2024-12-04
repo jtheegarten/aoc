@@ -72,6 +72,8 @@ enum class Direction8(val coords: PositionInt) {
 fun PositionInt.lineTo(direction: Direction, length: Int) = (0..length).map { this.move(direction, it) }
 fun PositionInt.lineTo(direction: Direction8, length: Int) = (0..length).map { this.move(direction, it) }
 
+fun List<PositionInt>.takeWord(charMap: List<String>): String = map { charMap.charAtOrNull(it) }.joinToString("")
+
 fun String.toDirection() = Direction.from(this)
 
 fun Pair<Long, Long>.neighbours(other: Collection<Direction8>): List<Pair<Long, Long>> = other.map { it.coords.first + first to it.coords.second + second }
