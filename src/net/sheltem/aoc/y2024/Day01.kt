@@ -16,13 +16,8 @@ class Day01 : Day<Long>(11, 31) {
 
     override suspend fun part2(input: List<String>): Long = input.toLists()
         .let { (left, right) ->
-            left.fold(0L) { acc, lNumber ->
-                acc + (lNumber * right.count { it == lNumber })
-            }
+            left.sumOf { lNumber -> lNumber * right.count { lNumber == it } }
         }
-//        .let { (left, right) ->
-//            left.sumOf { lNumber -> lNumber * right.count { lNumber == it } }
-//        }
 }
 
 fun List<String>.toLists() =
