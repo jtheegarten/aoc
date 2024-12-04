@@ -32,15 +32,11 @@ private fun List<String>.countXmas(crossed: Boolean = false): Long {
     return xmas
 }
 
-private fun List<String>.findXmas(x: Int, y: Int): Long {
-    var xmas = 0L
-
-    for (dir in Direction8.entries) {
-        if ((x to y).lineTo(dir, 3).takeWord(this) == "XMAS") xmas++
-    }
-
-    return xmas
-}
+private fun List<String>.findXmas(x: Int, y: Int): Long =
+    Direction8
+        .entries
+        .count { (x to y).lineTo(it, 3).takeWord(this) == "XMAS" }
+        .toLong()
 
 private fun List<String>.findXedMas(x: Int, y: Int): Long {
     val word1 = (x to y).move(Direction8.NORTH_WEST).lineTo(Direction8.SOUTH_EAST, 2).takeWord(this)
