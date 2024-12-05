@@ -1,6 +1,5 @@
 package net.sheltem.common
 
-import net.sheltem.aoc.y2024.Day
 import java.io.File
 import java.util.Locale
 import kotlin.io.path.Path
@@ -12,7 +11,7 @@ import kotlin.time.measureTime
 
 open class Year(
     private val year: Int = 2024,
-    private val days: List<Pair<String, Day<*>>>
+    private val days: List<Pair<String, Day<out Any>>>
 ) {
 
     suspend fun run() {
