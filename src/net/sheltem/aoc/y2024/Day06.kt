@@ -2,6 +2,7 @@ package net.sheltem.aoc.y2024
 
 import net.sheltem.common.Direction
 import net.sheltem.common.PositionInt
+import net.sheltem.common.countParallel
 import net.sheltem.common.move
 import net.sheltem.common.within
 
@@ -20,7 +21,7 @@ class Day06 : Day<Long>(41, 6) {
     override suspend fun part2(input: List<String>): Long = input
         .visit()
         .first
-        .count{ obstruction ->
+        .countParallel{ obstruction ->
             input.visit(obstruction).second
         }.toLong()
 
