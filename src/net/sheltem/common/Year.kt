@@ -19,7 +19,7 @@ open class Year(
         val results = days
             .map { Triple(it.first, it.second, File("src/net/sheltem/aoc/y$year/data/Day${it.first}.txt").readLines()) }
             .map { (day, dayClass, input) ->
-                Triple(day, List(10) { measureTime { dayClass.part1(input) } }.min(), List(10) { measureTime { dayClass.part2(input) } }.min())
+                Triple(day, measureTime { dayClass.part1(input) }, measureTime { dayClass.part2(input) })
             }
 
         val formattedResults = results.map { (day, resultA, resultB) ->
