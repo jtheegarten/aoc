@@ -1,10 +1,6 @@
 package net.sheltem.aoc.y2024
 
-import net.sheltem.common.Direction
-import net.sheltem.common.PositionInt
-import net.sheltem.common.countParallel
-import net.sheltem.common.move
-import net.sheltem.common.within
+import net.sheltem.common.*
 
 suspend fun main() {
     Day06().run()
@@ -28,12 +24,11 @@ class Day06 : Day<Long>(41, 6) {
 }
 
 private fun List<String>.visit(obstruction: PositionInt? = null): Pair<Set<PositionInt>, Boolean> {
-    val map = this.map { it.toCharArray() }
     var direction = Direction.NORTH
 
-    var pos = map.indices
-        .flatMap { y -> map[y].indices.map { x -> x to y } }
-        .first { (x, y) -> map[y][x] == '^' }
+    var pos = this.indices
+        .flatMap { y -> this[y].indices.map { x -> x to y } }
+        .first { (x, y) -> this[y][x] == '^' }
 
     val visited = mutableSetOf<Pair<PositionInt, Direction>>()
     var loop = false
@@ -50,7 +45,7 @@ private fun List<String>.visit(obstruction: PositionInt? = null): Pair<Set<Posit
         val next = pos.move(direction)
         when {
             !next.within(this) -> break
-            map[next.second][next.first] == '#' || next == obstruction -> direction = direction.turnRight()
+            this.charAt(next) == '#' || next == obstruction -> direction = direction.turnRight()
             else -> {
                 pos = next
             }
