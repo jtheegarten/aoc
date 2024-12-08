@@ -35,12 +35,12 @@ private fun List<String>.findAntinodes(pos: PositionInt, char: Char, repeat: Boo
             if (char == innerChar && pos != x to y) {
                 val diff = pos - (x to y)
 
-                generateSequence(if (repeat) 0 else 1) { it + 1 }
+                generateSequence(0) { it + 1 }
                     .map { mult ->
                         setOf(pos + (diff * mult), (x to y) - (diff * mult))
                     }.takeWhile { it.any { newPos -> newPos.within(this) } }
                     .let {
-                        if (repeat) it else it.take(1)
+                        if (repeat) it else it.drop(1).take(1)
                     }.flatten()
                     .toSet()
             } else {
