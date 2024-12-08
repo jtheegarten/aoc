@@ -26,6 +26,7 @@ private fun List<String>.countAntinodes(repeat: Boolean = false): Long =
         }
     }.filter { it.within(this) }
         .toSet()
+//        .also { it.printMap(this) }
         .size
         .toLong()
 
@@ -48,3 +49,9 @@ private fun List<String>.findAntinodes(pos: PositionInt, char: Char, repeat: Boo
             }
         }
     }.toSet()
+
+//private fun Set<PositionInt>.printMap(map: List<String>) = map.forEachIndexed { y, row ->
+//    row.mapIndexed { x, _ ->
+//        if (this.contains(x to y)) '#' else '.'
+//    }.joinToString("").run { println(this) }
+//}
