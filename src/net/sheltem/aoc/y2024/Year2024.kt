@@ -10,7 +10,7 @@ private val days = listOf(
     "05" to Day05(),
     "06" to Day06(),
     "07" to Day07(),
-//    "08" to Day08(),
+    "08" to Day08(),
 //    "09" to Day09(),
 //    "10" to Day10(),
 //    "11" to Day11(),
