@@ -21,10 +21,11 @@ private fun List<String>.countAntinodes(repeat: Boolean = false): Long =
             if (this.charAt(x to y) != '.') {
                 this.findAntinodes(x to y, char, repeat)
             } else {
-                setOf()
+                emptySet()
             }
         }
     }.filter { it.within(this) }
+        .toSet()
         .size
         .toLong()
 
@@ -34,19 +35,16 @@ private fun List<String>.findAntinodes(pos: PositionInt, char: Char, repeat: Boo
             if (char == innerChar && pos != x to y) {
                 val diff = pos - (x to y)
 
-                val antinodes = mutableSetOf<PositionInt>()
-                var mult = if (repeat) 0 else 1
-
-                do {
-                    val newNodes = listOf(pos + (diff * mult), (x to y) - (diff * mult))
-                    antinodes.addAll(newNodes)
-                    val within = newNodes.any { it.within(this) }
-                    mult++
-                } while (repeat && within)
-
-                antinodes
+                generateSequence(if (repeat) 0 else 1) { it + 1 }
+                    .map { mult ->
+                        setOf(pos + (diff * mult), (x to y) - (diff * mult))
+                    }.takeWhile { it.any { newPos -> newPos.within(this) } }
+                    .let {
+                        if (repeat) it else it.take(1)
+                    }.flatten()
+                    .toSet()
             } else {
-                setOf()
+                emptySet()
             }
         }
     }.toSet()
