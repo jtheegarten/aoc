@@ -31,13 +31,13 @@ private fun List<String>.findAntinodes(pos: PositionInt, char: Char, repeat: Boo
     this.flatMapIndexed { y, row ->
         row.flatMapIndexed { x, innerChar ->
             if (char == innerChar && pos != x to y) {
-                val diff = (pos.first - x to pos.second - y)
+                val diff = pos - (x to y)
 
                 val antinodes = mutableSetOf<PositionInt>()
                 var mult = if(repeat) 0 else 1
 
                 do {
-                    val newNodes = listOf(pos.plus(diff * mult), (x to y).minus(diff * mult))
+                    val newNodes = listOf(pos + (diff * mult), (x to y) - (diff * mult))
                     antinodes.addAll(newNodes)
                     val within = newNodes.any { it.within(this) }
                     mult++
