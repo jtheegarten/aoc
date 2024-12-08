@@ -25,3 +25,13 @@ fun Sequence<MatchResult>.toListLong(): List<Long> = toList().toListLong()
 fun String.regex(r: Regex) = r.findAll(this).map { it.value }.toList()
 fun String.regex(r: String) = Regex(r).findAll(this).map { it.value }.toList()
 fun String.regexNumbers() = numericRegex.findAll(this).map { it.value }.mapNotNull { it.toLongOrNull() }.toList()
+
+const val RESET = "\u001B[0m"
+const val BLACK = "\u001B[30m"
+const val GREEN_BACKGROUND = "\u001B[42m"
+const val BLUE_BACKGROUND = "\u001B[44m"
+const val RED_BACKGROUND = "\u001B[41m"
+
+val Any.inGreen get() = BLACK + GREEN_BACKGROUND + this + RESET
+val Any.inBlue get() = BLACK + BLUE_BACKGROUND + this + RESET
+val Any.inRed get() = BLACK + RED_BACKGROUND + this + RESET
