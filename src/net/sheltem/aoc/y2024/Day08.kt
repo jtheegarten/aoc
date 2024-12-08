@@ -15,17 +15,18 @@ class Day08 : Day<Long>(14, 34) {
         .countAntinodes(true)
 }
 
-private fun List<String>.countAntinodes(repeat: Boolean = false): Long {
-    val antinodeLocations = mutableSetOf<PositionInt>()
-    this.forEachIndexed { y, row ->
-        row.forEachIndexed { x, char ->
-            if (this.charAt(x to y) != '.')
-                antinodeLocations.addAll(this.findAntinodes(x to y, char, repeat))
+private fun List<String>.countAntinodes(repeat: Boolean = false): Long =
+    this.flatMapIndexed { y, row ->
+        row.flatMapIndexed { x, char ->
+            if (this.charAt(x to y) != '.') {
+                this.findAntinodes(x to y, char, repeat)
+            } else {
+                setOf()
+            }
         }
-    }
-
-    return antinodeLocations.filter { it.within(this) }.size.toLong()
-}
+    }.filter { it.within(this) }
+        .size
+        .toLong()
 
 private fun List<String>.findAntinodes(pos: PositionInt, char: Char, repeat: Boolean = false): Set<PositionInt> =
     this.flatMapIndexed { y, row ->
@@ -34,18 +35,18 @@ private fun List<String>.findAntinodes(pos: PositionInt, char: Char, repeat: Boo
                 val diff = pos - (x to y)
 
                 val antinodes = mutableSetOf<PositionInt>()
-                var mult = if(repeat) 0 else 1
+                var mult = if (repeat) 0 else 1
 
                 do {
                     val newNodes = listOf(pos + (diff * mult), (x to y) - (diff * mult))
                     antinodes.addAll(newNodes)
                     val within = newNodes.any { it.within(this) }
                     mult++
-                } while(repeat && within)
+                } while (repeat && within)
 
                 antinodes
             } else {
-                setOf<PositionInt>()
+                setOf()
             }
         }
     }.toSet()
