@@ -38,8 +38,7 @@ class Day09 : Day<Long>(1928, 2858) {
 }
 
 private fun String.toComplexFileSystem() =
-    this
-        .map { it.digitToInt() }
+    map { it.digitToInt() }
         .foldIndexed(Triple(mutableListOf<File>(), mutableListOf<Space>(), mutableListOf<Int?>())) { index, (files, spaces, diskState), size ->
             if (index % 2 == 0) {
                 files.add(File(files.size, diskState.size, size))
