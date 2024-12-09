@@ -19,9 +19,8 @@ class Day07 : Day<Long>(3749, 11387) {
 
 private fun List<Long>.calibrate(part2: Boolean = false): Long =
     this
-        .drop(1)
         .let {
-            if (it.combine(1, this[1], this[0], part2)) this[0] else 0
+            if (it.combine(2, this[1], this[0], part2)) this[0] else 0
         }
 
 private fun List<Long>.combine(index: Int, current: Long, goal: Long, part2: Boolean): Boolean =
