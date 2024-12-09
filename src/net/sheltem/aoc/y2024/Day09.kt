@@ -14,51 +14,42 @@ class Day09 : Day<Long>(1928, 2858) {
             acc + index * i
         }
 
-    override suspend fun part2(input: List<String>): Long {
-        val files = mutableListOf<File>()
-        val spaces = mutableListOf<Space>()
-        val diskState = mutableListOf<Int?>()
-        var position = 0
-        var fileId = 0
-
-        input[0]
-            .map { it.digitToInt() }
-            .forEachIndexed { index, size ->
-                if (index % 2 == 0) {
-                    files.add(File(fileId, position, size))
-                    repeat(size) {
-                        diskState.add(fileId)
+    override suspend fun part2(input: List<String>): Long =
+        input[0].toComplexFileSystem()
+            .let { (files, spaces, diskState) ->
+                files.reversed()
+                    .forEach { file ->
+                        spaces
+                            .withIndex()
+                            .firstOrNull { (_, s) ->
+                                s.start < file.start && file.size <= s.size
+                            }?.let { (spaceIndex, space) ->
+                                (0..<file.size).forEach { i ->
+                                    diskState[file.start + i] = null
+                                    diskState[space.start + i] = file.id
+                                }
+                                spaces[spaceIndex] = Space(space.start + file.size, space.size - file.size)
+                            }
                     }
-                    fileId++
-                } else {
-                    spaces.add(Space(position, size))
-                    diskState.addAll(List(size) { null })
-                }
-                position += size
+                diskState
             }
-
-        files
-            .reversed()
-            .forEach { file ->
-                spaces
-                    .withIndex()
-                    .firstOrNull { (_, s) ->
-                        s.start < file.start && file.size <= s.size
-                    }?.let { (spaceIndex, space) ->
-                        (0..<file.size).forEach { i ->
-                            diskState[file.start + i] = null
-                            diskState[space.start + i] = file.id
-                        }
-                        spaces[spaceIndex] = Space(space.start + file.size, space.size - file.size)
-                    }
-            }
-
-        return diskState
             .withIndex()
             .sumOf { (index, value) -> index.toLong() * (value ?: 0) }
-    }
-
 }
+
+private fun String.toComplexFileSystem() =
+    this
+        .map { it.digitToInt() }
+        .foldIndexed(Triple(mutableListOf<File>(), mutableListOf<Space>(), mutableListOf<Int?>())) { index, (files, spaces, diskState), size ->
+            if (index % 2 == 0) {
+                files.add(File(files.size, diskState.size, size))
+                diskState.addAll(List(size) { files.last().id })
+            } else {
+                spaces.add(Space(diskState.size, size))
+                diskState.addAll(List(size) { null })
+            }
+            Triple(files, spaces, diskState)
+        }
 
 private fun List<String>.toSimpleFileSystem(): MutableList<Int> = this[0]
     .mapIndexed { index, c ->
