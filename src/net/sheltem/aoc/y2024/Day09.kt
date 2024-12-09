@@ -14,27 +14,27 @@ class Day09 : Day<Long>(1928, 2858) {
             acc + index * i
         }
 
-    override suspend fun part2(input: List<String>): Long =
-        input[0].toComplexFileSystem()
-            .let { (files, spaces, diskState) ->
-                files.reversed()
-                    .forEach { file ->
-                        spaces
-                            .withIndex()
-                            .firstOrNull { (_, s) ->
-                                s.start < file.start && file.size <= s.size
-                            }?.let { (spaceIndex, space) ->
-                                (0..<file.size).forEach { i ->
-                                    diskState[file.start + i] = null
-                                    diskState[space.start + i] = file.id
-                                }
-                                spaces[spaceIndex] = Space(space.start + file.size, space.size - file.size)
+    override suspend fun part2(input: List<String>): Long = input[0]
+        .toComplexFileSystem()
+        .let { (files, spaces, diskState) ->
+            files.reversed()
+                .forEach { file ->
+                    spaces
+                        .withIndex()
+                        .firstOrNull { (_, s) ->
+                            s.start < file.start && file.size <= s.size
+                        }?.let { (spaceIndex, space) ->
+                            (0..<file.size).forEach { i ->
+                                diskState[file.start + i] = null
+                                diskState[space.start + i] = file.id
                             }
-                    }
-                diskState
-            }
-            .withIndex()
-            .sumOf { (index, value) -> index.toLong() * (value ?: 0) }
+                            spaces[spaceIndex] = Space(space.start + file.size, space.size - file.size)
+                        }
+                }
+            diskState
+        }
+        .withIndex()
+        .sumOf { (index, value) -> index.toLong() * (value ?: 0) }
 }
 
 private fun String.toComplexFileSystem() =
