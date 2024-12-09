@@ -9,31 +9,35 @@ suspend fun main() {
 class Day06 : Day<Long>(41, 6) {
 
     override suspend fun part1(input: List<String>): Long = input
-        .visit()
-        .first
-        .size
-        .toLong()
+        .let {
+            val start = it.indices.flatMap { y -> it[y].indices.map { x -> x to y } }.first { (x, y) -> it[y][x] == '^' }
+            it.visit(start)
+                .first
+                .size
+                .toLong()
+        }
 
     override suspend fun part2(input: List<String>): Long = input
-        .visit()
-        .first
-        .countParallel{ obstruction ->
-            input.visit(obstruction).second
-        }.toLong()
+        .let {
+            val start = it.indices.flatMap { y -> it[y].indices.map { x -> x to y } }.first { (x, y) -> it[y][x] == '^' }
+            it.visit(start)
+                .first
+                .countParallel { obstruction ->
+                    input.visit(start, obstruction).second
+                }.toLong()
+        }
 
 }
 
-private fun List<String>.visit(obstruction: PositionInt? = null): Pair<Set<PositionInt>, Boolean> {
+private fun List<String>.visit(start: PositionInt, obstruction: PositionInt? = null): Pair<Set<PositionInt>, Boolean> {
     var direction = Direction.NORTH
 
-    var pos = this.indices
-        .flatMap { y -> this[y].indices.map { x -> x to y } }
-        .first { (x, y) -> this[y][x] == '^' }
+    var pos = start
 
     val visited = mutableSetOf<Pair<PositionInt, Direction>>()
     var loop = false
 
-    while(true) {
+    while (true) {
 
         if (visited.contains(pos to direction)) {
             loop = true
