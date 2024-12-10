@@ -4,7 +4,6 @@ import net.sheltem.common.PositionInt
 import net.sheltem.common.intAt
 import net.sheltem.common.neighbours
 import net.sheltem.common.withinArrayMap
-import net.sheltem.common.withinMap
 
 suspend fun main() {
     Day10().run()
