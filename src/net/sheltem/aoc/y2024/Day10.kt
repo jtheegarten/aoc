@@ -24,10 +24,10 @@ private fun List<List<Int>>.trailheads(): List<List<PositionInt>> = indices
 
 private fun List<List<Int>>.nines(pos: PositionInt): List<PositionInt> = pos
     .neighbours { next -> next.withinMap(this) && (this.intAt(pos)!! + 1) == this.intAt(next) }
-    .let {
+    .let { neighbours ->
         when {
             this.intAt(pos) == 9 -> listOf(pos)
-            it.isEmpty() -> emptyList()
-            else -> it.flatMap { neighbour -> this.nines(neighbour) }
+            neighbours.isEmpty() -> emptyList()
+            else -> neighbours.flatMap { this.nines(it) }
         }
     }
