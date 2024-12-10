@@ -103,6 +103,8 @@ fun List<PositionInt>.gaussArea(): Long {
 fun List<String>.charAtOrNull(pos: PositionInt) = if (pos.within(this)) this[pos.second][pos.first] else null
 fun List<String>.charAt(pos: PositionInt) = this.charAtOrNull(pos)!!
 
+fun List<List<Int>>.intAt(pos: PositionInt) = if (pos.withinMap(this)) this[pos.second][pos.first] else null
+
 operator fun PositionInt.plus(other: PositionInt) = (this.first + other.first) to (this.second + other.second)
 operator fun PositionInt.minus(other: PositionInt) = (this.first - other.first) to (this.second - other.second)
 operator fun PositionInt.times(mult: Int) = (this.first * mult) to (this.second * mult)
