@@ -83,6 +83,7 @@ fun Collection<Pair<Long, Long>>.bounds() = (minOf { it.first } to minOf { it.se
 
 fun PositionInt.within(map: List<CharSequence>) = this.first in map[0].indices && this.second in map.indices
 fun PositionInt.withinMap(map: List<List<*>>) = this.first in map[0].indices && this.second in map.indices
+fun PositionInt.withinArrayMap(map: List<IntArray>) = this.first in map[0].indices && this.second in map.indices
 
 fun PositionInt.neighbours(predicate: Predicate<PositionInt> = Predicate{ true }) = (Direction.entries - Direction.NEUTRAL).map { this.move(it) }.filter { predicate.test(it) }
 fun PositionInt.move(direction: Direction8, distance: Int = 1) = first + (direction.coords.first * distance) to second + (direction.coords.second * distance)
@@ -104,7 +105,7 @@ fun List<PositionInt>.gaussArea(): Long {
 fun List<String>.charAtOrNull(pos: PositionInt) = if (pos.within(this)) this[pos.second][pos.first] else null
 fun List<String>.charAt(pos: PositionInt) = this.charAtOrNull(pos)!!
 
-fun List<List<Int>>.intAt(pos: PositionInt) = if (pos.withinMap(this)) this[pos.second][pos.first] else null
+fun List<IntArray>.intAt(pos: PositionInt) = if (pos.withinArrayMap(this)) this[pos.second][pos.first] else null
 
 operator fun PositionInt.plus(other: PositionInt) = (this.first + other.first) to (this.second + other.second)
 operator fun PositionInt.minus(other: PositionInt) = (this.first - other.first) to (this.second - other.second)

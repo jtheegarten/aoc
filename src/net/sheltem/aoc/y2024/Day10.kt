@@ -3,6 +3,7 @@ package net.sheltem.aoc.y2024
 import net.sheltem.common.PositionInt
 import net.sheltem.common.intAt
 import net.sheltem.common.neighbours
+import net.sheltem.common.withinArrayMap
 import net.sheltem.common.withinMap
 
 suspend fun main() {
@@ -11,19 +12,19 @@ suspend fun main() {
 
 class Day10 : Day<Long>(36, 81) {
 
-    override suspend fun part1(input: List<String>): Long = input.map { it.toCharArray().map { char -> char.digitToInt() } }.trailheads().sumOf { it.toSet().size }.toLong()
+    override suspend fun part1(input: List<String>): Long = input.map { it.toCharArray().map { char -> char.digitToInt() }.toTypedArray().toIntArray() }.trailheads().sumOf { it.toSet().size }.toLong()
 
-    override suspend fun part2(input: List<String>): Long = input.map { it.toCharArray().map { char -> char.digitToInt() } }.trailheads().sumOf { it.size }.toLong()
+    override suspend fun part2(input: List<String>): Long = input.map { it.toCharArray().map { char -> char.digitToInt() }.toTypedArray().toIntArray() }.trailheads().sumOf { it.size }.toLong()
 
 }
 
-private fun List<List<Int>>.trailheads(): List<List<PositionInt>> = indices
+private fun List<IntArray>.trailheads(): List<List<PositionInt>> = indices
     .flatMap { y -> this[y].indices.map { x -> x to y } }
     .filter { this.intAt(it) == 0 }
     .map { this.nines(it) }
 
-private fun List<List<Int>>.nines(pos: PositionInt): List<PositionInt> = pos
-    .neighbours { next -> next.withinMap(this) && (this.intAt(pos)!! + 1) == this.intAt(next) }
+private fun List<IntArray>.nines(pos: PositionInt): List<PositionInt> = pos
+    .neighbours { next -> next.withinArrayMap(this) && (this.intAt(pos)!! + 1) == this.intAt(next) }
     .let { neighbours ->
         when {
             this.intAt(pos) == 9 -> listOf(pos)
