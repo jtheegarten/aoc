@@ -19,12 +19,11 @@ class Day10 : Day<Long>(36, 81) {
 
 private fun List<List<Int>>.trailheads(): List<List<PositionInt>> = indices
     .flatMap { y -> this[y].indices.map { x -> x to y } }
-    .filter { this[it.second][it.first] == 0 }
+    .filter { this.intAt(it) == 0 }
     .map { this.nines(it) }
 
 private fun List<List<Int>>.nines(pos: PositionInt): List<PositionInt> = pos
-    .neighbours()
-    .filter { it.withinMap(this) && (this.intAt(pos)!! + 1) == this.intAt(it) }
+    .neighbours { next -> next.withinMap(this) && (this.intAt(pos)!! + 1) == this.intAt(next) }
     .let {
         when {
             this.intAt(pos) == 9 -> listOf(pos)
