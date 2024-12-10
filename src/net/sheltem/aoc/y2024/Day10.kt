@@ -22,12 +22,13 @@ private fun List<List<Int>>.trailheads(): List<List<PositionInt>> = indices
     .filter { this[it.second][it.first] == 0 }
     .map { this.nines(it) }
 
-private fun List<List<Int>>.nines(pos: PositionInt): List<PositionInt> {
-    val neighbours = pos.neighbours().filter { it.withinMap(this) && (this.intAt(pos)!! + 1) == this.intAt(it) }
-
-    return when {
-        this.intAt(pos) == 9 -> listOf(pos)
-        neighbours.isEmpty() -> emptyList()
-        else -> neighbours.flatMap { this.nines(it) }
+private fun List<List<Int>>.nines(pos: PositionInt): List<PositionInt> = pos
+    .neighbours()
+    .filter { it.withinMap(this) && (this.intAt(pos)!! + 1) == this.intAt(it) }
+    .let {
+        when {
+            this.intAt(pos) == 9 -> listOf(pos)
+            it.isEmpty() -> emptyList()
+            else -> it.flatMap { neighbour -> this.nines(neighbour) }
+        }
     }
-}
