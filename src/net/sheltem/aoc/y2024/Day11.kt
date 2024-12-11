@@ -1,6 +1,7 @@
 package net.sheltem.aoc.y2024
 
 import net.sheltem.common.regexNumbers
+import net.sheltem.common.splitInHalf
 
 suspend fun main() {
     Day11().run()
@@ -13,9 +14,6 @@ class Day11 : Day<Long>(55312, 65601038650482) {
     override suspend fun part2(input: List<String>): Long = input.single().regexNumbers().sumOf { it.blink(75) }
 
     private val cache = mutableMapOf<Pair<Long, Int>, Long>()
-
-    private fun String.splitInHalf(): List<String> =
-        (length / 2).let { mid -> listOf(this.take(mid), this.drop(mid)) }
 
     private fun Long.blink(times: Int): Long = when {
         cache.contains(this to times) -> cache[this to times]!!
