@@ -18,9 +18,9 @@ class Day03 : Day<Long>(161, 48) {
         .joinToString()
         .replace(cutRegex, "")
         .regex(mulRegex).doMults()
+
+    private val mulRegex = Regex("mul\\(\\d{1,3},\\d{1,3}\\)")
+    private val cutRegex = Regex("don't\\(\\).*?do\\(\\)")
+
+    private fun List<String>.doMults(): Long = this.map { it.regexNumbers() }.sumOf { (first, second) -> first * second }
 }
-
-private val mulRegex = Regex("mul\\(\\d{1,3},\\d{1,3}\\)")
-private val cutRegex = Regex("don't\\(\\).*?do\\(\\)")
-
-private fun List<String>.doMults(): Long = this.map { it.regexNumbers() }.sumOf { (first, second) -> first * second }

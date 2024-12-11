@@ -18,10 +18,11 @@ class Day01 : Day<Long>(11, 31) {
         .let { (left, right) ->
             left.sumOf { lNumber -> lNumber * right.count { lNumber == it } }
         }
-}
 
-fun List<String>.toLists() =
-    map {
-        val (n, m) = it.regexNumbers()
-        n to m
-    }.unzip()
+    private fun List<String>.toLists() =
+        map {
+            val (n, m) = it.regexNumbers()
+            n to m
+        }.unzip()
+
+}

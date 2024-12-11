@@ -27,34 +27,33 @@ class Day06 : Day<Long>(41, 6) {
                 }.toLong()
         }
 
-}
+    private fun List<String>.visit(start: PositionInt, obstruction: PositionInt? = null): Pair<Set<PositionInt>, Boolean> {
+        var direction = Direction.NORTH
 
-private fun List<String>.visit(start: PositionInt, obstruction: PositionInt? = null): Pair<Set<PositionInt>, Boolean> {
-    var direction = Direction.NORTH
+        var pos = start
 
-    var pos = start
+        val visited = mutableSetOf<Pair<PositionInt, Direction>>()
+        var loop = false
 
-    val visited = mutableSetOf<Pair<PositionInt, Direction>>()
-    var loop = false
+        while (true) {
 
-    while (true) {
+            if (visited.contains(pos to direction)) {
+                loop = true
+                break
+            } else {
+                visited.add(pos to direction)
+            }
 
-        if (visited.contains(pos to direction)) {
-            loop = true
-            break
-        } else {
-            visited.add(pos to direction)
-        }
-
-        val next = pos.move(direction)
-        when {
-            !next.within(this) -> break
-            this.charAt(next) == '#' || next == obstruction -> direction = direction.turnRight()
-            else -> {
-                pos = next
+            val next = pos.move(direction)
+            when {
+                !next.within(this) -> break
+                this.charAt(next) == '#' || next == obstruction -> direction = direction.turnRight()
+                else -> {
+                    pos = next
+                }
             }
         }
-    }
 
-    return visited.map { it.first }.toSet() to loop
+        return visited.map { it.first }.toSet() to loop
+    }
 }

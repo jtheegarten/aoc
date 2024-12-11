@@ -35,46 +35,46 @@ class Day09 : Day<Long>(1928, 2858) {
         }
         .withIndex()
         .sumOf { (index, value) -> index.toLong() * (value ?: 0) }
-}
 
-private fun String.toComplexFileSystem() =
-    map { it.digitToInt() }
-        .foldIndexed(Triple(mutableListOf<File>(), mutableListOf<Space>(), mutableListOf<Int?>())) { index, (files, spaces, diskState), size ->
-            if (index % 2 == 0) {
-                files.add(File(files.size, diskState.size, size))
-                diskState.addAll(List(size) { files.last().id })
-            } else {
-                spaces.add(Space(diskState.size, size))
-                diskState.addAll(List(size) { null })
+    private fun String.toComplexFileSystem() =
+        map { it.digitToInt() }
+            .foldIndexed(Triple(mutableListOf<File>(), mutableListOf<Space>(), mutableListOf<Int?>())) { index, (files, spaces, diskState), size ->
+                if (index % 2 == 0) {
+                    files.add(File(files.size, diskState.size, size))
+                    diskState.addAll(List(size) { files.last().id })
+                } else {
+                    spaces.add(Space(diskState.size, size))
+                    diskState.addAll(List(size) { null })
+                }
+                Triple(files, spaces, diskState)
             }
-            Triple(files, spaces, diskState)
+
+    private fun List<String>.toSimpleFileSystem(): MutableList<Int> = this[0]
+        .mapIndexed { index, c ->
+            val length = c.digitToInt()
+            val id = if (index % 2 == 0) {
+                index / 2
+            } else {
+                -1
+            }
+            List(length) { id }
+        }.flatten().toMutableList()
+
+    private fun MutableList<Int>.pack(): MutableList<Int> {
+        var front = 0
+        var back = lastIndex
+
+        while (true) {
+            while (this[front] >= 0) front++
+            while (this[back] < 0) back--
+            if (back < front) break
+
+            this[front] = this[back]
+            this[back] = -1
         }
-
-private fun List<String>.toSimpleFileSystem(): MutableList<Int> = this[0]
-    .mapIndexed { index, c ->
-        val length = c.digitToInt()
-        val id = if (index % 2 == 0) {
-            index / 2
-        } else {
-            -1
-        }
-        List(length) { id }
-    }.flatten().toMutableList()
-
-private fun MutableList<Int>.pack(): MutableList<Int> {
-    var front = 0
-    var back = lastIndex
-
-    while (true) {
-        while (this[front] >= 0) front++
-        while (this[back] < 0) back--
-        if (back < front) break
-
-        this[front] = this[back]
-        this[back] = -1
+        return this
     }
-    return this
-}
 
-data class File(val id: Int, val start: Int, val size: Int)
-data class Space(val start: Int, val size: Int)
+    data class File(val id: Int, val start: Int, val size: Int)
+    data class Space(val start: Int, val size: Int)
+}
