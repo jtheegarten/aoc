@@ -86,8 +86,8 @@ fun PositionInt.withinMap(map: List<List<*>>) = this.first in map[0].indices && 
 fun PositionInt.withinArrayMap(map: List<IntArray>) = this.first in map[0].indices && this.second in map.indices
 
 fun PositionInt.neighbours(predicate: Predicate<PositionInt> = Predicate{ true }) = (Direction.entries - Direction.NEUTRAL).map { this.move(it) }.filter { predicate.test(it) }
-fun PositionInt.move(direction: Direction8, distance: Int = 1) = first + (direction.coords.first * distance) to second + (direction.coords.second * distance)
-fun PositionInt.move(direction: Direction, distance: Int = 1) = first + (direction.coords.first * distance) to second + (direction.coords.second * distance)
+fun PositionInt.move(direction: Direction8, distance: Int = 1) = this + (direction.coords * distance)
+fun PositionInt.move(direction: Direction, distance: Int = 1) = this + (direction.coords * distance)
 
 fun Pair<PositionInt, PositionInt>.manhattan(): Long = (abs(this.first.first - this.second.first) + abs(this.first.second - this.second.second)).toLong()
 infix fun PositionInt.manhattan(other: PositionInt): Long = (this to other).manhattan()
