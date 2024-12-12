@@ -22,8 +22,7 @@ class Day12 : Day<Long>(1930, 1206) {
                     row.mapIndexed { x, c ->
                         if (visited.contains(x to y)) 0L else {
                             val plot = mutableSetOf<PositionInt>()
-                            val queue = ArrayDeque<PositionInt>()
-                            queue.add(x to y)
+                            val queue = ArrayDeque(listOf(x to y))
                             var perimeter = 0
                             while (queue.isNotEmpty()) {
                                 val pos = queue.removeFirst()
