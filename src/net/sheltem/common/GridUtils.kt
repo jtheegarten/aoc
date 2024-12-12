@@ -104,6 +104,13 @@ fun List<PositionInt>.gaussArea(): Long {
 
 fun List<String>.charAtOrNull(pos: PositionInt) = if (pos.within(this)) this[pos.second][pos.first] else null
 fun List<String>.charAt(pos: PositionInt) = this.charAtOrNull(pos)!!
+fun List<String>.corners(pos: PositionInt) = (Direction.entries - Direction.NEUTRAL + Direction.NORTH).zipWithNext()
+    .filter { (d1, d2) ->
+        val a = this.charAtOrNull(pos.move(d1))
+        val b = this.charAtOrNull(pos.move(d2))
+        val c = this.charAtOrNull(pos)
+        (a != c && b != c) || (a == c && b == c && this.charAtOrNull(pos.move(d1).move(d2)) != c)
+    }.size
 
 fun List<IntArray>.intAt(pos: PositionInt) = if (pos.withinArrayMap(this)) this[pos.second][pos.first] else null
 
