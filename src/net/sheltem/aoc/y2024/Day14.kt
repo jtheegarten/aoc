@@ -22,7 +22,7 @@ class Day14 : Day<Long>(12, 1206) {
             it.copy(vec = ((it.vec.first + it.maxX) % it.maxX) to ((it.vec.second + it.maxY) % it.maxY))
         }
         .findPattern()
-        .also { it.second.print(101, 103) }
+//        .also { it.second.print(101, 103) }
         .first.toLong()
 
     private data class Robot(var pos: PositionInt, val vec: PositionInt, val maxX: Int, val maxY: Int) {
@@ -68,7 +68,6 @@ class Day14 : Day<Long>(12, 1206) {
         val q2 = this.count { it.pos.first in (maxX / 2 + 1)..<maxX && it.pos.second in 0..<(maxY / 2) }
         val q3 = this.count { it.pos.first in (maxX / 2 + 1)..maxX && it.pos.second in (maxY / 2 + 1)..<maxY }
         val q4 = this.count { it.pos.first in 0..<(maxX / 2) && it.pos.second in (maxY / 2 + 1)..<maxY }
-        println ("q1=$q1 | q2=$q2 | q3=$q3 | q4=$q4")
         return q1.toLong() * q2 * q3 * q4
     }
 
