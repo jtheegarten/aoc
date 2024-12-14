@@ -40,6 +40,7 @@ class Day14 : Day<Long>(12, 1206) {
         while (true) {
             steps++
             situation = situation.map { it.step(1) }
+            if (situation.map { it.pos }.toSet().size != situation.map { it.pos }.size) continue
             if (situation.map { it.pos }.largestPattern() > 15) break
         }
         return steps to situation
