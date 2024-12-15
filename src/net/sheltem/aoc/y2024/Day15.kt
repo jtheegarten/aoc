@@ -31,8 +31,8 @@ class Day15 : Day<Long>(10092, 9021) {
         grid = grid.replace(pos, '.')
 
         instructions.forEach { dir ->
-            val next = pos.move(dir)
-            when (grid.charAt(next)) {
+            val next = pos move dir
+            when (grid[next]) {
                 '.' -> pos = next
                 '#' -> Unit
                 '[', ']' -> {
@@ -43,35 +43,35 @@ class Day15 : Day<Long>(10092, 9021) {
                         val stackPos = stack.pop()
                         if (checked.add(stackPos)) {
 
-                            when (grid.charAt(stackPos)) {
-                                '[' -> stack.add(stackPos.move(EAST))
-                                ']' -> stack.add(stackPos.move(WEST))
+                            when (grid[stackPos]) {
+                                '[' -> stack.add(stackPos move EAST )
+                                ']' -> stack.add(stackPos move WEST)
                             }
 
-                            val nextStackPos = stackPos.move(dir)
+                            val nextStackPos = stackPos move dir
 
-                            if (grid.charAt(nextStackPos) in "[]") {
+                            if (grid[nextStackPos]!! in "[]") {
                                 stack.add(nextStackPos)
-                            } else if (grid.charAt(nextStackPos) == '#') {
+                            } else if (grid[nextStackPos] == '#') {
                                 return@forEach
                             }
                         }
                     }
 
-                    checked.associateWith { grid.charAt(it) }
+                    checked.associateWith { grid[it]!! }
                         .onEach { (position, _) -> grid = grid.replace(position, '.') }
-                        .forEach { (position, char) -> grid = grid.replace(position.move(dir), char) }
+                        .forEach { (position, char) -> grid = grid.replace(position move dir, char) }
 
                     pos = next
                 }
 
                 'O' -> {
                     var box = next
-                    while (grid.charAt(box.move(dir)) == 'O') {
-                        box = box.move(dir)
+                    while (grid[box move dir] == 'O') {
+                        box = box move dir
                     }
-                    if (grid.charAt(box.move(dir)) != '#') {
-                        grid = grid.replace(box.move(dir), 'O').replace(pos.move(dir), '.')
+                    if (grid[box move dir] != '#') {
+                        grid = grid.replace(box move dir, 'O').replace(pos move dir, '.')
                         pos = next
                     }
                 }
