@@ -9,48 +9,40 @@ suspend fun main() {
 class Day08 : Day<Long>(14, 34) {
 
     override suspend fun part1(input: List<String>): Long = input
+        .toGrid()
         .countAntinodes()
 
     override suspend fun part2(input: List<String>): Long = input
+        .toGrid()
         .countAntinodes(true)
 
-    private fun List<String>.countAntinodes(repeat: Boolean = false): Long =
-        this.flatMapIndexed { y, row ->
-            row.flatMapIndexed { x, char ->
-                if (this.charAt(x to y) != '.') {
-                    this.findAntinodes(x to y, char, repeat)
-                } else {
-                    emptySet()
-                }
+    private fun Grid<Char>.countAntinodes(repeat: Boolean = false): Long =
+        this.allCoordinates.flatMap { coord ->
+            if (this[coord] != '.') {
+                this.findAntinodes(coord, this[coord]!!, repeat)
+            } else {
+                emptySet()
             }
-        }.filter { it.within(this) }
+        }.filter { this.contains(it) }
             .toSet()
-//        .also { it.printMap(this) }
             .size
             .toLong()
 
-    private fun List<String>.findAntinodes(pos: PositionInt, char: Char, repeat: Boolean = false): Set<PositionInt> =
-        this.flatMapIndexed { y, row ->
-            row.flatMapIndexed { x, innerChar ->
-                if (char == innerChar && pos != x to y) {
-                    val diff = pos - (x to y)
+    private fun Grid<Char>.findAntinodes(pos: PositionInt, char: Char, repeat: Boolean = false): Set<PositionInt> =
+        allCoordinates.flatMap { coord ->
+            if (char == this[coord] && pos != coord) {
+                val diff = pos - coord
 
-                    generateSequence(0) { it + 1 }
-                        .map { mult ->
-                            setOf(pos + (diff * mult), (x to y) - (diff * mult))
-                        }.takeWhile { it.any { newPos -> newPos.within(this) } }
-                        .let {
-                            if (repeat) it else it.drop(1).take(1)
-                        }.flatten()
-                        .toSet()
-                } else {
-                    emptySet()
-                }
+                generateSequence(0) { it + 1 }
+                    .map { mult ->
+                        setOf(pos + (diff * mult), coord - (diff * mult))
+                    }.takeWhile { it.any { newPos -> this.contains(newPos) } }
+                    .let {
+                        if (repeat) it else it.drop(1).take(1)
+                    }.flatten()
+                    .toSet()
+            } else {
+                emptySet()
             }
         }.toSet()
 }
-//private fun Set<PositionInt>.printMap(map: List<String>) = map.forEachIndexed { y, row ->
-//    row.mapIndexed { x, _ ->
-//        if (this.contains(x to y)) '#' else '.'
-//    }.joinToString("").run { println(this) }
-//}
