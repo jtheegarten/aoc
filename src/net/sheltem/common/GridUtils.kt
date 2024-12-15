@@ -87,6 +87,9 @@ data class Grid<T>(
     val allCoordinates: List<PositionInt>
         get() = list.indices.flatMap { y -> list.first().indices.map { x -> x to y } }
 
+    val allFields: List<T>
+        get() = list.flatten()
+
     operator fun contains(pos: PositionInt) = pos.x in list.first().indices && pos.y in list.indices
     operator fun get(pos: PositionInt) = if(contains(pos)) list[pos.y][pos.x] else null
     operator fun set(pos: PositionInt, value: T) {

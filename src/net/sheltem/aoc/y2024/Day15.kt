@@ -16,19 +16,19 @@ class Day15 : Day<Long>(10092, 9021) {
     override suspend fun part2(input: List<String>): Long = input.parse(true).execute2()
 
 
-    private fun List<String>.parse(double: Boolean = false): Pair<List<String>, List<Direction>> {
+    private fun List<String>.parse(double: Boolean = false): Pair<Grid<Char>, List<Direction>> {
         val separator = indexOfFirst { it.isBlank() }
         val map = take(separator).map { if (!double) it else it.replace("#", "##").replace("O", "[]").replace(".", "..").replace("@", "@.") }
         val instructions = drop(separator + 1).joinToString("").map { Direction.from(it.toString()) }
 
-        return map to instructions
+        return map.toGrid() to instructions
     }
 
-    private fun Pair<List<String>, List<Direction>>.execute2(): Long {
-        var (grid, instructions) = this
+    private fun Pair<Grid<Char>, List<Direction>>.execute2(): Long {
+        val (grid, instructions) = this
         var pos = grid.find('@')
 
-        grid = grid.replace(pos, '.')
+        grid[pos] = '.'
 
         instructions.forEach { dir ->
             val next = pos move dir
@@ -59,8 +59,8 @@ class Day15 : Day<Long>(10092, 9021) {
                     }
 
                     checked.associateWith { grid[it]!! }
-                        .onEach { (position, _) -> grid = grid.replace(position, '.') }
-                        .forEach { (position, char) -> grid = grid.replace(position move dir, char) }
+                        .onEach { (position, _) -> grid[position] = '.' }
+                        .forEach { (position, char) -> grid[position move dir] = char }
 
                     pos = next
                 }
@@ -71,18 +71,17 @@ class Day15 : Day<Long>(10092, 9021) {
                         box = box move dir
                     }
                     if (grid[box move dir] != '#') {
-                        grid = grid.replace(box move dir, 'O').replace(pos move dir, '.')
+                        grid[box move dir] = 'O'
+                        grid[pos move dir] = '.'
                         pos = next
                     }
                 }
             }
         }
 
-        return grid.flatMapIndexed { y, row ->
-            row.mapIndexed { x, c ->
-                if (c in "[O") (x to y).score() else 0
-            }
-        }.sum()
+        return grid.transform { coord, c ->
+            if (c in "[O") coord.score() else 0
+        }.allFields.sum()
     }
 
     private fun PositionInt.score(): Long = first.toLong() + (second * 100)
