@@ -111,6 +111,9 @@ fun List<String>.corners(pos: PositionInt) = (Direction.entries - Direction.NEUT
         val c = this.charAtOrNull(pos)
         (a != c && b != c) || (a == c && b == c && this.charAtOrNull(pos.move(d1).move(d2)) != c)
     }.size
+fun List<String>.replace(pos: PositionInt, char: Char) = this.mapIndexed{ y, row -> if (y == pos.second) row.replaceCharAt(pos.first, char) else row}
+fun List<String>.find(char: Char) = indices.flatMap { y -> this[y].indices.map { x -> x to y } }.first { (x, y) -> this[y][x] == char }
+fun String.replaceCharAt(index: Int, char: Char): String = this.take(index) + char + this.drop(index + 1)
 
 fun List<IntArray>.intAt(pos: PositionInt) = if (pos.withinArrayMap(this)) this[pos.second][pos.first] else null
 

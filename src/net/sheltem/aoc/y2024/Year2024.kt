@@ -17,7 +17,7 @@ private val days = listOf(
     "12" to Day12(),
     "13" to Day13(),
     "14" to Day14(),
-//    "15" to Day15(),
+    "15" to Day15(),
 //    "16" to Day16(),
 //    "17" to Day17(),
 //    "18" to Day18(),
