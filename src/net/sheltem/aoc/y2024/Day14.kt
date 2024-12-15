@@ -14,6 +14,7 @@ class Day14 : Day<Long>(12, 1206) {
         .map {
             it.copy(vec = ((it.vec.first + it.maxX) % it.maxX) to ((it.vec.second + it.maxY) % it.maxY))
         }.map { it.step(100) }
+//        .print(101, 103)
         .calc(101, 103)
 
     override suspend fun part2(input: List<String>): Long = input
@@ -26,11 +27,10 @@ class Day14 : Day<Long>(12, 1206) {
         .first.toLong()
 
     private data class Robot(var pos: PositionInt, val vec: PositionInt, val maxX: Int, val maxY: Int) {
-        fun step(times: Int): Robot {
+        fun step(times: Int): Robot = this.also {
             val newX = (pos.first + vec.first * times) % maxX
             val newY = (pos.second + vec.second * times) % maxY
             pos = newX to newY
-            return this
         }
     }
 
@@ -40,8 +40,8 @@ class Day14 : Day<Long>(12, 1206) {
         while (true) {
             steps++
             situation = situation.map { it.step(1) }
-            if (situation.map { it.pos }.toSet().size != situation.map { it.pos }.size) continue
-            if (situation.map { it.pos }.largestPattern() > 15) break
+            if (situation.map { it.pos }.toSet().size == situation.map { it.pos }.size) break
+//            if (situation.map { it.pos }.largestPattern() > 15) break
         }
         return steps to situation
     }
@@ -68,6 +68,7 @@ class Day14 : Day<Long>(12, 1206) {
         val q2 = this.count { it.pos.first in (maxX / 2 + 1)..<maxX && it.pos.second in 0..<(maxY / 2) }
         val q3 = this.count { it.pos.first in (maxX / 2 + 1)..maxX && it.pos.second in (maxY / 2 + 1)..<maxY }
         val q4 = this.count { it.pos.first in 0..<(maxX / 2) && it.pos.second in (maxY / 2 + 1)..<maxY }
+//        println("q1=$q1 | q2=$q2 | q3=$q3 | q4=$q4")
         return q1.toLong() * q2 * q3 * q4
     }
 
@@ -76,9 +77,12 @@ class Day14 : Day<Long>(12, 1206) {
     private fun List<Robot>.print(maxX: Int, maxY: Int): List<Robot> {
         println()
         for (y in 0 until maxY) {
-            for (x in 0 until maxX) {
-                val count = this.count { it.pos == x to y }
-                print(if (count == 0) "." else count)
+            if (maxY / 2 == y) print("-".repeat(maxX)) else {
+                for (x in 0 until maxX) {
+                    if (maxX / 2 == x) print("|") else {
+                    val count = this.count { it.pos == x to y }
+                    print(if (count == 0) "." else count)}
+                }
             }
             println()
         }
