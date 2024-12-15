@@ -6,6 +6,9 @@ import kotlin.math.abs
 typealias PositionInt = Pair<Int, Int>
 typealias Position = Pair<Long, Long>
 
+val PositionInt.x get() = first
+val PositionInt.y get() = second
+
 enum class Direction(val coords: PositionInt) {
     NORTH(0 to -1),
     EAST(1 to 0),
@@ -70,6 +73,49 @@ enum class Direction8(val coords: PositionInt) {
     }
 }
 
+data class Grid<T>(
+    private val list: List<MutableList<T>>
+) : Iterable<Pair<PositionInt, T>> {
+
+    companion object {
+        fun fromStrings(list: List<String>) = Grid(list.map { it.toMutableList() })
+    }
+
+    val maxRow = list.size - 1
+    val maxCol = list.first().size - 1
+
+    val allCoordinates: List<PositionInt>
+        get() = list.indices.flatMap { y -> list.first().indices.map { x -> x to y } }
+
+    operator fun contains(pos: PositionInt) = pos.x in list.first().indices && pos.y in list.indices
+    operator fun get(pos: PositionInt) = list[pos.y][pos.x]
+    operator fun set(pos: PositionInt, value: T) {
+        list[pos.y][pos.x] = value
+    }
+
+    fun getRow(index: Int) = list[index]
+    fun getColumn(index: Int) = list.map { it[index] }
+
+    fun <P> transform(block: (PositionInt, T) -> P): Grid<P> =
+        list.mapIndexed { y, row ->
+            row.mapIndexed { x, data ->
+                block(x to y, data)
+            }.toMutableList()
+        }.let(::Grid)
+
+    fun print(toString: (PositionInt) -> Any = { pos -> this[pos] ?: "" }) {
+        list.indices.forEach { y ->
+            list.first().indices.forEach { x ->
+                print(toString(x to y))
+            }
+            println()
+        }
+    }
+
+    override fun iterator(): Iterator<Pair<PositionInt, T>> = allCoordinates.map { it to this[it] }.iterator()
+}
+
+
 fun PositionInt.lineTo(direction: Direction, length: Int) = (0..length).map { this.move(direction, it) }
 fun PositionInt.lineTo(direction: Direction8, length: Int) = (0..length).map { this.move(direction, it) }
 
@@ -85,7 +131,9 @@ fun PositionInt.within(map: List<CharSequence>) = this.first in map[0].indices &
 fun PositionInt.withinMap(map: List<List<*>>) = this.first in map[0].indices && this.second in map.indices
 fun PositionInt.withinArrayMap(map: List<IntArray>) = this.first in map[0].indices && this.second in map.indices
 
-fun PositionInt.neighbours(predicate: Predicate<PositionInt> = Predicate{ true }) = (Direction.entries - Direction.NEUTRAL).map { this.move(it) }.filter { predicate.test(it) }
+fun PositionInt.neighbours(predicate: Predicate<PositionInt> = Predicate { true }) =
+    (Direction.entries - Direction.NEUTRAL).map { this.move(it) }.filter { predicate.test(it) }
+
 fun PositionInt.move(direction: Direction8, distance: Int = 1) = this + (direction.coords * distance)
 fun PositionInt.move(direction: Direction, distance: Int = 1) = this + (direction.coords * distance)
 infix fun PositionInt.move(direction: Direction) = this + direction.coords
@@ -114,7 +162,8 @@ fun List<String>.corners(pos: PositionInt) = (Direction.entries - Direction.NEUT
         val c = this.charAtOrNull(pos)
         (a != c && b != c) || (a == c && b == c && this.charAtOrNull(pos.move(d1).move(d2)) != c)
     }.size
-fun List<String>.replace(pos: PositionInt, char: Char) = this.mapIndexed{ y, row -> if (y == pos.second) row.replaceCharAt(pos.first, char) else row}
+
+fun List<String>.replace(pos: PositionInt, char: Char) = this.mapIndexed { y, row -> if (y == pos.second) row.replaceCharAt(pos.first, char) else row }
 fun List<String>.find(char: Char) = indices.flatMap { y -> this[y].indices.map { x -> x to y } }.first { (x, y) -> this[y][x] == char }
 fun String.replaceCharAt(index: Int, char: Char): String = this.take(index) + char + this.drop(index + 1)
 
