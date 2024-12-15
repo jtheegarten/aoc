@@ -112,16 +112,25 @@ data class Grid<T>(
         }
     }
 
+    fun find(item: T) = allCoordinates.first { this[it] == item }
+
+    fun corners(pos: PositionInt) = (Direction.entries - Direction.NEUTRAL + Direction.NORTH).zipWithNext()
+        .filter { (d1, d2) ->
+            val a = this[pos move d1]
+            val b = this[pos move d2]
+            val c = this[pos]
+            (a != c && b != c) || (a == c && b == c && this[pos move d1 move d2] != c)
+        }.size
+
     override fun iterator(): Iterator<Pair<PositionInt, T>> = allCoordinates.map { it to this[it]!! }.iterator()
 }
-
 fun List<String>.toGrid() = Grid.fromStrings(this)
+fun List<PositionInt>.takeWord(grid: Grid<Char>): String = mapNotNull { grid[it] }.joinToString("")
 
 fun PositionInt.lineTo(direction: Direction, length: Int) = (0..length).map { this.move(direction, it) }
 fun PositionInt.lineTo(direction: Direction8, length: Int) = (0..length).map { this.move(direction, it) }
 
 fun List<PositionInt>.takeWord(charMap: List<String>): String = map { charMap.charAtOrNull(it) }.joinToString("")
-fun List<PositionInt>.takeWord(grid: Grid<Char>): String = mapNotNull { grid[it] }.joinToString("")
 
 fun String.toDirection() = Direction.from(this)
 
