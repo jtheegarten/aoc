@@ -1,9 +1,6 @@
 package net.sheltem.aoc.y2024
 
-import net.sheltem.common.Direction8
-import net.sheltem.common.lineTo
-import net.sheltem.common.move
-import net.sheltem.common.takeWord
+import net.sheltem.common.*
 
 suspend fun main() {
     Day04().run()
@@ -11,35 +8,28 @@ suspend fun main() {
 
 class Day04 : Day<Long>(18, 9) {
 
-    override suspend fun part1(input: List<String>): Long = input.countXmas()
+    override suspend fun part1(input: List<String>): Long = input.toGrid().countXmas()
 
-    override suspend fun part2(input: List<String>): Long = input.countXmas(true)
+    override suspend fun part2(input: List<String>): Long = input.toGrid().countXmas(true)
 
-    private fun List<String>.countXmas(crossed: Boolean = false): Long {
-        var xmas = 0L
-        for (y in this.indices) {
-            for (x in this[0].indices) {
-                if (!crossed && this[y][x] == 'X') {
-                    xmas += this.findXmas(x, y)
-                }
-                if (crossed && this[y][x] == 'A') {
-                    xmas += this.findXedMas(x, y)
-                }
-            }
+    private fun Grid<Char>.countXmas(crossed: Boolean = false): Long =
+        this.allCoordinates.sumOf { pos ->
+        when {
+            !crossed && this[pos] == 'X' -> this.findXmas(pos)
+            crossed && this[pos] == 'A' -> this.findXedMas(pos)
+            else -> 0
         }
-
-        return xmas
     }
 
-    private fun List<String>.findXmas(x: Int, y: Int): Long =
+    private fun Grid<Char>.findXmas(pos: PositionInt): Long =
         Direction8
             .entries
-            .count { (x to y).lineTo(it, 3).takeWord(this) == "XMAS" }
+            .count { pos.lineTo(it, 3).takeWord(this) == "XMAS" }
             .toLong()
 
-    private fun List<String>.findXedMas(x: Int, y: Int): Long {
-        val word1 = (x to y).move(Direction8.NORTH_WEST).lineTo(Direction8.SOUTH_EAST, 2).takeWord(this)
-        val word2 = (x to y).move(Direction8.SOUTH_WEST).lineTo(Direction8.NORTH_EAST, 2).takeWord(this)
+    private fun Grid<Char>.findXedMas(pos: PositionInt): Long {
+        val word1 = pos.move(Direction8.NORTH_WEST).lineTo(Direction8.SOUTH_EAST, 2).takeWord(this)
+        val word2 = pos.move(Direction8.SOUTH_WEST).lineTo(Direction8.NORTH_EAST, 2).takeWord(this)
 
         return if (isMAS(listOf(word1, word2))) {
             1

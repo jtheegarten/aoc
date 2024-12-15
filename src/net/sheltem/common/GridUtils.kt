@@ -88,7 +88,7 @@ data class Grid<T>(
         get() = list.indices.flatMap { y -> list.first().indices.map { x -> x to y } }
 
     operator fun contains(pos: PositionInt) = pos.x in list.first().indices && pos.y in list.indices
-    operator fun get(pos: PositionInt) = list[pos.y][pos.x]
+    operator fun get(pos: PositionInt) = if(contains(pos)) list[pos.y][pos.x] else null
     operator fun set(pos: PositionInt, value: T) {
         list[pos.y][pos.x] = value
     }
@@ -112,14 +112,16 @@ data class Grid<T>(
         }
     }
 
-    override fun iterator(): Iterator<Pair<PositionInt, T>> = allCoordinates.map { it to this[it] }.iterator()
+    override fun iterator(): Iterator<Pair<PositionInt, T>> = allCoordinates.map { it to this[it]!! }.iterator()
 }
 
+fun List<String>.toGrid() = Grid.fromStrings(this)
 
 fun PositionInt.lineTo(direction: Direction, length: Int) = (0..length).map { this.move(direction, it) }
 fun PositionInt.lineTo(direction: Direction8, length: Int) = (0..length).map { this.move(direction, it) }
 
 fun List<PositionInt>.takeWord(charMap: List<String>): String = map { charMap.charAtOrNull(it) }.joinToString("")
+fun List<PositionInt>.takeWord(grid: Grid<Char>): String = mapNotNull { grid[it] }.joinToString("")
 
 fun String.toDirection() = Direction.from(this)
 
