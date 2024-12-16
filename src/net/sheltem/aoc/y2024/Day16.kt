@@ -32,8 +32,8 @@ class Day16 : Day<Long>(11048, 64) {
                 else -> {
                     visited[pos to dir] = score
                     if (this[pos move dir] != '#') queue.add(Triple(pos move dir, dir, score + 1))
-                    queue.add(Triple(pos, dir.turnRight(), score + 1000))
-                    queue.add(Triple(pos, dir.turnLeft(), score + 1000))
+                    if (this[pos move dir.turnRight()] != '#') queue.add(Triple(pos move dir.turnRight(), dir.turnRight(), score + 1001))
+                    if (this[pos move dir.turnLeft()] != '#') queue.add(Triple(pos move dir.turnLeft(), dir.turnLeft(), score + 1001))
                 }
             }
         }
@@ -50,13 +50,15 @@ class Day16 : Day<Long>(11048, 64) {
         val best = HashSet<PositionInt>()
 
 
-        while(queue.isNotEmpty()) {
+        while (queue.isNotEmpty()) {
             val (path, dir, score) = queue.poll()
             val pathEnd = path.last()
 
             if (pathEnd == end) {
-                if (score <= min) min = score else return best.size.toLong()
-                best.addAll(path)
+                if (score <= min) {
+                    min = score
+                    best.addAll(path)
+                } else return best.size.toLong()
             }
 
             if (visited.getOrDefault(pathEnd to dir, Long.MAX_VALUE) < score) continue
@@ -66,6 +68,15 @@ class Day16 : Day<Long>(11048, 64) {
             }
             queue.add(Triple(path, dir.turnRight(), score + 1000))
             queue.add(Triple(path, dir.turnLeft(), score + 1000))
+
+//            if (this[pathEnd move dir.turnRight()] != '#') {
+//                visited[pathEnd to dir.turnRight()] = score + 1000
+//                queue.add(Triple(path + (pathEnd move dir.turnRight()), dir.turnRight(), score + 1001))
+//            }
+//            if (this[pathEnd move dir.turnLeft()] != '#') {
+//                visited[pathEnd to dir.turnLeft()] = score + 1000
+//                queue.add(Triple(path + (pathEnd move dir.turnLeft()), dir.turnLeft(), score + 1001))
+//            }
         }
         return 0L
     }
