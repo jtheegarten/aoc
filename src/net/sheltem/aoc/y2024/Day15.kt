@@ -11,9 +11,9 @@ suspend fun main() {
 
 class Day15 : Day<Long>(10092, 9021) {
 
-    override suspend fun part1(input: List<String>): Long = input.parse().execute2()
+    override suspend fun part1(input: List<String>): Long = input.parse().execute()
 
-    override suspend fun part2(input: List<String>): Long = input.parse(true).execute2()
+    override suspend fun part2(input: List<String>): Long = input.parse(true).execute()
 
 
     private fun List<String>.parse(double: Boolean = false): Pair<Grid<Char>, List<Direction>> {
@@ -24,7 +24,7 @@ class Day15 : Day<Long>(10092, 9021) {
         return map.toGrid() to instructions
     }
 
-    private fun Pair<Grid<Char>, List<Direction>>.execute2(): Long {
+    private fun Pair<Grid<Char>, List<Direction>>.execute(): Long {
         val (grid, instructions) = this
         var pos = grid.find('@')
 
