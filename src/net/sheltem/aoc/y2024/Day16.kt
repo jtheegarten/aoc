@@ -26,13 +26,16 @@ class Day16 : Day<Long>(11048, 64) {
         while (queue.isNotEmpty()) {
             val (pos, dir, score) = queue.poll()
 
-            if (pos == end) return score
-            if (visited.getOrDefault(pos to dir, Long.MAX_VALUE) < score) continue
-            visited[pos to dir] = score
-
-            if (this[pos move dir] != '#') queue.add(Triple(pos move dir, dir, score + 1))
-            queue.add(Triple(pos, dir.turnRight(), score + 1000))
-            queue.add(Triple(pos, dir.turnLeft(), score + 1000))
+            when {
+                pos == end -> return score
+                visited.getOrDefault(pos to dir, Long.MAX_VALUE) < score -> continue
+                else -> {
+                    visited[pos to dir] = score
+                    if (this[pos move dir] != '#') queue.add(Triple(pos move dir, dir, score + 1))
+                    queue.add(Triple(pos, dir.turnRight(), score + 1000))
+                    queue.add(Triple(pos, dir.turnLeft(), score + 1000))
+                }
+            }
         }
         return 0L
     }
