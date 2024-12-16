@@ -78,7 +78,7 @@ data class Grid<T>(
 ) : Iterable<Pair<PositionInt, T>> {
 
     companion object {
-        fun fromStrings(list: List<String>) = Grid(list.map { it.toMutableList() })
+        fun fromStrings(list: List<String>) = Grid(list.filter { it.isNotBlank() }.map { it.toMutableList() })
     }
 
     val maxRow = list.size - 1
