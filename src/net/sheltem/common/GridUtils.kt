@@ -126,6 +126,40 @@ data class Grid<T>(
             (a != c && b != c) || (a == c && b == c && this[pos move d1 move d2] != c)
         }.size
 
+    fun dijkstra(
+        start: PositionInt,
+        goal: PositionInt,
+        nFilter: (PositionInt) -> Boolean = { this.contains(it) },
+    ): List<PositionInt>? {
+        val distances = mutableMapOf<PositionInt, Long>().withDefault { Long.MAX_VALUE }
+        val previous = mutableMapOf<PositionInt, PositionInt?>()
+        val queue = PriorityQueue(compareBy<PositionInt> { distances.getValue(it) })
+
+        distances[start] = 0
+        queue.add(start)
+
+        while (queue.isNotEmpty()) {
+            val current = queue.poll()
+
+            if (current == goal) {
+                return generateSequence(goal) { previous[it] }
+                    .takeWhile { it != null }
+                    .toList()
+                    .reversed()
+            }
+
+            current.neighbours { nFilter(it) }.forEach { neighbor ->
+                val alt = distances.getValue(current) + 1
+                if (alt < distances.getValue(neighbor)) {
+                    distances[neighbor] = alt
+                    previous[neighbor] = current
+                    queue.add(neighbor)
+                }
+            }
+        }
+        return null
+    }
+
     fun aStar(
         start: PositionInt,
         goal: PositionInt,

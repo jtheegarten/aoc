@@ -10,7 +10,7 @@ suspend fun main() {
 
 class Day18 : Day<String>("146", "15") {
 
-    override suspend fun part1(input: List<String>): String = input.map { it.toPos() }.runMaze(1024, 70, 70)!!.size.toString()
+    override suspend fun part1(input: List<String>): String = (input.map { it.toPos() }.runMaze(1024, 70, 70)!!.size - 1).toString()
 
     override suspend fun part2(input: List<String>): String {
         val bytes = input.map { it.toPos() }
@@ -36,6 +36,6 @@ class Day18 : Day<String>("146", "15") {
                     this[pos] = '#'
                 }
             }.let { grid ->
-                grid.aStar(0 to 0, maxX to maxY, { grid.contains(it) && grid[it] != '#' })
+                grid.dijkstra(0 to 0, maxX to maxY, { grid.contains(it) && grid[it] != '#' })
             }
 }
