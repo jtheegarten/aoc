@@ -149,14 +149,15 @@ data class Grid<T>(
                     .reversed()
             }
 
-            current.neighbours { nFilter(it) }.forEach { neighbour ->
-                val alt = distances.getValue(current) + dist(current, neighbour)
-                if (alt < distances.getValue(neighbour)) {
-                    distances[neighbour] = alt
-                    previous[neighbour] = current
-                    queue.add(neighbour)
+            current.neighbours { nFilter(it) }
+                .forEach { neighbour ->
+                    val alt = distances.getValue(current) + dist(current, neighbour)
+                    if (alt < distances.getValue(neighbour)) {
+                        distances[neighbour] = alt
+                        previous[neighbour] = current
+                        queue.add(neighbour)
+                    }
                 }
-            }
         }
         return null
     }
@@ -179,38 +180,25 @@ data class Grid<T>(
             val current = openSet.poll()
 
             if (current == goal) {
-                return reconstructPath(cameFrom, current)
+                return generateSequence(current) { cameFrom[it] }
+                    .takeWhile { it in cameFrom }
+                    .toList()
+                    .reversed()
             }
 
-            current.neighbours {
-                nFilter(it)
-            }.forEach { neighbour ->
-                val prelimG = gScore.getValue(current) + 1
-                if (prelimG < gScore.getValue(neighbour)) {
-                    cameFrom[neighbour] = current
-                    gScore[neighbour] = prelimG
-                    fScore[neighbour] = prelimG + heuristic(neighbour, goal)
-                    if (!openSet.contains(neighbour)) openSet.add(neighbour)
+            current.neighbours { nFilter(it) }
+                .forEach { neighbour ->
+                    val prelimG = gScore.getValue(current) + 1
+                    if (prelimG < gScore.getValue(neighbour)) {
+                        cameFrom[neighbour] = current
+                        gScore[neighbour] = prelimG
+                        fScore[neighbour] = prelimG + heuristic(neighbour, goal)
+                        if (!openSet.contains(neighbour)) openSet.add(neighbour)
+                    }
                 }
-            }
         }
         return null
     }
-
-    private fun reconstructPath(cameFrom: Map<PositionInt, PositionInt>, current: PositionInt): List<PositionInt> =
-        generateSequence(current) { cameFrom[it] }
-            .takeWhile { it in cameFrom }
-            .toList()
-            .reversed()
-//        val path = mutableListOf<PositionInt>()
-//        var pos = current
-//        while (pos in cameFrom) {
-//            path.add(pos)
-//            pos = cameFrom[pos]!!
-//
-//        }
-//        path.add(pos)
-//        return path.reversed()
 
     override fun iterator(): Iterator<Pair<PositionInt, T>> = allCoordinates.map { it to this[it]!! }.iterator()
 }
