@@ -10,51 +10,32 @@ suspend fun main() {
 
 class Day18 : Day<String>("146", "15") {
 
-    override suspend fun part1(input: List<String>): String = input.map { it.toPos() }.runMaze(1024, 70, 70).toString()
+    override suspend fun part1(input: List<String>): String = input.map { it.toPos() }.runMaze(1024, 70, 70)!!.size.toString()
 
-    override suspend fun part2(input: List<String>): String = input.map { it.toPos() }
-        .let { byteList ->
-            (1024..byteList.lastIndex).map {
-                it to byteList
-            }.mapParallel { (i, list) ->
-                if (list.runMaze(i, 70, 70) == 0L) i else -1
-            }.first { it != -1 }
-                .let { input[it - 1] }
+    override suspend fun part2(input: List<String>): String {
 
+        val bytes = input.map { it.toPos() }
+        var i = 1024
+        var path = bytes.runMaze(i, 70, 70)
+        while (path != null) {
+            i++
+            if (path.contains(bytes[i - 1])) {
+                path = bytes.runMaze(i, 70, 70)
+            }
         }
-
-//        byteList[generateSequence (1024) { it + 1 }
-//            .first { byteList.runMaze(it, 70, 70) == 0L }.toInt() - 1]
-//    }.toString()
+        return input[i - 1]
+    }
 
     private fun String.toPos() = this.split(",").let { (l, r) -> l.toInt() to r.toInt() }
 
-    private fun List<PositionInt>.runMaze(bytes: Int, maxX: Int, maxY: Int): Long {
-        val grid = List(maxY + 1) { ".".repeat(maxX + 1) }.toGrid()
-        this.take(bytes)
-            .forEach { pos ->
-                grid[pos] = '#'
+    private fun List<PositionInt>.runMaze(bytes: Int, maxX: Int, maxY: Int): List<PositionInt>? =
+        List(maxY + 1) { ".".repeat(maxX + 1) }
+            .toGrid()
+            .apply {
+                for (pos in this@runMaze.take(bytes)) {
+                    this[pos] = '#'
+                }
+            }.let { grid ->
+                grid.aStar(0 to 0, maxX to maxY, { grid.contains(it) && grid[it] != '#' })
             }
-
-        val visited = HashMap<PositionInt, Int>()
-        val queue = ArrayDeque<Pair<PositionInt, Int>>()
-        val goal = maxX to maxY
-        queue.add((0 to 0) to 0)
-
-        while (queue.isNotEmpty()) {
-            val (current, cost) = queue.removeFirst()
-            if (visited.getOrDefault(current, Int.MAX_VALUE) <= cost) continue
-
-            if (current == goal) return cost.toLong()
-            visited[current] = cost
-
-
-            listOf(EAST, SOUTH, WEST, NORTH)
-                .map { current move it }
-                .filter { grid.contains(it) && grid[it] != '#' }
-                .forEach { queue.add(it to (cost + 1)) }
-        }
-
-        return 0L
-    }
 }

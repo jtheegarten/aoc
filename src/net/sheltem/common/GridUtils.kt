@@ -1,5 +1,6 @@
 package net.sheltem.common
 
+import java.util.PriorityQueue
 import java.util.function.Predicate
 import kotlin.math.abs
 
@@ -91,7 +92,7 @@ data class Grid<T>(
         get() = list.flatten()
 
     operator fun contains(pos: PositionInt) = pos.x in list.first().indices && pos.y in list.indices
-    operator fun get(pos: PositionInt) = if(contains(pos)) list[pos.y][pos.x] else null
+    operator fun get(pos: PositionInt) = if (contains(pos)) list[pos.y][pos.x] else null
     operator fun set(pos: PositionInt, value: T) {
         list[pos.y][pos.x] = value
     }
@@ -125,8 +126,60 @@ data class Grid<T>(
             (a != c && b != c) || (a == c && b == c && this[pos move d1 move d2] != c)
         }.size
 
+    fun aStar(
+        start: PositionInt,
+        goal: PositionInt,
+        nFilter: (PositionInt) -> Boolean = { this.contains(it) },
+        heuristic: (PositionInt, PositionInt) -> Long = { a, b -> a.manhattan(b) }
+    ): List<PositionInt>? {
+
+        val cameFrom = mutableMapOf<PositionInt, PositionInt>()
+
+        val gScore = mutableMapOf<PositionInt, Long>().withDefault { Long.MAX_VALUE }.apply { this[start] = 0 }
+        val fScore = mutableMapOf<PositionInt, Long>().withDefault { Long.MAX_VALUE }.apply { this[start] = heuristic(start, goal) }
+
+        val openSet = PriorityQueue(compareBy<PositionInt> { fScore.getOrDefault(it, Long.MAX_VALUE) }).apply { add(start) }
+
+        while (openSet.isNotEmpty()) {
+            val current = openSet.poll()
+
+            if (current == goal) {
+                return reconstructPath(cameFrom, current)
+            }
+
+            current.neighbours {
+                nFilter(it)
+            }.forEach { neighbour ->
+                val prelimG = gScore.getValue(current) + 1
+                if (prelimG < gScore.getValue(neighbour)) {
+                    cameFrom[neighbour] = current
+                    gScore[neighbour] = prelimG
+                    fScore[neighbour] = prelimG + heuristic(neighbour, goal)
+                    if (!openSet.contains(neighbour)) openSet.add(neighbour)
+                }
+            }
+        }
+        return null
+    }
+
+    private fun reconstructPath(cameFrom: Map<PositionInt, PositionInt>, current: PositionInt): List<PositionInt> =
+        generateSequence(current) { cameFrom[it] }
+            .takeWhile { it in cameFrom }
+            .toList()
+            .reversed()
+//        val path = mutableListOf<PositionInt>()
+//        var pos = current
+//        while (pos in cameFrom) {
+//            path.add(pos)
+//            pos = cameFrom[pos]!!
+//
+//        }
+//        path.add(pos)
+//        return path.reversed()
+
     override fun iterator(): Iterator<Pair<PositionInt, T>> = allCoordinates.map { it to this[it]!! }.iterator()
 }
+
 fun List<String>.toGrid() = Grid.fromStrings(this)
 fun List<PositionInt>.takeWord(grid: Grid<Char>): String = mapNotNull { grid[it] }.joinToString("")
 
