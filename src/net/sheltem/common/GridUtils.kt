@@ -130,6 +130,7 @@ data class Grid<T>(
         start: PositionInt,
         goal: PositionInt,
         nFilter: (PositionInt) -> Boolean = { this.contains(it) },
+        dist: (PositionInt, PositionInt) -> Long = { _, _ -> 1L },
     ): List<PositionInt>? {
         val distances = mutableMapOf<PositionInt, Long>().withDefault { Long.MAX_VALUE }
         val previous = mutableMapOf<PositionInt, PositionInt?>()
@@ -148,12 +149,12 @@ data class Grid<T>(
                     .reversed()
             }
 
-            current.neighbours { nFilter(it) }.forEach { neighbor ->
-                val alt = distances.getValue(current) + 1
-                if (alt < distances.getValue(neighbor)) {
-                    distances[neighbor] = alt
-                    previous[neighbor] = current
-                    queue.add(neighbor)
+            current.neighbours { nFilter(it) }.forEach { neighbour ->
+                val alt = distances.getValue(current) + dist(current, neighbour)
+                if (alt < distances.getValue(neighbour)) {
+                    distances[neighbour] = alt
+                    previous[neighbour] = current
+                    queue.add(neighbour)
                 }
             }
         }
