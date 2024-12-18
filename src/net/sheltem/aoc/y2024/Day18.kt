@@ -12,10 +12,20 @@ class Day18 : Day<String>("146", "15") {
 
     override suspend fun part1(input: List<String>): String = input.map { it.toPos() }.runMaze(1024, 70, 70).toString()
 
-    override suspend fun part2(input: List<String>): String = input.map { it.toPos() }.let { byteList ->
-        byteList[generateSequence (1024) { it + 1 }
-            .first { byteList.runMaze(it, 70, 70) == 0L }.toInt() - 1]
-    }.toString()
+    override suspend fun part2(input: List<String>): String = input.map { it.toPos() }
+        .let { byteList ->
+            (1024..byteList.lastIndex).map {
+                it to byteList
+            }.mapParallel { (i, list) ->
+                if (list.runMaze(i, 70, 70) == 0L) i else -1
+            }.first { it != -1 }
+                .let { input[it - 1] }
+
+        }
+
+//        byteList[generateSequence (1024) { it + 1 }
+//            .first { byteList.runMaze(it, 70, 70) == 0L }.toInt() - 1]
+//    }.toString()
 
     private fun String.toPos() = this.split(",").let { (l, r) -> l.toInt() to r.toInt() }
 
