@@ -9,11 +9,12 @@ suspend fun main() {
 
 class Day11 : Day<Long>(55312, 65601038650482) {
 
-    override suspend fun part1(input: List<String>): Long = input.single().regexNumbers().sumOf { it.blink(25) }
-
-    override suspend fun part2(input: List<String>): Long = input.single().regexNumbers().sumOf { it.blink(75) }
-
     private val cache = mutableMapOf<Pair<Long, Int>, Long>()
+
+    override suspend fun part1(input: List<String>): Long = input.also { cache.clear() }.single().regexNumbers().sumOf { it.blink(25) }
+
+    override suspend fun part2(input: List<String>): Long = input.also { cache.clear() }.single().regexNumbers().sumOf { it.blink(75) }
+
 
     private fun Long.blink(times: Int): Long =
         cache.getOrPut(this to times) {
