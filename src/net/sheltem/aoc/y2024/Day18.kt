@@ -1,6 +1,7 @@
 package net.sheltem.aoc.y2024
 
 import net.sheltem.common.*
+import net.sheltem.common.Direction.*
 import kotlin.math.pow
 
 suspend fun main() {
@@ -27,9 +28,8 @@ class Day18 : Day<String>("146", "15") {
 
         val visited = HashMap<PositionInt, Int>()
         val queue = ArrayDeque<Pair<PositionInt, Int>>()
-        var pos = 0 to 0
         val goal = maxX to maxY
-        queue.add(pos to 0)
+        queue.add((0 to 0) to 0)
 
         while (queue.isNotEmpty()) {
             val (current, cost) = queue.removeFirst()
@@ -39,7 +39,9 @@ class Day18 : Day<String>("146", "15") {
             visited[current] = cost
 
 
-            current.neighbours { grid.contains(it) && grid[it]!! != '#' }
+            listOf(EAST, SOUTH, WEST, NORTH)
+                .map { current move it }
+                .filter { grid.contains(it) && grid[it] != '#' }
                 .forEach { queue.add(it to (cost + 1)) }
         }
 
