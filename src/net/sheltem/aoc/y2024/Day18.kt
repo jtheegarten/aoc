@@ -13,17 +13,17 @@ class Day18 : Day<String>("146", "15") {
     override suspend fun part1(input: List<String>): String = input.map { it.toPos() }.runMaze(1024, 70, 70)!!.size.toString()
 
     override suspend fun part2(input: List<String>): String {
-
         val bytes = input.map { it.toPos() }
-        var i = 1024
-        var path = bytes.runMaze(i, 70, 70)
-        while (path != null) {
-            i++
-            if (path.contains(bytes[i - 1])) {
-                path = bytes.runMaze(i, 70, 70)
+
+        (1024..input.lastIndex)
+            .fold(bytes.runMaze(1024, 70, 70)) { acc, i ->
+                when {
+                    (acc == null) -> return input[i - 2]
+                    acc.contains(bytes[i - 1]) -> bytes.runMaze(i, 70, 70)
+                    else -> acc
+                }
             }
-        }
-        return input[i - 1]
+        return ""
     }
 
     private fun String.toPos() = this.split(",").let { (l, r) -> l.toInt() to r.toInt() }
