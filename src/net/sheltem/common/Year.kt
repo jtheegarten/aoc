@@ -3,8 +3,10 @@ package net.sheltem.common
 import java.io.File
 import java.util.Locale
 import kotlin.io.path.Path
+import kotlin.io.path.toPath
 import kotlin.io.path.writeText
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.measureTime
 
@@ -19,7 +21,7 @@ open class Year(
         val results = days
             .map { Triple(it.first, it.second, File("src/net/sheltem/aoc/y$year/data/Day${it.first}.txt").readLines()) }
             .map { (day, dayClass, input) ->
-                Triple(day, List(10) { measureTime { dayClass.part1(input) } }.min(), List(10) { measureTime { dayClass.part2(input) } }.min())
+                Triple(day, List(25) { measureTime { dayClass.part1(input) } }.min(), List(25) { measureTime { dayClass.part2(input) } }.min())
             }
 
         val formattedResults = results.map { (day, resultA, resultB) ->
@@ -60,7 +62,21 @@ open class Year(
 
         val outputPath = Path("TIMES$year.MD")
 
+        runPlotter(results)
+
         outputPath.writeText("$markdownTable\n\nTotal time: $totalTime\n")
+    }
+
+    private fun runPlotter(list: List<Triple<String, Duration, Duration>>) {
+        val plotterInput = list.map { it.second to it.third }.unzip().let {
+            listOf(it.first.joinToString("#") { it.inWholeMicroseconds.toString() }, it.second.joinToString("#") { it.inWholeMicroseconds.toString() })
+        }
+        println(plotterInput.joinToString(" "))
+
+        val processBuilder = ProcessBuilder("java", "-jar", "C:\\Users\\Jon\\IdeaProjects\\aoc-2022\\plotter.jar", *plotterInput.toTypedArray())
+        processBuilder.directory(File("C:\\Users\\Jon\\IdeaProjects\\aoc-2022\\"))
+        val process = processBuilder.start()
+        process.waitFor()
     }
 }
 
