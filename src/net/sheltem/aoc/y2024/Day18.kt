@@ -15,13 +15,10 @@ class Day18 : Day<String>("146", "15") {
     override suspend fun part2(input: List<String>): String {
         val bytes = input.map { it.toPos() }
 
-        (1024..input.lastIndex)
-            .fold(bytes.runMaze(1024, 70, 70)) { acc, i ->
-                when {
-                    (acc == null) -> return input[i - 2]
-                    acc.contains(bytes[i - 1]) -> bytes.runMaze(i, 70, 70)
-                    else -> acc
-                }
+        (input.lastIndex downTo 0)
+            .fold(null) { acc: List<PositionInt>?, i ->
+                if (acc == null) bytes.runMaze(i, 70, 70)
+                else return input[i + 1]
             }
         return ""
     }
