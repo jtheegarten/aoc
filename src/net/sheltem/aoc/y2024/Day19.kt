@@ -9,7 +9,7 @@ class Day19 : Day<Long>(6, 16) {
     override suspend fun part1(input: List<String>): Long = input
         .also { cache.clear() }
         .parse()
-        .let { (supply, patterns) -> patterns.count { supply.validate(it) >= 1L } }
+        .let { (supply, patterns) -> patterns.count { supply.validate(it) > 0L } }
         .toLong()
 
     override suspend fun part2(input: List<String>): Long = input
