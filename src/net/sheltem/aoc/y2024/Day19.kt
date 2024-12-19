@@ -19,8 +19,8 @@ class Day19 : Day<Long>(6, 16) {
 
     private val cache = HashMap<String, Long>()
 
-    private fun List<String>.validate(pattern: String): Long {
-        return when {
+    private fun List<String>.validate(pattern: String): Long =
+        when {
             pattern.isEmpty() -> 1L
             cache.contains(pattern) -> cache[pattern]!!
             else -> this.sumOf {
@@ -29,7 +29,6 @@ class Day19 : Day<Long>(6, 16) {
                 else 0L
             }.also { cache[pattern] = it }
         }
-    }
 
     private fun List<String>.parse() = let { this[0].split(", ") to this.drop(2) }
 }
