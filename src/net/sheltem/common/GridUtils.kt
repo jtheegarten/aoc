@@ -74,6 +74,7 @@ enum class Direction8(val coords: PositionInt) {
     }
 }
 
+@Suppress("SENSELESS_COMPARISON")
 data class Grid<T>(
     private val list: List<MutableList<T>>
 ) : Iterable<Pair<PositionInt, T>> {

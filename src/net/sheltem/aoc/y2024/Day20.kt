@@ -10,24 +10,22 @@ suspend fun main() {
 
 class Day20 : Day<Long>(6, 16) {
 
-    override suspend fun part1(input: List<String>): Long = input.toGrid().findCheats(101)
+    override suspend fun part1(input: List<String>): Long = input.toGrid().findCheats(100, 2)
 
-    override suspend fun part2(input: List<String>): Long = 6L
+    override suspend fun part2(input: List<String>): Long = input.toGrid().findCheats(100, 20)
 
-    private fun Grid<Char>.findCheats(saved: Long): Long {
+    private fun Grid<Char>.findCheats(saved: Int, steps: Int): Long {
         val start = this.find('S')
         val end = this.find('E')
 
         val path = this.dijkstra(start, end, { this.contains(it) && this[it] != '#' })
 
-        var cheatcount = 0L
-        for (i in path!!.indices) {
-            val j = (i + saved).toInt()
-            (j..path.lastIndex).forEach {
-                if (path[i].manhattan(path[it]) == 2L) cheatcount++
+        return path!!.indices.sumOf { i ->
+            val j = i + saved + 1
+            (j..path.lastIndex).count {
+                val distance = path[i].manhattan(path[it])
+                distance <= steps.toLong() && it - i - distance >= saved
             }
-        }
-
-        return cheatcount
+        }.toLong()
     }
 }
