@@ -10,12 +10,12 @@ typealias Position = Pair<Long, Long>
 val PositionInt.x get() = first
 val PositionInt.y get() = second
 
-enum class Direction(val coords: PositionInt) {
-    NORTH(0 to -1),
-    EAST(1 to 0),
-    SOUTH(0 to 1),
-    WEST(-1 to 0),
-    NEUTRAL(0 to 0);
+enum class Direction(val coords: PositionInt, val caret: Char) {
+    NORTH(0 to -1, '^'),
+    EAST(1 to 0, '>'),
+    SOUTH(0 to 1, 'v'),
+    WEST(-1 to 0, '<'),
+    NEUTRAL(0 to 0, '.');
 
     fun turnRight() = when (this) {
         NORTH -> EAST
@@ -43,6 +43,12 @@ enum class Direction(val coords: PositionInt) {
             "R", ">", "E" -> EAST
             else -> NEUTRAL
         }
+
+        fun from(start: PositionInt, end: PositionInt): Direction {
+            return Direction.from((end - start))
+        }
+
+        fun from(coords: PositionInt): Direction = Direction.entries.single { it.coords == coords }
     }
 }
 
