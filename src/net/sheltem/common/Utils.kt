@@ -21,4 +21,6 @@ suspend inline fun <T> Iterable<T>.countParallel(crossinline predicate: (T) -> B
 suspend inline fun <T> Iterable<T>.sumOfParallel(crossinline transform: (T) -> Long): Long = coroutineScope {
     map { async { transform(it) } }.sumOf { it.await() }
 }
-
+suspend inline fun <T> Iterable<T>.forEachParallel(crossinline action: (T) -> Unit): Unit = coroutineScope {
+    map { async { action(it) } }.awaitAll()
+}
