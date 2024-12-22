@@ -14,19 +14,21 @@ class Day22 : Day<Long>(37327623, 24) {
         input.filter { it.isNotEmpty() }.map { it.toLong() }.sumOfParallel { it.secret().drop(2000).first() }
 
     override suspend fun part2(input: List<String>): Long {
-        val monkeys = input.filter { it.isNotEmpty() }.map { it.toLong() }
         val maxBananas = ConcurrentHashMap<List<Int>, Int>()
 
-        monkeys.forEachParallel { monkey ->
-            val prices = monkey.secret().take(2000).map { it.toString().last().digitToInt() }.toList()
-            val changeSetsSeen = HashSet<List<Int>>()
+        input.filter { it.isNotEmpty() }
+            .map { it.toLong() }
+            .forEachParallel { monkey ->
+                val prices = monkey.secret().take(2000).map { it.toString().last().digitToInt() }.toList()
+                val changeSetsSeen = HashSet<List<Int>>()
 
-            prices.zipWithNext { left, right -> right - left }
-                .windowed(4)
-                .forEachIndexed { index, changeSet ->
-                    if (changeSetsSeen.add(changeSet)) maxBananas.compute(changeSet) { _, value -> (value ?: 0) + prices[index + 4] }
-                }
-        }
+                prices.zipWithNext { left, right -> right - left }
+                    .windowed(4)
+                    .forEachIndexed { index, changeSet ->
+                        if (changeSetsSeen.add(changeSet))
+                            maxBananas.compute(changeSet) { _, value -> (value ?: 0) + prices[index + 4] }
+                    }
+            }
         return maxBananas.maxOf { it.value }.toLong()
     }
 
