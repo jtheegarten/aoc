@@ -33,6 +33,6 @@ class Day22 : Day<Long>(37327623, 24) {
     }
 
     private fun Long.secrets() = generateSequence(this) { secret ->
-        listOf(6, 5, 11).fold(secret) { acc, bits -> acc.xor(if (bits == 5) acc shr bits else acc shl bits) % 16777216 }
+        listOf(6, 5, 11).fold(secret) { acc, bits -> acc.xor(if (bits == 5) acc shr bits else acc shl bits) and 0xffffff }
     }
 }
