@@ -24,3 +24,18 @@ suspend inline fun <T> Iterable<T>.sumOfParallel(crossinline transform: (T) -> L
 suspend inline fun <T> Iterable<T>.forEachParallel(crossinline action: (T) -> Unit): Unit = coroutineScope {
     map { async { action(it) } }.awaitAll()
 }
+
+fun <T> List<T>.combinations(size: Int): List<List<T>> {
+    if (size <= 0) return listOf(emptyList())
+    if (size > this.size) return emptyList()
+    if (size == this.size) return listOf(this)
+    if (size == 1) return this.map { listOf(it) }
+
+    val combinations = mutableListOf<List<T>>()
+    val rest = this.drop(1)
+    rest.combinations(size - 1).forEach { combination ->
+        combinations.add(listOf(this[0]) + combination)
+    }
+    combinations += rest.combinations(size)
+    return combinations
+}
