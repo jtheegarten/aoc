@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    kotlin("jvm") version "2.1.0"
+    kotlin("jvm") version "2.2.21"
 }
 
 repositories {
@@ -21,7 +19,7 @@ tasks {
     }
 
     wrapper {
-        gradleVersion = "8.3"
+        gradleVersion = "9.2.1"
     }
 }
 
