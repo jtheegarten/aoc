@@ -98,10 +98,20 @@ data class Grid<T>(
     val allFields: List<T>
         get() = list.flatten()
 
+
     operator fun contains(pos: PositionInt) = pos.x in list.first().indices && pos.y in list.indices
     operator fun get(pos: PositionInt) = if (contains(pos)) list[pos.y][pos.x] else null
     operator fun set(pos: PositionInt, value: T) {
         list[pos.y][pos.x] = value
+    }
+
+    fun setAll(positions: List<PositionInt>, value: T): Grid<T> {
+        positions.forEach { this[it] = value }
+        return this
+    }
+
+    fun allCoordinates(content: T): List<PositionInt> {
+        return allCoordinates.filter { this[it] == content }
     }
 
     fun getRow(index: Int) = list[index]
@@ -230,6 +240,9 @@ fun PositionInt.withinArrayMap(map: List<IntArray>) = this.first in map[0].indic
 
 fun PositionInt.neighbours(predicate: Predicate<PositionInt> = Predicate { true }) =
     (Direction.entries - Direction.NEUTRAL).map { this.move(it) }.filter { predicate.test(it) }
+
+fun PositionInt.neighbours8(predicate: Predicate<PositionInt> = Predicate { true }) =
+    (Direction8.entries - Direction8.NEUTRAL).map { this.move(it) }.filter { predicate.test(it) }
 
 fun PositionInt.move(direction: Direction8, distance: Int = 1) = this + (direction.coords * distance)
 fun PositionInt.move(direction: Direction, distance: Int = 1) = this + (direction.coords * distance)
