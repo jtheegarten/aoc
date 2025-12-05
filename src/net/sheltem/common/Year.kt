@@ -62,7 +62,7 @@ open class Year(
 
         val outputPath = Path("TIMES$year.MD")
 
-        runPlotter(results)
+//        runPlotter(results)
 
         outputPath.writeText("$markdownTable\n\nTotal time: $totalTime\n")
     }
