@@ -26,20 +26,18 @@ class Day07 : Day<Long>(21, 40) {
 
     private fun Grid<Char>.countBeams(): Long {
         val start = this.find('S')
-        var tachyonXs = setOf<Int>(start.x)
+        var tachyonXs = setOf(start.x)
         var splits = 0
 
         for (y in 1..this.maxRow) {
             val newTachyonXs = mutableSetOf<Int>()
-            for (x in 0..this.maxCol) {
-                if (tachyonXs.contains(x)) {
-                    if (this[x to y] == '^') {
-                        newTachyonXs.add(x - 1)
-                        newTachyonXs.add(x + 1)
-                        splits++
-                    } else {
-                        newTachyonXs.add(x)
-                    }
+            for (x in tachyonXs) {
+                if (this[x to y] == '^') {
+                    newTachyonXs.add(x - 1)
+                    newTachyonXs.add(x + 1)
+                    splits++
+                } else {
+                    newTachyonXs.add(x)
                 }
             }
             tachyonXs = newTachyonXs
