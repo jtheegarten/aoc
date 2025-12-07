@@ -2,6 +2,7 @@ package net.sheltem.aoc.y2025
 
 import net.sheltem.common.Direction
 import net.sheltem.common.Direction.EAST
+import net.sheltem.common.Direction.SOUTH
 import net.sheltem.common.Direction.WEST
 import net.sheltem.common.Grid
 import net.sheltem.common.PositionInt
@@ -51,12 +52,12 @@ class Day07 : Day<Long>(21, 40) {
 
         fun search(pos: PositionInt): Long = cache
             .getOrPut(pos) {
-                val nextPos = pos.move(Direction.SOUTH)
-                val next = this[nextPos]
-                when (next) {
-                    '.' -> search(nextPos)
-                    '^' -> search(nextPos.move(WEST)) + search(nextPos.move(EAST))
-                    else -> 1
+                pos.move(SOUTH).let { next ->
+                    when (this[next]) {
+                        '.' -> search(next)
+                        '^' -> search(next.move(WEST)) + search(next.move(EAST))
+                        else -> 1
+                    }
                 }
             }
 
