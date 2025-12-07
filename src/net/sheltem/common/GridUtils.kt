@@ -249,6 +249,8 @@ fun PositionInt.move(direction: Direction, distance: Int = 1) = this + (directio
 infix fun PositionInt.move(direction: Direction) = this + direction.coords
 infix fun PositionInt.move(direction8: Direction8) = this + direction8.coords
 
+fun <T> PositionInt.takeFrom(grid: Grid<T>): T? = grid[this]
+
 fun Pair<PositionInt, PositionInt>.manhattan(): Long = (abs(this.first.first - this.second.first) + abs(this.first.second - this.second.second)).toLong()
 infix fun PositionInt.manhattan(other: PositionInt): Long = (this to other).manhattan()
 
