@@ -9,4 +9,4 @@ fun String.toPoint3D() = split(Regex("[,\\s]")).map { it.toLong() }.let { (a, b,
 
 fun Point3D.bigDistance(b: Point3D): Double = (this.first - b.first).toDouble().pow(2) + (this.second - b.second).toDouble().pow(2) + (this.third - b.third).toDouble().pow(2)
 fun Point3D.distance(b: Point3D): Double = sqrt(this.bigDistance(b))
-fun Point3D.sum() = first + second + third
+fun Point3D.sum() = this.toList().sum()
