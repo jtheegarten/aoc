@@ -1,10 +1,10 @@
 package net.sheltem.aoc.y2025
 
-import Point3D
-import distance
+import net.sheltem.common.Point3D
+import net.sheltem.common.bigDistance
 import net.sheltem.common.multiply
-import sum
-import toPoint3D
+import net.sheltem.common.sum
+import net.sheltem.common.toPoint3D
 import kotlin.math.roundToInt
 
 
@@ -25,7 +25,7 @@ class Day08 : Day<Long>(40, 25272) {
     private fun List<Point3D>.connect(): Long {
         val connectionsToMake = if (this.size < 1000) 10 else 1000
         val circuits = this.map { setOf(it) }.toMutableList()
-        val mesh = this.fullMesh().sortedBy { (a, b) -> a.distance(b).roundToInt() }
+        val mesh = this.fullMesh().sortedBy { (a, b) -> a.bigDistance(b).roundToInt() }
 
         var i = 0
         repeat (connectionsToMake) {
@@ -41,7 +41,7 @@ class Day08 : Day<Long>(40, 25272) {
 
     private fun List<Point3D>.connectAll(): Long {
         val circuits = this.map { setOf(it) }.toMutableList()
-        val mesh = this.fullMesh().sortedBy { (a, b) -> a.distance(b).roundToInt() }
+        val mesh = this.fullMesh().sortedBy { (a, b) -> a.bigDistance(b).roundToInt() }
 
         var i = 0
         while (true) {

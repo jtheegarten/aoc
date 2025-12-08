@@ -8,9 +8,9 @@ private val days = listOf(
     "03" to Day03(),
     "04" to Day04(),
     "05" to Day05(),
-//    "06" to Day06(),
-//    "07" to Day07(),
-//    "08" to Day08(),
+    "06" to Day06(),
+    "07" to Day07(),
+    "08" to Day08(),
 //    "09" to Day09(),
 //    "10" to Day10(),
 //    "11" to Day11(),
@@ -21,4 +21,4 @@ suspend fun main() {
     Year2025().run()
 }
 
-class Year2025: Year(2025, days)
+class Year2025 : Year(2025, days)
