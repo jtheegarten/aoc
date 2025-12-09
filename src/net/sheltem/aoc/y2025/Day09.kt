@@ -26,9 +26,8 @@ class Day09 : Day<Long>(50, 24) {
 
     private fun String.toPositionInt() = split(",").let { (left, right) -> left.toInt() to right.toInt() }
 
-    private fun List<PositionInt>.maxContainedArea(ignorePolygon: Boolean = false): Long {
-        val polygon = Area(Polygon().also { polygon -> this.forEach { polygon.addPoint(it.x, it.y) } })
-        return this.flatMapIndexed { i, start ->
+    private fun List<PositionInt>.maxContainedArea(ignorePolygon: Boolean = false): Long =
+        flatMapIndexed { i, start ->
             drop(i + 1).map { end ->
                 Rectangle2D.Double(
                     min(start.x, end.x).toDouble(),
@@ -37,10 +36,10 @@ class Day09 : Day<Long>(50, 24) {
                     abs(end.y - start.y).toDouble()
                 )
             }
-        }
-            .filter { ignorePolygon || polygon.contains(it) }
-            .maxOf { ((it.width + 1) * (it.height + 1)).toLong() }
-    }
+        }.let { list ->
+            val polygon = Area(Polygon().also { polygon -> this.forEach { point -> polygon.addPoint(point.x, point.y) } })
+            list.filter { ignorePolygon || polygon.contains(it) }
+        }.maxOf { ((it.width + 1) * (it.height + 1)).toLong() }
 
 //    private fun List<PositionInt>.maxArea(): Long =
 //        map { start ->
