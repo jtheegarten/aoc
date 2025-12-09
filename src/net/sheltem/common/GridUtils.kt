@@ -3,6 +3,8 @@ package net.sheltem.common
 import java.util.PriorityQueue
 import java.util.function.Predicate
 import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -267,6 +269,14 @@ fun PositionInt.move(direction: Direction8, distance: Int = 1) = this + (directi
 fun PositionInt.move(direction: Direction, distance: Int = 1) = this + (direction.coords * distance)
 infix fun PositionInt.move(direction: Direction) = this + direction.coords
 infix fun PositionInt.move(direction8: Direction8) = this + direction8.coords
+
+infix fun PositionInt.minX(other: PositionInt) = min(this.x, other.x)
+infix fun PositionInt.maxX(other: PositionInt) = max(this.x, other.x)
+infix fun PositionInt.minY(other: PositionInt) = min(this.y, other.y)
+infix fun PositionInt.maxY(other: PositionInt) = max(this.y, other.y)
+infix fun PositionInt.distX(other: PositionInt) = abs(this.x - other.x)
+infix fun PositionInt.distY(other: PositionInt) = abs(this.y - other.y)
+
 
 fun <T> PositionInt.takeFrom(grid: Grid<T>): T? = grid[this]
 

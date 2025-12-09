@@ -1,6 +1,10 @@
 package net.sheltem.aoc.y2025
 
 import net.sheltem.common.PositionInt
+import net.sheltem.common.distX
+import net.sheltem.common.distY
+import net.sheltem.common.minX
+import net.sheltem.common.minY
 import net.sheltem.common.x
 import net.sheltem.common.y
 import java.awt.Polygon
@@ -30,10 +34,10 @@ class Day09 : Day<Long>(50, 24) {
         flatMapIndexed { i, start ->
             drop(i + 1).map { end ->
                 Rectangle2D.Double(
-                    min(start.x, end.x).toDouble(),
-                    min(start.y, end.y).toDouble(),
-                    abs(end.x - start.x).toDouble(),
-                    abs(end.y - start.y).toDouble()
+                    (start minX end).toDouble(),
+                    (start minY end).toDouble(),
+                    abs(start distX end).toDouble(),
+                    abs(start distY end).toDouble()
                 )
             }
         }.let { list ->
