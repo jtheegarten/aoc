@@ -8,10 +8,9 @@ import net.sheltem.common.minY
 import net.sheltem.common.x
 import net.sheltem.common.y
 import java.awt.Polygon
+import java.awt.Rectangle
 import java.awt.geom.Area
-import java.awt.geom.Rectangle2D
 import kotlin.math.abs
-import kotlin.math.min
 
 
 suspend fun main() {
@@ -33,11 +32,11 @@ class Day09 : Day<Long>(50, 24) {
     private fun List<PositionInt>.maxContainedArea(ignorePolygon: Boolean = false): Long =
         flatMapIndexed { i, start ->
             drop(i + 1).map { end ->
-                Rectangle2D.Double(
-                    (start minX end).toDouble(),
-                    (start minY end).toDouble(),
-                    abs(start distX end).toDouble(),
-                    abs(start distY end).toDouble()
+                Rectangle(
+                    (start minX end),
+                    (start minY end),
+                    abs(start distX end),
+                    abs(start distY end)
                 )
             }
         }.let { list ->
