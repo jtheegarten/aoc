@@ -3,6 +3,8 @@ package net.sheltem.common
 import java.util.PriorityQueue
 import java.util.function.Predicate
 import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 typealias PositionInt = Pair<Int, Int>
 typealias Position = Pair<Long, Long>
@@ -225,6 +227,23 @@ fun List<PositionInt>.takeWord(grid: Grid<Char>): String = mapNotNull { grid[it]
 
 fun PositionInt.lineTo(direction: Direction, length: Int) = (0..length).map { this.move(direction, it) }
 fun PositionInt.lineTo(direction: Direction8, length: Int) = (0..length).map { this.move(direction, it) }
+fun PositionInt.lineTo(end: PositionInt) =
+    when {
+        this.x != end.x && this.y != end.y -> error("Not a line along an axis")
+        this.x == end.x -> {
+            (end.y - this.y).let { distance ->
+                if (distance < 0) this.lineTo(Direction.NORTH, abs(distance))
+                else this.lineTo(Direction.SOUTH, distance)
+            }
+        }
+        this.y == end.y -> {
+            (end.x - this.x).let { distance ->
+                if (distance < 0) this.lineTo(Direction.WEST, abs(distance))
+                else this.lineTo(Direction.EAST, distance)
+            }
+        }
+        else -> error("No line to make")
+    }
 
 fun List<PositionInt>.takeWord(charMap: List<String>): String = map { charMap.charAtOrNull(it) }.joinToString("")
 
@@ -251,8 +270,10 @@ infix fun PositionInt.move(direction8: Direction8) = this + direction8.coords
 
 fun <T> PositionInt.takeFrom(grid: Grid<T>): T? = grid[this]
 
-fun Pair<PositionInt, PositionInt>.manhattan(): Long = (abs(this.first.first - this.second.first) + abs(this.first.second - this.second.second)).toLong()
+fun Pair<PositionInt, PositionInt>.euclidean(): Double = sqrt((first.first - second.first).toDouble().pow(2) + (first.second - second.second).toDouble().pow(2))
+fun Pair<PositionInt, PositionInt>.manhattan(): Long = abs(this.first.first - this.second.first).toLong() + abs(this.first.second - this.second.second).toLong()
 infix fun PositionInt.manhattan(other: PositionInt): Long = (this to other).manhattan()
+fun Pair<PositionInt, PositionInt>.area(): Long = (abs(this.first.first - this.second.first) + 1).toLong() * (abs(this.first.second - this.second.second).toLong() + 1)
 
 fun List<PositionInt>.gaussArea(): Long {
     val last = this.last()
