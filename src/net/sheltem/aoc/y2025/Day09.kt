@@ -32,12 +32,7 @@ class Day09 : Day<Long>(50, 24) {
     private fun List<PositionInt>.maxContainedArea(ignorePolygon: Boolean = false): Long =
         flatMapIndexed { i, start ->
             drop(i + 1).map { end ->
-                Rectangle(
-                    (start minX end),
-                    (start minY end),
-                    abs(start distX end),
-                    abs(start distY end)
-                )
+                Rectangle((start minX end), (start minY end), abs(start distX end), abs(start distY end))
             }
         }.let { list ->
             val polygon = Area(Polygon().also { polygon -> this.forEach { point -> polygon.addPoint(point.x, point.y) } })
