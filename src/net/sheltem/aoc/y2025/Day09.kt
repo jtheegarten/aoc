@@ -12,7 +12,6 @@ import java.awt.Rectangle
 import java.awt.geom.Area
 import kotlin.math.abs
 
-
 suspend fun main() {
     Day09().run()
 }
@@ -38,15 +37,6 @@ class Day09 : Day<Long>(50, 24) {
             val polygon = Area(Polygon().also { polygon -> this.forEach { point -> polygon.addPoint(point.x, point.y) } })
             list.filter { ignorePolygon || polygon.contains(it) }
         }.maxOf { ((it.width + 1) * (it.height + 1)).toLong() }
-
-//    private fun List<PositionInt>.maxArea(): Long =
-//        map { start ->
-//            (this - start).map { end ->
-//                start to end
-//            }.maxBy { it.area() }
-//        }.maxBy { it.area() }
-//            .area()
-
 }
 
 // Polygon > 1550582096
