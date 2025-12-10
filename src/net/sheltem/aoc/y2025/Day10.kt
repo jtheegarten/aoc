@@ -89,20 +89,10 @@ class Day10 : Day<Long>(7, 33) {
             }
         }
 
-
-
         fun next(state: List<Boolean>, count: Int, seen: Set<List<Boolean>>): Set<Pair<List<Boolean>, Int>> =
             buttonSets.map { buttons ->
                 state.modifyWith(buttons)
             }.filter { !seen.contains(it) }
-                .map { it to (count + 1) }
-                .toSet()
-
-        fun nextJoltage(state: List<Int>, count: Int, seen: Set<List<Int>>): Set<Pair<List<Int>, Int>> =
-            buttonSets.map { buttons ->
-                state.modifyJoltageWith(buttons)
-            }.filter { !seen.contains(it) }
-                .filter { it.zip(joltage).all { (l, r) -> l <= r } }
                 .map { it to (count + 1) }
                 .toSet()
     }
