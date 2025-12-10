@@ -7,11 +7,6 @@ import com.microsoft.z3.Status
 import net.sheltem.common.mapParallel
 import net.sheltem.common.regex
 import java.util.PriorityQueue
-import kotlin.collections.get
-import kotlin.collections.toTypedArray
-import kotlin.io.use
-import kotlin.text.get
-import kotlin.text.toLong
 
 
 suspend fun main() {
