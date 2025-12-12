@@ -8,14 +8,13 @@ suspend fun main() {
     Day12().run()
 }
 
-class Day12 : Day<Long>(3, 2) {
+class Day12 : Day<Long>(3, 24) {
 
     override suspend fun part1(input: List<String>): Long = input
         .parse()
         .naiveFit()
 
-
-    override suspend fun part2(input: List<String>): Long = 2
+    override suspend fun part2(input: List<String>): Long = 24
 
     private fun Pair<List<Int>, List<Pair<String, List<Int>>>>.naiveFit(): Long {
         val (shapes, trees) = this
