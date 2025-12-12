@@ -1,4 +1,4 @@
-package net.sheltem.common
+package net.sheltem.aoc
 
 import java.io.File
 import java.time.Duration

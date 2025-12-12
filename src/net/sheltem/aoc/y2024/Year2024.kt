@@ -1,6 +1,6 @@
 package net.sheltem.aoc.y2024
 
-import net.sheltem.common.Year
+import net.sheltem.aoc.Year
 
 private val days = listOf(
     "01" to Day01(),

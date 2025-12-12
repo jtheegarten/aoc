@@ -1,12 +1,10 @@
-package net.sheltem.common
+package net.sheltem.aoc
 
 import java.io.File
 import java.util.Locale
 import kotlin.io.path.Path
-import kotlin.io.path.toPath
 import kotlin.io.path.writeText
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.measureTime
 
