@@ -1,7 +1,6 @@
 package net.sheltem.ec.events.algorithmia
 
 import net.sheltem.common.joinToLong
-import kotlin.times
 
 suspend fun main() {
     Quest05().run()
