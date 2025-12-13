@@ -1,7 +1,18 @@
 package net.sheltem.ec.events.algorithmia
 
+import java.io.File
+
 suspend fun main() {
     Quest01().run()
+}
+
+fun generateInputFiles() {
+    File("src/net/sheltem/ec/events/algorithmia/data/Quest01_test1.txt")
+    File("src/net/sheltem/ec/events/algorithmia/data/Quest01_test2.txt")
+    File("src/net/sheltem/ec/events/algorithmia/data/Quest01_test3.txt")
+    File("src/net/sheltem/ec/events/algorithmia/data/Quest01-1.txt")
+    File("src/net/sheltem/ec/events/algorithmia/data/Quest01-2.txt")
+    File("src/net/sheltem/ec/events/algorithmia/data/Quest01-3.txt")
 }
 
 class Quest01 : AlgorithmiaQuest<Long>(listOf(5, 28, 30)) {
@@ -10,7 +21,7 @@ class Quest01 : AlgorithmiaQuest<Long>(listOf(5, 28, 30)) {
 
     override suspend fun part1(input: List<String>): Long = input
         .joinToString("")
-        .sumOf { costs[it]?.toLong() ?: 0 }
+        .sumOf { it.toString().toCost() }
 
     override suspend fun part2(input: List<String>): Long = input
         .joinToString("")

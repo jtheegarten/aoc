@@ -1,6 +1,5 @@
 package net.sheltem.aoc.y2025
 
-import net.sheltem.common.Direction
 import net.sheltem.common.Direction.EAST
 import net.sheltem.common.Direction.SOUTH
 import net.sheltem.common.Direction.WEST
@@ -30,7 +29,7 @@ class Day07 : Day<Long>(21, 40) {
         var tachyonXs = setOf(start.x)
         var splits = 0
 
-        for (y in 1..this.maxRow) {
+        for (y in 1..this.maxY) {
             val newTachyonXs = mutableSetOf<Int>()
             for (x in tachyonXs) {
                 if (this[x to y] == '^') {

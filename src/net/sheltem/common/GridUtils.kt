@@ -93,8 +93,8 @@ data class Grid<T>(
         fun fromStrings(list: List<String>) = Grid(list.filter { it.isNotBlank() }.map { it.toMutableList() })
     }
 
-    val maxRow = list.size - 1
-    val maxCol = list.first().size - 1
+    val maxY = list.size - 1
+    val maxX = list.first().size - 1
 
     val allCoordinates: List<PositionInt>
         get() = list.indices.flatMap { y -> list.first().indices.map { x -> x to y } }
@@ -227,8 +227,19 @@ data class Grid<T>(
 fun List<String>.toGrid() = Grid.fromStrings(this)
 fun List<PositionInt>.takeWord(grid: Grid<Char>): String = mapNotNull { grid[it] }.joinToString("")
 
-fun PositionInt.lineTo(direction: Direction, length: Int) = (0..length).map { this.move(direction, it) }
-fun PositionInt.lineTo(direction: Direction8, length: Int) = (0..length).map { this.move(direction, it) }
+fun PositionInt.wrappingLineTo(direction: Direction, length: Int, grid: Grid<*>): List<Pair<Int, Int>> = this
+    .lineTo(direction, length).let { line ->
+        when (direction) {
+            Direction.NORTH -> line.map { if (it.y < 0) it.x to ((grid.maxY + 1) + it.y) else it }
+            Direction.SOUTH -> line.map { if (it.y > grid.maxY) it.x to (it.y - grid.maxY - 1) else it }
+            Direction.WEST -> line.map { if (it.x < 0) ((grid.maxX + 1) + it.x) to it.y else it }
+            Direction.EAST -> line.map { if (it.x > grid.maxX) (it.x - grid.maxX - 1) to it.y else it }
+            else -> error("Direction $direction not supported")
+        }
+    }
+
+fun PositionInt.lineTo(direction: Direction, length: Int) = (0..<length).map { this.move(direction, it) }
+fun PositionInt.lineTo(direction: Direction8, length: Int) = (0..<length).map { this.move(direction, it) }
 fun PositionInt.lineTo(end: PositionInt) =
     when {
         this.x != end.x && this.y != end.y -> error("Not a line along an axis")
@@ -238,12 +249,14 @@ fun PositionInt.lineTo(end: PositionInt) =
                 else this.lineTo(Direction.SOUTH, distance)
             }
         }
+
         this.y == end.y -> {
             (end.x - this.x).let { distance ->
                 if (distance < 0) this.lineTo(Direction.WEST, abs(distance))
                 else this.lineTo(Direction.EAST, distance)
             }
         }
+
         else -> error("No line to make")
     }
 
@@ -283,7 +296,8 @@ fun <T> PositionInt.takeFrom(grid: Grid<T>): T? = grid[this]
 fun Pair<PositionInt, PositionInt>.euclidean(): Double = sqrt((first.first - second.first).toDouble().pow(2) + (first.second - second.second).toDouble().pow(2))
 fun Pair<PositionInt, PositionInt>.manhattan(): Long = abs(this.first.first - this.second.first).toLong() + abs(this.first.second - this.second.second).toLong()
 infix fun PositionInt.manhattan(other: PositionInt): Long = (this to other).manhattan()
-fun Pair<PositionInt, PositionInt>.area(): Long = (abs(this.first.first - this.second.first) + 1).toLong() * (abs(this.first.second - this.second.second).toLong() + 1)
+fun Pair<PositionInt, PositionInt>.area(): Long =
+    (abs(this.first.first - this.second.first) + 1).toLong() * (abs(this.first.second - this.second.second).toLong() + 1)
 
 fun List<PositionInt>.gaussArea(): Long {
     val last = this.last()

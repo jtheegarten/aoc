@@ -75,6 +75,6 @@ class Day09 : Day<Long>(1928, 2858) {
         return this
     }
 
-    data class File(val id: Int, val start: Int, val size: Int)
-    data class Space(val start: Int, val size: Int)
+    private data class File(val id: Int, val start: Int, val size: Int)
+    private data class Space(val start: Int, val size: Int)
 }
