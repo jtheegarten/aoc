@@ -11,6 +11,8 @@ infix fun Int?.nullsafeMax(other: Int?): Int? = when {
 infix operator fun Pair<Long, Long>.plus(other: Pair<Long, Long>): Pair<Long, Long> = first + other.first to second + other.second
 fun Pair<Long, Long>.absoluteDifference(): Long = let { (a, b) -> if (abs(a) >= abs(b)) abs(a) - abs(b) else abs(b) - abs(a) }
 
+fun List<Int>.joinToLong() = joinToString("").toLong()
+
 fun Collection<Long>.multiply(): Long = reduce { acc, l -> acc * l }
 
 fun List<Long>.gcd(): Long {
