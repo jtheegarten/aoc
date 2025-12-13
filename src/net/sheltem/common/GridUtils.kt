@@ -90,7 +90,7 @@ data class Grid<T>(
 ) : Iterable<Pair<PositionInt, T>> {
 
     companion object {
-        fun fromStrings(list: List<String>) = Grid(list.filter { it.isNotBlank() }.map { it.toMutableList() })
+        fun <T> fromStrings(list: List<String>, transform: (Char) -> T) = Grid(list.filter { it.isNotBlank() }.map { it.map(transform).toMutableList() })
     }
 
     val maxY = list.size - 1
@@ -224,7 +224,7 @@ data class Grid<T>(
     override fun iterator(): Iterator<Pair<PositionInt, T>> = allCoordinates.map { it to this[it]!! }.iterator()
 }
 
-fun List<String>.toGrid() = Grid.fromStrings(this)
+fun <T> List<String>.toGrid(transform: (Char) -> T = { it as T }) = Grid.fromStrings(this, transform)
 fun List<PositionInt>.takeWord(grid: Grid<Char>): String = mapNotNull { grid[it] }.joinToString("")
 
 fun PositionInt.wrappingLineTo(direction: Direction, length: Int, grid: Grid<*>): List<Pair<Int, Int>> = this

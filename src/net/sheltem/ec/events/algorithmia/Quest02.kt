@@ -32,7 +32,7 @@ class Quest02 : AlgorithmiaQuest<Long>(listOf(4, 42, 10)) {
         }
 
     override suspend fun part3(input: List<String>): Long = input
-        .let { it[0].split(":")[1].split(",").sortedByDescending { word -> word.length } to it.drop(2).toGrid() }
+        .let { it[0].split(":")[1].split(",").sortedByDescending { word -> word.length } to it.drop(2).toGrid<Char>() }
         .countSymbols()
 
     private fun List<String>.countIn(str: String): Long = this

@@ -8,9 +8,9 @@ suspend fun main() {
 
 class Day04 : Day<Long>(18, 9) {
 
-    override suspend fun part1(input: List<String>): Long = input.toGrid().countXmas()
+    override suspend fun part1(input: List<String>): Long = input.toGrid<Char>().countXmas()
 
-    override suspend fun part2(input: List<String>): Long = input.toGrid().countXmas(true)
+    override suspend fun part2(input: List<String>): Long = input.toGrid<Char>().countXmas(true)
 
     private fun Grid<Char>.countXmas(crossed: Boolean = false): Long =
         this.allCoordinates.sumOf { pos ->

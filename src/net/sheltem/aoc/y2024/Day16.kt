@@ -11,9 +11,9 @@ suspend fun main() {
 
 class Day16 : Day<Long>(11048, 64) {
 
-    override suspend fun part1(input: List<String>): Long = input.toGrid().labyrinth()
+    override suspend fun part1(input: List<String>): Long = input.toGrid<Char>().labyrinth()
 
-    override suspend fun part2(input: List<String>): Long = input.toGrid().seats()
+    override suspend fun part2(input: List<String>): Long = input.toGrid<Char>().seats()
 
 
     private fun Grid<Char>.labyrinth(): Long {

@@ -27,7 +27,7 @@ class Day18 : Day<String>("146", "15") {
 
     private fun List<PositionInt>.runMaze(bytes: Int, maxX: Int, maxY: Int): List<PositionInt>? =
         List(maxY + 1) { ".".repeat(maxX + 1) }
-            .toGrid()
+            .toGrid<Char>()
             .apply {
                 for (pos in this@runMaze.take(bytes)) {
                     this[pos] = '#'

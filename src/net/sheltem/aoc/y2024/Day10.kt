@@ -8,9 +8,9 @@ suspend fun main() {
 
 class Day10 : Day<Long>(36, 81) {
 
-    override suspend fun part1(input: List<String>): Long = input.toGrid().transform { _, c -> c.digitToInt() }.trailheads().sumOf { it.toSet().size }.toLong()
+    override suspend fun part1(input: List<String>): Long = input.toGrid(Char::digitToInt).trailheads().sumOf { it.toSet().size }.toLong()
 
-    override suspend fun part2(input: List<String>): Long = input.toGrid().transform { _, c -> c.digitToInt() }.trailheads().sumOf { it.size }.toLong()
+    override suspend fun part2(input: List<String>): Long = input.toGrid(Char::digitToInt).trailheads().sumOf { it.size }.toLong()
 
     private fun Grid<Int>.trailheads(): List<List<PositionInt>> =
         allCoordinates

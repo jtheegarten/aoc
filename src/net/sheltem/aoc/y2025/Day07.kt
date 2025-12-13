@@ -16,11 +16,11 @@ suspend fun main() {
 class Day07 : Day<Long>(21, 40) {
 
     override suspend fun part1(input: List<String>): Long = input
-        .toGrid()
+        .toGrid<Char>()
         .countBeams()
 
     override suspend fun part2(input: List<String>): Long = input
-        .toGrid()
+        .toGrid<Char>()
         .countTimelines()
 
 

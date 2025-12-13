@@ -9,7 +9,7 @@ suspend fun main() {
 class Day06 : Day<Long>(41, 6) {
 
     override suspend fun part1(input: List<String>): Long = input
-        .toGrid()
+        .toGrid<Char>()
         .let {
             val start = it.find('^')
             it.visit(start)
@@ -19,7 +19,7 @@ class Day06 : Day<Long>(41, 6) {
         }
 
     override suspend fun part2(input: List<String>): Long = input
-        .toGrid()
+        .toGrid<Char>()
         .let {
             val start = it.find('^')
             it.visit(start)

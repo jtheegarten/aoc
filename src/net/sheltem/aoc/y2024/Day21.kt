@@ -8,8 +8,8 @@ suspend fun main() {
 
 class Day21 : Day<Long>(126384, 154115708116294) {
 
-    private val numPad = listOf("789", "456", "123", ".0A").toGrid()
-    private val dirPad = listOf(".^A", "<v>").toGrid()
+    private val numPad = listOf("789", "456", "123", ".0A").toGrid<Char>()
+    private val dirPad = listOf(".^A", "<v>").toGrid<Char>()
 
     private fun listSteps(grid: Grid<Char>, start: Char, end: Char, visitedButtons: String): List<String> =
         if (start == end) listOf("A")

@@ -10,7 +10,7 @@ suspend fun main() {
 class Day04 : Day<Long>(13, 43) {
 
     override suspend fun part1(input: List<String>): Long = input
-        .toGrid()
+        .toGrid<Char>()
         .let { it to it.allCoordinates('@') }
         .let { (grid, papers) ->
             papers.count { paper ->
@@ -20,7 +20,7 @@ class Day04 : Day<Long>(13, 43) {
 
 
     override suspend fun part2(input: List<String>): Long = input
-        .toGrid()
+        .toGrid<Char>()
         .let { grid ->
             generateSequence {
                 grid.allCoordinates('@')

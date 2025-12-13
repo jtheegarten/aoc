@@ -8,9 +8,9 @@ suspend fun main() {
 
 class Day12 : Day<Long>(1930, 1206) {
 
-    override suspend fun part1(input: List<String>): Long = input.toGrid().solve()
+    override suspend fun part1(input: List<String>): Long = input.toGrid<Char>().solve()
 
-    override suspend fun part2(input: List<String>): Long = input.toGrid().solve(true)
+    override suspend fun part2(input: List<String>): Long = input.toGrid<Char>().solve(true)
 
     private fun Grid<Char>.solve(second: Boolean = false): Long =
         mutableSetOf<PositionInt>()

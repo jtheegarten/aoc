@@ -9,11 +9,11 @@ suspend fun main() {
 class Day08 : Day<Long>(14, 34) {
 
     override suspend fun part1(input: List<String>): Long = input
-        .toGrid()
+        .toGrid<Char>()
         .countAntinodes()
 
     override suspend fun part2(input: List<String>): Long = input
-        .toGrid()
+        .toGrid<Char>()
         .countAntinodes(true)
 
     private fun Grid<Char>.countAntinodes(repeat: Boolean = false): Long =

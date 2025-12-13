@@ -21,7 +21,7 @@ class Day15 : Day<Long>(10092, 9021) {
         val map = take(separator).map { if (!double) it else it.replace("#", "##").replace("O", "[]").replace(".", "..").replace("@", "@.") }
         val instructions = drop(separator + 1).joinToString("").map { Direction.from(it.toString()) }
 
-        return map.toGrid() to instructions
+        return map.toGrid<Char>() to instructions
     }
 
     private fun Pair<Grid<Char>, List<Direction>>.execute(): Long {
