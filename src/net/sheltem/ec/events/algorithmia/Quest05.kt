@@ -1,12 +1,13 @@
 package net.sheltem.ec.events.algorithmia
 
 import net.sheltem.common.joinToLong
+import kotlin.math.max
 
 suspend fun main() {
     Quest05().run()
 }
 
-class Quest05 : AlgorithmiaQuest<Long>(listOf(2323, 50877075, 23)) {
+class Quest05 : AlgorithmiaQuest<Long>(listOf(2323, 50877075, 6584)) {
 
     override suspend fun part1(input: List<String>): Long = input
         .parse()
@@ -14,19 +15,47 @@ class Quest05 : AlgorithmiaQuest<Long>(listOf(2323, 50877075, 23)) {
 
     override suspend fun part2(input: List<String>): Long = input
         .parse()
-        .danceUntil(0, 2024)
+        .danceUntil(2024)
 
-    override suspend fun part3(input: List<String>): Long = input.let { 23 }
+    override suspend fun part3(input: List<String>): Long = input
+        .parse()
+        .dancePredict(10000)
+
+    private fun List<List<Int>>.dancePredict(tries: Int): Long {
+        var lists = this
+        var dIndex = 0
+        var round = 1
+        var max: Long = 0
+
+        while (round < tries) {
+            val cIndex = (dIndex + 1) % lists.size
+            val dancer = lists[dIndex][0]
+
+            lists = lists.mapIndexed { index, list ->
+                when (index) {
+                    dIndex -> list.drop(1)
+                    cIndex -> list.clap(dancer)
+                    else -> list
+                }
+            }
+
+            val number = lists.map { it[0] }.joinToLong()
+            max = max(max, number)
+
+            dIndex = (dIndex + 1) % lists.size
+            round++
+        }
+
+        return max
+    }
 
     private fun List<List<Int>>.danceUntil(
-        startDIndex: Int,
         count: Int,
-        startRound: Int = 1,
-        memory: MutableMap<Long, Int> = mutableMapOf()
     ): Long {
+        val memory: MutableMap<Long, Int> = mutableMapOf()
         var lists = this
-        var dIndex = startDIndex
-        var round = startRound
+        var dIndex = 0
+        var round = 1
 
         while (true) {
             val cIndex = (dIndex + 1) % lists.size
@@ -49,25 +78,6 @@ class Quest05 : AlgorithmiaQuest<Long>(listOf(2323, 50877075, 23)) {
             dIndex = (dIndex + 1) % lists.size
             round++
         }
-    }
-
-    private fun List<List<Int>>.danceUntilRec(dIndex: Int, count: Int, round: Int = 0, memory: MutableMap<Long, Int> = mutableMapOf()): Long {
-        val number = this.map { it[0] }.joinToLong()
-        if ((memory[number] ?: 0) == count) {
-            return number * round
-        }
-        val cIndex = (dIndex + 1) % this.size
-        val dancer = this[dIndex][0]
-
-        return this.mapIndexed { index, list ->
-            when (index) {
-                dIndex -> list.drop(1)
-                cIndex -> list.clap(dancer)
-                else -> list
-            }
-        }.also {
-            if (round != 0) memory.merge(number, 1) { old, new -> old + new }
-        }.danceUntil((dIndex + 1) % this.size, count, round + 1, memory)
     }
 
     private fun List<List<Int>>.dance(dIndex: Int, repeats: Int): Long {
