@@ -3,6 +3,86 @@ package net.sheltem.common
 import net.sheltem.common.SearchGraph.Edge
 import net.sheltem.common.SearchGraph.Route
 import kotlin.random.Random
+import kotlin.sequences.map
+
+/**
+ * Base class for graph search algorithms (BFS and DFS).
+ *
+ * @param T The type of vertices in the graph.
+ * @param neighborhood Function that returns the neighbors of a given vertex.
+ * @param reverseInsertionOrder Whether to reverse the order of neighbor insertion into the queue.
+ */
+abstract class GraphSearch<T : Any>(
+    private val neighborhood: (T) -> Collection<T>,
+    private val reverseInsertionOrder: Boolean,
+) {
+
+    protected abstract fun ArrayDeque<List<T>>.dequeue(): List<T>
+
+    /**
+     * Iterate over all vertices in visited order.
+     * Each element is a [List] from the current vertex as to the [startVertex].
+     */
+    fun fromWithPaths(startVertex: T, endVertex: T? = null): Sequence<List<T>> = sequence {
+        val visited = mutableSetOf<T>()
+
+        val queue = ArrayDeque<List<T>>()
+        queue += (listOf(startVertex))
+        visited += startVertex
+
+        while (queue.isNotEmpty()) {
+            val path = queue.dequeue()
+            yield(path)
+            val neighbors = neighborhood(path[0])
+                .filter { it !in visited }
+            visited += neighbors.filter { it != endVertex }
+            val newPaths = neighbors.map { listOf(it) + path }
+
+            // make sure neighbors are visited the same order as returned by `neighborhood`
+            queue += if (reverseInsertionOrder) {
+                newPaths.reversed()
+            } else {
+                newPaths
+            }
+        }
+    }
+
+    /**
+     * Iterate over all vertices in visited order, starting from [startVertex].
+     * Returns a sequence of vertices in the order they are visited.
+     */
+    fun from(startVertex: T) = fromWithPaths(startVertex).map { it[0] }
+}
+
+/**
+ * Breadth-First Search (BFS) graph traversal algorithm.
+ * Visits vertices level by level, exploring all neighbors at the current depth
+ * before moving to vertices at the next depth level.
+ *
+ * @param T The type of vertices in the graph.
+ * @param neighborhood Function that returns the neighbors of a given vertex.
+ */
+class BFS<T : Any>(
+    neighborhood: (T) -> Collection<T>,
+) : GraphSearch<T>(neighborhood, false) {
+    override fun ArrayDeque<List<T>>.dequeue(): List<T> = removeFirst()
+}
+
+/**
+ * Depth-First Search (DFS) graph traversal algorithm.
+ * Visits vertices by exploring as far as possible along each branch before backtracking.
+ *
+ * @param T The type of vertices in the graph.
+ * @param neighborhood Function that returns the neighbors of a given vertex.
+ */
+class DFS<T : Any>(
+    neighborhood: (T) -> Collection<T>,
+) : GraphSearch<T>(neighborhood, true) {
+    override fun ArrayDeque<List<T>>.dequeue(): List<T> = removeLast()
+}
+
+
+
 
 class SearchGraph<N>(val nodes: Set<Node<N>>, edges: Set<Edge<N>>, val bidirectional: Boolean, val circular: Boolean = false) {
 
