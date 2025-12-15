@@ -10,7 +10,7 @@ suspend fun main() {
 
 class Quest07 : AlgorithmiaQuest<String>(listOf("BDCA", "DCBA", "")) {
 
-    private val opponent = Chariot("A", "++-+-+=-=+=".map { Chariot.Action.from(it) })
+    private val opponent = Chariot("A", "++-+-+=-=+=".map { it.toAction() })
 
     override suspend fun part1(input: List<String>): String = input
         .parse()
@@ -19,23 +19,18 @@ class Quest07 : AlgorithmiaQuest<String>(listOf("BDCA", "DCBA", "")) {
     override suspend fun part2(input: List<String>): String = input
         .parseWithTrack()
         .raceRounds(10)
-        .onEach { entry ->
-            println("${entry.first.name} => ${entry.second}")
-        }
         .joinToString("") { it.first.name[0].toString() }
 
     override suspend fun part3(input: List<String>): String = input[0]
         .raceAll(2024)
 
     private suspend fun String.raceAll(rounds: Int): String {
-        val opponentScore = opponent.race(10, this.map { c -> Chariot.Action.from(c) }, rounds)
-
-        println(opponentScore)
+        val opponentScore = opponent.race(10, this.map { c -> c.toAction() }, rounds)
 
         return combinations()
-            .map { Chariot(it, it.map(Chariot.Action::from)) }
+            .map { Chariot(it, it.map{ c -> c.toAction() }) }
             .mapParallel { chariot ->
-                chariot to chariot.race(10, this.map { Chariot.Action.from(it) }, rounds)
+                chariot to chariot.race(10, this.map { it.toAction() }, rounds)
             }.count { runResult ->
                 runResult.second > opponentScore
             }
@@ -51,13 +46,13 @@ class Quest07 : AlgorithmiaQuest<String>(listOf("BDCA", "DCBA", "")) {
     private fun List<String>.parse(): List<Chariot> = this
         .map { line ->
             val (name, actions) = line.split(":")
-            Chariot(name, actions.filter { it != ',' }.map { Chariot.Action.from(it) })
+            Chariot(name, actions.filter { it != ',' }.map { it.toAction() })
         }
 
     private suspend fun Pair<String, List<Chariot>>.raceRounds(rounds: Int): List<Pair<Chariot, Long>> = this
         .second
         .mapParallel { chariot ->
-            chariot to chariot.race(10, this.first.map { Chariot.Action.from(it) }, rounds)
+            chariot to chariot.race(10, this.first.map { it.toAction() }, rounds)
         }.sortedByDescending { it.second }
 
     fun combinations(): Set<String> {
@@ -90,55 +85,39 @@ class Quest07 : AlgorithmiaQuest<String>(listOf("BDCA", "DCBA", "")) {
         return results
     }
 
+    private fun Char.toAction(): Int = when (this) {
+        '+' -> 1
+        '-' -> -1
+        else -> 0
+    }
+
     private fun List<String>.parseWithTrack(): Pair<String, List<Chariot>> = this[0] to this.drop(1).parse()
 
     private data class Chariot(
         val name: String,
-        val actions: List<Action>,
+        val actions: List<Int>,
     ) {
 
         fun race(startVal: Int, repeats: Int): Int =
             generateSequence(0 to startVal) { (index, value) ->
-                (index + 1) to actions[index % actions.size].apply(value)
-            }.take(repeats)
+                (index + 1) to actions[index % actions.size] + value
+            }.take(repeats + 1)
+                .drop(1)
                 .sumOf { it.second }
 
-        fun race(startVal: Long, track: List<Action>, rounds: Int): Long =
+        fun race(startVal: Long, track: List<Int>, rounds: Int): Long =
             generateSequence(0 to startVal) { (index, value) ->
                 (index + 1) to step(value, track[(index + 1) % track.size], index)
-            }.take(rounds * track.size)
-                .toList()
-                .also { println("Endaction: ${track[it.size % track.size]}") }
+            }.take((rounds * track.size) + 1)
+                .drop(1)
                 .sumOf { it.second }
 
-        fun step(power: Long, trackAction: Action, index: Int): Long =
-            when (trackAction) {
-                Action.PLUS -> power + 1
-                Action.MINUS -> max(0, power - 1)
-                else -> when (actions[index % actions.size]) {
-                    Action.PLUS -> power + 1
-                    Action.MINUS -> max(0, power - 1)
-                    else -> power
-                }
-            }
-
-        enum class Action(val value: Char) {
-            PLUS('+'),
-            MINUS('-'),
-            HOLD('='),
-            START('S');
-
-            fun apply(num: Int) =
-                when (this) {
-                    PLUS -> num + 1
-                    MINUS -> max(0, num - 1)
-                    else -> num
-                }
-
-            companion object {
-                fun from(c: Char) = entries.single { it.value == c }
-            }
-        }
+        fun step(power: Long, trackAction: Int, index: Int): Long =
+            if (trackAction == 0) {
+                actions[index % actions.size] + power
+            } else {
+                power + trackAction
+            }.coerceAtLeast(0)
     }
 }
 
