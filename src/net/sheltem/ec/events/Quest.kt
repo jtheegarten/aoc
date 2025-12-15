@@ -9,7 +9,7 @@ abstract class Quest<T>(
     private val event: String,
     private val testResult: List<T>,
 ) {
-    suspend fun run(skipTest: Boolean = false) {
+    suspend fun run(skipTest: List<Boolean> = listOf(false, false, false)) {
 
         val number = this::class.java.simpleName.takeLast(2)
 
@@ -21,7 +21,7 @@ abstract class Quest<T>(
         println("=== $event Quest $number: ===\n")
 
         val outputs = testResult.mapIndexed { i, it ->
-            runPart(i + 1, it, testInput[i], input[i], skipTest).output()
+            runPart(i + 1, it, testInput[i], input[i], skipTest[i]).output()
         }
 
         (0..5).map { i ->
@@ -75,7 +75,7 @@ abstract class Quest<T>(
         fun output(): List<String> {
             return listOf(
                 "Part$part:",
-                "Test: $testResult" + if (testSuccess == false) " != $expected" else "",
+                "Test: ${testResult ?: "Not run"}" + if (testSuccess == false) " != $expected" else "",
                 "  in $testDuration ms",
                 "",
                 "Real: $result",
